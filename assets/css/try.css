@@ -1,0 +1,116 @@
+/* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #f0f4f8, #c8d6e5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Form Container Styling */
+.form-container {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: #34495e;
+}
+
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: block;
+    color: #2c3e50;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccd1d9;
+    font-size: 1rem;
+    margin-top: 8px;
+    transition: border 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #34495e;
+    outline: none;
+}
+
+select {
+    appearance: none;
+    background: url('data:image/svg+xml;base64,...') no-repeat right 10px center;
+    background-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* Radio Group Styling */
+.radio-group {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.radio-group label {
+    flex-basis: 48%;
+    text-align: center;
+    padding: 10px;
+    background: #ecf0f1;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked + label {
+    background: #34495e;
+    color: white;
+}
+
+/* Button Styling */
+button {
+    background-color: #34495e;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    font-size: 1.2rem;
+}
+
+button:hover {
+    background-color: #2c3e50;
+}
