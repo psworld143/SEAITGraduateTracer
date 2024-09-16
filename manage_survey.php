@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Survey Result / Data - SEAITGraduateTracer</title>
+  <title>Manage Survey - SEAITGraduateTracer</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -38,61 +38,15 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Survey Result</h1>
+      <h1>Manage Survey</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-          <li class="breadcrumb-item">Survey Result</li>
-          <li class="breadcrumb-item active">Data</li>
+          <li class="breadcrumb-item active">Manage Survey</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section">
-      <div class="row">
-        <div class="col-lg-12">
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Data</h5>
-              <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">Select Year of Graduate:</label>
-                  <div class="col-sm-10">
-                    <select class="form-select" aria-label="Default select example">
-                      <option selected>Year Level</option>
-                      <option value="1">2024-2025</option>
-                      <option value="2">2023-2024</option>
-                      <option value="3">2022-2023</option>
-                      <option value="2">2021-2022</option>
-                      <option value="3">2020-2021</option>
-                    </select>
-                  </div>
-              </div>
-              <!-- Table with stripped rows -->
-              <table class="table datatable">
-                <thead>
-                  <tr>
-                    <th>
-                      <b>N</b>ame
-                    </th>
-                    <th>Ext.</th>
-                    <th>City</th>
-                    <th data-type="date" data-format="YYYY/DD/MM">Start Date</th>
-                    <th>Completion</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  
-                </tbody>
-              </table>
-              <!-- End Table with stripped rows -->
-
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
 
   </main><!-- End #main -->
 

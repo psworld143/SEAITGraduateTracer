@@ -1,11 +1,6 @@
   <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
 
-    <div class="sidebar-avatar">
-      <img src="assets/img/image.jpg" alt="User Avatar" class="avatar-img">
-    </div>
-    <br>
-
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
@@ -14,29 +9,25 @@
           <span>Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
-      
-      <li class="nav-heading">Survey</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="manage_survey.php">
+        <a class="nav-link collapsed" href="users-profile.html">
           <i class="bi bi-file-text"></i>
-          <span>Manage Survey</span>
+          <span>Admin User</span>
         </a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="survey_result.php">
           <i class="bi bi-graph-up"></i>
-          <span>Survey Result</span>
+          <span>Users</span>
         </a>
       </li>
-
-      <li class="nav-heading">User Management</li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="users_profile.php">
           <i class="bi bi-person-circle"></i>
-          <span>User Profile</span>
+          <span>Department</span>
         </a>
       </li>
 
