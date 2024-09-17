@@ -22,7 +22,7 @@
         </div>
 
         <hr>
-        <!-- One "tab" for each step in the form: -->
+        <!-- A -->
         <div class="tab">
             <h2>A. GENERAL INFORMATION </h2>
             <div class="row mb-3">
@@ -118,6 +118,7 @@
             </div>
         </div>
 
+        <!-- B -->
         <div class="tab">
             <h2>B. EDUCATIONAL BACKGROUND</h2>
 
@@ -291,6 +292,7 @@
             </div>
         </div>
 
+        <!-- C -->
         <div class="tab">
             <h2>C. TRAINING(S) AND ADVANCED STUDIES ATTENDED FOR COLLEGE</h2>
 
@@ -360,6 +362,7 @@
             </div>
         </div>
 
+        <!-- D -->
         <div class="tab">
             <h2>D. EMPLOYMENT DATA </h2>
             <div class="row mb-3">
