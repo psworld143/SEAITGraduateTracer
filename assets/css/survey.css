@@ -1,0 +1,148 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f1f1f1;
+    font-family: 'Raleway', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#regForm {
+    background-color: #fff;
+    margin: 80px auto;
+    padding: 40px;
+    width: 80%;
+    max-width: 900px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
+}
+
+input, select {
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    font-family: 'Raleway', sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+    border-color: #04AA6D;
+    box-shadow: 0 0 5px rgba(4, 170, 109, 0.5);
+    outline: none;
+}
+
+input.invalid {
+    background-color: #ffdddd;
+    border-color: #ff5e5e;
+}
+
+.tab {
+    display: none;
+}
+
+button {
+    background-color: #04AA6D;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #039f60;
+}
+
+#prevBtn {
+    background-color: #bbb;
+}
+
+#prevBtn:hover {
+    background-color: #999;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.step {
+    height: 12px;
+    width: 12px;
+    margin: 0 3px;
+    background-color: #ccc;
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0.5;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.step.active {
+    opacity: 1;
+}
+
+.step.finish {
+    background-color: #04AA6D;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    #regForm {
+        width: 95%;
+        margin: 50px auto;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 20px;
+    }
+
+    input, select {
+        font-size: 14px;
+    }
+
+    button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .step {
+        height: 10px;
+        width: 10px;
+    }
+}
+
+.tab:first-child {
+    display: block;
+}
