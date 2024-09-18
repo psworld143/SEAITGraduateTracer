@@ -537,6 +537,7 @@ h6 {
 /*--------------------------------------------------------------
 # Sidebar
 --------------------------------------------------------------*/
+/* Base Sidebar Styles */
 .sidebar {
   position: fixed;
   top: 60px;
@@ -544,19 +545,13 @@ h6 {
   bottom: 0;
   width: 300px;
   z-index: 996;
-  transition: all 0.3s;
   padding: 20px;
   overflow-y: auto;
+  transition: all 0.3s;
+  background-color: #fff;
+  box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
   scrollbar-width: thin;
   scrollbar-color: #aab7cf transparent;
-  box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
-  background-color: #fff;
-}
-
-@media (max-width: 1199px) {
-  .sidebar {
-    left: -300px;
-  }
 }
 
 .sidebar::-webkit-scrollbar {
@@ -569,24 +564,24 @@ h6 {
   background-color: #aab7cf;
 }
 
-@media (min-width: 1200px) {
-
-  #main,
-  #footer {
-    margin-left: 300px;
-  }
-}
-
+/* Sidebar Collapsed on Small Screens */
 @media (max-width: 1199px) {
+  .sidebar {
+    left: -300px;
+  }
+  
   .toggle-sidebar .sidebar {
     left: 0;
   }
 }
 
+/* Sidebar Expanded on Large Screens */
 @media (min-width: 1200px) {
+  #main, #footer {
+    margin-left: 300px;
+  }
 
-  .toggle-sidebar #main,
-  .toggle-sidebar #footer {
+  .toggle-sidebar #main, .toggle-sidebar #footer {
     margin-left: 0;
   }
 
@@ -595,6 +590,7 @@ h6 {
   }
 }
 
+/* Sidebar Navigation */
 .sidebar-nav {
   padding: 0;
   margin: 0;
@@ -602,8 +598,6 @@ h6 {
 }
 
 .sidebar-nav li {
-  padding: 0;
-  margin: 0;
   list-style: none;
 }
 
@@ -625,10 +619,10 @@ h6 {
   font-size: 15px;
   font-weight: 600;
   color: #4154f1;
-  transition: 0.3;
   background: #f6f9ff;
   padding: 10px 15px;
   border-radius: 4px;
+  transition: background 0.3s, color 0.3s;
 }
 
 .sidebar-nav .nav-link i {
@@ -637,6 +631,7 @@ h6 {
   color: #4154f1;
 }
 
+/* Collapsed State */
 .sidebar-nav .nav-link.collapsed {
   color: #012970;
   background: #fff;
@@ -646,6 +641,7 @@ h6 {
   color: #899bbd;
 }
 
+/* Hover States */
 .sidebar-nav .nav-link:hover {
   color: #4154f1;
   background: #f6f9ff;
@@ -655,6 +651,7 @@ h6 {
   color: #4154f1;
 }
 
+/* Chevron Rotation */
 .sidebar-nav .nav-link .bi-chevron-down {
   margin-right: 0;
   transition: transform 0.2s ease-in-out;
@@ -664,6 +661,7 @@ h6 {
   transform: rotate(180deg);
 }
 
+/* Sidebar Content */
 .sidebar-nav .nav-content {
   padding: 5px 0 0 0;
   margin: 0;
@@ -676,9 +674,8 @@ h6 {
   font-size: 14px;
   font-weight: 600;
   color: #012970;
-  transition: 0.3;
   padding: 10px 0 10px 40px;
-  transition: 0.3s;
+  transition: color 0.3s, background 0.3s;
 }
 
 .sidebar-nav .nav-content a i {
@@ -688,14 +685,15 @@ h6 {
   border-radius: 50%;
 }
 
-.sidebar-nav .nav-content a:hover,
-.sidebar-nav .nav-content a.active {
+/* Active/hover States */
+.sidebar-nav .nav-content a:hover, .sidebar-nav .nav-content a.active {
   color: #4154f1;
 }
 
 .sidebar-nav .nav-content a.active i {
   background-color: #4154f1;
 }
+
 
 /*--------------------------------------------------------------
 # Dashboard
