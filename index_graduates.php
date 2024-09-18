@@ -34,8 +34,8 @@
 
 <body>
 
-    <?php include('inc/header.php'); ?>
-    <?php include('inc/sidebar.php'); ?>
+    <?php include('inc/graduate_header.php'); ?>
+    <?php include('inc/graduate_sidebar.php'); ?>
 
     <main id="main" class="main">
 
@@ -56,34 +56,50 @@
                 <div class="col-lg-8">
                     <div class="row">
 
-                        <!-- Total Students Card -->
+                        <!-- Sales Card -->
                         <div class="col-xxl-4 col-md-6">
                             <div class="card info-card sales-card">
 
+                                <div class="filter">
+                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                            class="bi bi-three-dots"></i></a>
+                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                        <li class="dropdown-header text-start">
+                                            <h6>Filter</h6>
+                                        </li>
+
+                                        <li><a class="dropdown-item" href="#">Today</a></li>
+                                        <li><a class="dropdown-item" href="#">This Month</a></li>
+                                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                                    </ul>
+                                </div>
+
                                 <div class="card-body">
-                                    <h5 class="card-title">Total of Students Tracked</h5>
+                                    <h5 class="card-title">Total of Graduates Tracked <span>| Today</span></h5>
 
                                     <div class="d-flex align-items-center">
-                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <div
+                                            class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                             <div class="icon">
                                                 <i class="ri-team-fill"></i>
                                             </div>
                                         </div>
                                         <div class="ps-3">
-                                            <!-- Add content here if needed -->
+
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
-                        </div><!-- End Total Students Card -->
+                        </div><!-- End Sales Card -->
 
-                        <!-- Recent Survey Card -->
+                        <!-- Revenue Card -->
                         <div class="col-xxl-4 col-md-6">
                             <div class="card info-card revenue-card">
 
                                 <div class="filter">
-                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                            class="bi bi-three-dots"></i></a>
                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                         <li class="dropdown-header text-start">
                                             <h6>Filter</h6>
@@ -99,23 +115,23 @@
                                     <h5 class="card-title">Recent Survey Submissions <span>| This Month</span></h5>
 
                                     <div class="d-flex align-items-center">
-                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <div
+                                            class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                             <div class="icon">
                                                 <i class="ri-team-line"></i>
                                             </div>
                                         </div>
                                         <div class="ps-3">
-                                            <!-- Add content here if needed -->
+
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
-                        </div><!-- End Recent Survey Card -->
-
+                        </div><!-- End Revenue Card -->
                     </div><!-- End Right side columns -->
+
                 </div>
-            </div>
         </section>
 
     </main><!-- End #main -->

@@ -43,12 +43,96 @@
             <h1>Manage Survey</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
                     <li class="breadcrumb-item active">Manage Survey</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
 
+        <section class="section dashboard">
+            <div class="row">
+
+                <!-- Left side columns -->
+                <div class="col-lg-8">
+                    <div class="row">
+
+                        <!-- Batch Graduated -->
+                        <div class="col-12">
+                            <div class="card top-selling overflow-auto">
+
+                                <div class="card-body pb-0">
+                                    <h5 class="card-title">Batch Graduated</h5>
+
+                                    <div class="row">
+                                        <!-- Batch Card 1 -->
+                                        <div class="col-xxl-4 col-md-6 mb-4">
+                                            <a href="student.php" class="card batch-card-link">
+                                                <div class="batch-card-body">
+                                                    <h5 class="batch-card-title">Batch 2024-2025</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <!-- Batch Card 2 -->
+                                        <div class="col-xxl-4 col-md-6 mb-4">
+                                            <a href="batch-2023-2024.html" class="card batch-card-link">
+                                                <div class="batch-card-body">
+                                                    <h5 class="batch-card-title">Batch 2023-2024</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <!-- Batch Card 3 -->
+                                        <div class="col-xxl-4 col-md-6 mb-4">
+                                            <a href="batch-2022-2023.html" class="card batch-card-link">
+                                                <div class="batch-card-body">
+                                                    <h5 class="batch-card-title">Batch 2022-2023</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div><!-- End Batch Graduated -->
+
+                    </div>
+                </div><!-- End Left side columns -->
+
+                <!-- Right side columns -->
+                <div class="col-lg-4">
+
+                    <!-- Recent Activity -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Add New Batch</h5>
+                            <form class="row g-3">
+                                <div class="col-12">
+                                    <label for="inputPassword4" class="form-label">Batch Name:</label>
+                                    <input type="batchName" class="form-control" id="batchName">
+                                </div>
+                                <div class="col-12">
+                                    <label for="inputState" class="form-label">Year Graduated:</label>
+                                    <select id="inputState" class="form-select">
+                                        <option selected>Select Year Graduated</option>
+                                        <option>2024-2025</option>
+                                        <option>2023-2024</option>
+                                        <option>2022-2023</option>
+                                        <option>2021-2022</option>
+                                        <option>2020-2021</option>
+                                    </select>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Add</button>
+                                </div>
+                            </form>
+                        </div><!-- End Recent Activity -->
+
+                    </div><!-- End Right side columns -->
+
+                </div>
+        </section>
 
     </main><!-- End #main -->
 

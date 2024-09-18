@@ -662,6 +662,18 @@ h6 {
 }
 
 /* Sidebar Content */
+
+.sidebar-avatar {
+  text-align: center; /* Center the avatar */
+}
+
+.avatar-img {
+  width: 180px; /* Set the desired width */
+  height: 180px; /* Set the desired height */
+  border-radius: 50%; /* Optional: make it circular */
+  object-fit: cover; /* Maintain aspect ratio */
+}
+
 .sidebar-nav .nav-content {
   padding: 5px 0 0 0;
   margin: 0;
@@ -675,7 +687,7 @@ h6 {
   font-weight: 600;
   color: #012970;
   padding: 10px 0 10px 40px;
-  transition: color 0.3s, background 0.3s;
+  transition: color 0.3s;
 }
 
 .sidebar-nav .nav-content a i {
@@ -737,6 +749,33 @@ h6 {
 }
 
 /* Info Cards */
+
+.batch-card {
+  width: 100%;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; 
+}
+
+.batch-card-body {
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+
+.batch-card-title {
+  font-size: 1.25rem;
+  margin-bottom: 0;
+}
+
 .dashboard .info-card {
   padding-bottom: 10px;
 }
