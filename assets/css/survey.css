@@ -1,97 +1,131 @@
+/* General Reset and Box Sizing */
 * {
     box-sizing: border-box;
-}
-
-body {
-    background-color: #f1f1f1;
-    font-family: 'Raleway', sans-serif;
     margin: 0;
     padding: 0;
 }
 
-#regForm {
-    background-color: #fff;
-    margin: 80px auto;
-    padding: 40px;
-    width: 80%;
-    max-width: 900px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+.title-card {
+    background-color: #ffffff4d; 
+    color: #fff; /* White text color */
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%; /* Full width */
+    margin: 0 auto; /* Centering the card */
 }
 
-h1 {
-    text-align: center;
-    font-size: 28px;
+.title h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.title p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+
+body {
+    background-color: #f7f8fa;
+    font-family: 'Raleway', sans-serif;
     color: #333;
+}
+
+/* Form Container */
+#regForm {
+    background-color: #fff;
+    margin: 100px auto;
+    padding: 40px;
+    width: 80%;
+    max-width: 850px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Headings */
+h1, h2 {
+    font-weight: 600;
+    color: #222;
+    text-align: center;
     margin-bottom: 20px;
 }
 
+h1 {
+    font-size: 26px;
+}
+
+h2 {
+    font-size: 22px;
+    text-align: left;
+}
+
+/* Text */
 p {
-    font-size: 16px;
-    color: #666;
-    line-height: 1.6;
+    font-size: 15px;
+    color: #555;
+    line-height: 1.5;
 }
 
-input, select {
-    padding: 12px;
+/* Inputs and Selects */
+input, select, textarea {
+    padding: 14px;
     width: 100%;
-    font-size: 16px;
-    font-family: 'Raleway', sans-serif;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-top: 8px;
-    margin-bottom: 16px;
-    transition: all 0.3s ease;
+    font-size: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-input:focus, select:focus {
-    border-color: #04AA6D;
-    box-shadow: 0 0 5px rgba(4, 170, 109, 0.5);
+input:focus, select:focus, textarea:focus {
+    border-color: #6366F1;
     outline: none;
+    box-shadow: 0 0 6px rgba(99, 102, 241, 0.2);
 }
 
 input.invalid {
-    background-color: #ffdddd;
-    border-color: #ff5e5e;
+    background-color: #ffe5e5;
+    border-color: #f56565;
 }
 
-.tab {
-    display: none;
-}
-
+/* Buttons */
 button {
-    background-color: #04AA6D;
+    background-color: #6366F1;
     color: #fff;
     border: none;
-    padding: 12px 24px;
+    padding: 14px 28px;
     font-size: 16px;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button:hover {
-    background-color: #039f60;
-}
-
-#prevBtn {
-    background-color: #bbb;
-}
-
-#prevBtn:hover {
-    background-color: #999;
+    background-color: #4f46e5;
+    transform: translateY(-2px);
 }
 
 button:disabled {
-    background-color: #ccc;
+    background-color: #cfd8dc;
     cursor: not-allowed;
 }
 
+#prevBtn {
+    background-color: #e0e0e0;
+}
+
+#prevBtn:hover {
+    background-color: #bdbdbd;
+}
+
+/* Step Indicators */
 .step {
     height: 12px;
     width: 12px;
     margin: 0 3px;
-    background-color: #ccc;
+    background-color: #e0e0e0;
     border-radius: 50%;
     display: inline-block;
     opacity: 0.5;
@@ -100,17 +134,110 @@ button:disabled {
 
 .step.active {
     opacity: 1;
+    background-color: #6366F1;
 }
 
 .step.finish {
-    background-color: #04AA6D;
+    background-color: #22c55e;
+}
+
+/* Form Tab */
+.tab {
+    display: none;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.tab:first-child {
+    display: block;
+}
+
+/* Labels */
+label {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* Checkboxes and Text Inputs */
+.form-group {
+    margin-bottom: 20px;
+}
+
+input[type="checkbox"], input[type="text"], select {
+    font-size: 15px;
+    padding: 14px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    margin-top: 8px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Checkbox Styles */
+.form-check {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+
+.form-check-input {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    accent-color: #6366F1;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.form-check-label {
+    font-size: 15px;
+    color: #555;
+    cursor: pointer;
+    line-height: 1.5;
+}
+
+.form-check-input:checked + .form-check-label {
+    color: #6366F1;
+}
+
+/* Responsive Checkbox Group */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; 
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto; 
+    margin-right: 10px; 
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     #regForm {
-        width: 95%;
-        margin: 50px auto;
+        width: 90%;
+        margin: 70px auto;
     }
 
     h1 {
@@ -118,23 +245,13 @@ button:disabled {
     }
 
     button {
-        padding: 10px 20px;
+        padding: 12px 24px;
         font-size: 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    h1 {
-        font-size: 20px;
     }
 
     input, select {
         font-size: 14px;
-    }
-
-    button {
-        padding: 8px 16px;
-        font-size: 14px;
+        padding: 12px;
     }
 
     .step {
@@ -143,6 +260,13 @@ button:disabled {
     }
 }
 
-.tab:first-child {
-    display: block;
+@media (max-width: 480px) {
+    h1 {
+        font-size: 20px;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
 }
