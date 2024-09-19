@@ -87,6 +87,10 @@
                                                 <input type="text" class="form-control" id="inputYearGraduated">
                                             </div>
                                             <div class="col-12 mb-3">
+                                                <label for="inputCourse" class="form-label">Course:</label>
+                                                <input type="course" class="form-control" id="inputCourse">
+                                            </div>
+                                            <div class="col-12 mb-3">
                                                 <label for="inputEmail" class="form-label">Email:</label>
                                                 <input type="email" class="form-control" id="inputEmail">
                                             </div>
@@ -105,6 +109,7 @@
                                     <tr>
                                         <th>Student Name</th>
                                         <th>Year Graduated</th>
+                                        <th>Course</th>
                                         <th>Email Address</th>
                                         <th>Action</th>
                                     </tr>

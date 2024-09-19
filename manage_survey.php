@@ -14,7 +14,6 @@
     <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.gstatic.com" rel="preconnect">
     <link
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
         rel="stylesheet">
@@ -38,7 +37,6 @@
     <?php include('inc/sidebar.php'); ?>
 
     <main id="main" class="main">
-
         <div class="pagetitle">
             <h1>Manage Survey</h1>
             <nav>
@@ -59,41 +57,12 @@
                         <!-- Batch Graduated -->
                         <div class="col-12">
                             <div class="card top-selling overflow-auto">
-
                                 <div class="card-body pb-0">
                                     <h5 class="card-title">Batch Graduated</h5>
-
-                                    <div class="row">
-                                        <!-- Batch Card 1 -->
-                                        <div class="col-xxl-4 col-md-6 mb-4">
-                                            <a href="student.php" class="card batch-card-link">
-                                                <div class="batch-card-body">
-                                                    <h5 class="batch-card-title">Batch 2024-2025</h5>
-                                                </div>
-                                            </a>
-                                        </div>
-
-                                        <!-- Batch Card 2 -->
-                                        <div class="col-xxl-4 col-md-6 mb-4">
-                                            <a href="batch-2023-2024.html" class="card batch-card-link">
-                                                <div class="batch-card-body">
-                                                    <h5 class="batch-card-title">Batch 2023-2024</h5>
-                                                </div>
-                                            </a>
-                                        </div>
-
-                                        <!-- Batch Card 3 -->
-                                        <div class="col-xxl-4 col-md-6 mb-4">
-                                            <a href="batch-2022-2023.html" class="card batch-card-link">
-                                                <div class="batch-card-body">
-                                                    <h5 class="batch-card-title">Batch 2022-2023</h5>
-                                                </div>
-                                            </a>
-                                        </div>
-
+                                    <div class="row" id="batchList">
+                                        <!-- Batch Card Template -->
                                     </div>
                                 </div>
-
                             </div>
                         </div><!-- End Batch Graduated -->
 
@@ -102,38 +71,36 @@
 
                 <!-- Right side columns -->
                 <div class="col-lg-4">
-
                     <!-- Recent Activity -->
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Add New Batch</h5>
-                            <form class="row g-3">
+                            <form id="addBatchForm" class="row g-3">
                                 <div class="col-12">
-                                    <label for="inputPassword4" class="form-label">Batch Name:</label>
-                                    <input type="batchName" class="form-control" id="batchName">
+                                    <label for="batchName" class="form-label">Batch Name:</label>
+                                    <input type="text" class="form-control" name="batchName" id="batchName" required>
                                 </div>
                                 <div class="col-12">
-                                    <label for="inputState" class="form-label">Year Graduated:</label>
-                                    <select id="inputState" class="form-select">
-                                        <option selected>Select Year Graduated</option>
-                                        <option>2024-2025</option>
-                                        <option>2023-2024</option>
-                                        <option>2022-2023</option>
-                                        <option>2021-2022</option>
-                                        <option>2020-2021</option>
+                                    <label for="yearGraduated" class="form-label">Year Graduated:</label>
+                                    <select id="yearGraduated" class="form-select" name="yearGraduated" required>
+                                        <option value="" selected>Select Year Graduated</option>
+                                        <option value="2024-2025">2024-2025</option>
+                                        <option value="2023-2024">2023-2024</option>
+                                        <option value="2022-2023">2022-2023</option>
+                                        <option value="2021-2022">2021-2022</option>
+                                        <option value="2020-2021">2020-2021</option>
                                     </select>
                                 </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary">Add</button>
                                 </div>
                             </form>
+                            <div id="responseMessage"></div>
                         </div><!-- End Recent Activity -->
-
                     </div><!-- End Right side columns -->
-
                 </div>
+            </div>
         </section>
-
     </main><!-- End #main -->
 
     <?php include('inc/footer.php'); ?>
@@ -150,6 +117,88 @@
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
+
+    <!-- Custom JS File -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        // Function to load batch list via AJAX
+        function loadBatchList() {
+            $.ajax({
+                url: 'get_batches.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        var batchListHtml = '';
+                        $.each(response.data, function(index, batch) {
+                            batchListHtml += `
+                            <div class="col-xxl-4 col-md-6 mb-4">
+                                <a href="student.php?id=${batch.id}" class="card batch-card-link">
+                                    <div class="batch-card-body">
+                                        <h5 class="batch-card-title">${batch.batch_name}</h5>
+                                        <p>${batch.year_graduated}</p>
+                                    </div>
+                                </a>
+                            </div>
+                        `;
+                        });
+                        $('#batchList').html(batchListHtml);
+                    } else {
+                        $('#batchList').html('<p>' + response.message + '</p>');
+                    }
+                },
+                error: function() {
+                    $('#batchList').html('<p>An error occurred while fetching batch list.</p>');
+                }
+            });
+        }
+
+        // Load batch list when page loads
+        loadBatchList();
+
+        // Function to handle form submission
+        $('#addBatchForm').submit(function(event) {
+            event.preventDefault(); // Prevent the form from submitting the default way
+
+            // Get form data
+            var batchName = $('#batchName').val();
+            var yearGraduated = $('#yearGraduated').val();
+
+            // Validate form data
+            if (batchName === '' || yearGraduated === '') {
+                $('#responseMessage').text('Please fill in all fields.').css('color', 'red');
+                return;
+            }
+
+            // Send data to PHP script via AJAX
+            $.ajax({
+                url: 'addnewbatch.php',
+                type: 'POST',
+                data: {
+                    batchName: batchName,
+                    yearGraduated: yearGraduated
+                },
+                beforeSend: function() {
+                    $('#responseMessage').text('Processing...').css('color', 'blue');
+                },
+                success: function(response) {
+                    var data = JSON.parse(response);
+                    $('#responseMessage').text(data.message).css('color', data.success ?
+                        'green' : 'red');
+                    if (data.success) {
+                        $('#addBatchForm')[0].reset(); // Clear form if successful
+                        loadBatchList(); // Refresh the batch list
+                    }
+                },
+                error: function() {
+                    $('#responseMessage').text('An error occurred. Please try again.').css(
+                        'color', 'red');
+                }
+            });
+        });
+    });
+    </script>
 
 </body>
 

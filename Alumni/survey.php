@@ -1,24 +1,57 @@
 <!DOCTYPE html>
-<html>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<html lang="en">
 
-<!-- Template Main CSS File -->
-<link href="assets/css/alumni.css" rel="stylesheet">
+<head>
+    <meta charset="utf-8">
+    <title>SEAITGraduateTracer</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <link href="img/favicon.ico" rel="icon">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/alumni.css" rel="stylesheet">
+
+
+</head>
 
 <body>
 
+    <?php include('inc/navbar.php'); ?>
+
+    <!-- Header Start -->
+    <div class="jumbotron jumbotron-fluid position-relative overlay-bottom" style="margin-bottom: 90px;">
+        <div class="container text-center my-5 py-5">
+            <h1 class="text-white display-1 mb-5">Survey Form</h1>
+            <div class="mx-auto mb-5" style="width: 100%; max-width: 600px;">
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+
+    <!-- Form Start -->
     <form id="regForm" action="/action_page.php">
         <div class="title-card">
             <div class="title">
-                <h1>SEAITGraduateTracer</h1>
+                <h1>SURVEY FORM</h1>
                 <p>Dear Graduate:</p>
-                <p>Good day! Please complete this GTS questionnaire as accurately and frankly as posible by filling in
+                <p>Good day! Please complete this GTS questionnaire as accurately and frankly as posible by
+                    filling in
                     the
                     blank or checking the box corresponding to your response.
-                    Your answer will be used for research purposes in order to asses graduate employability and
+                    Your answer will be used for research purposes in order to asses graduate employability
+                    and
                     eventually,
-                    improve cource offerings of your Alma Mater and other universities/colleges in the Phillipines.
+                    improve cource offerings of your Alma Mater and other universities/colleges in the
+                    Phillipines.
                     Your answers to this survey will be treated with strictest confidentiality.
                 </p>
             </div>
@@ -121,7 +154,8 @@
             </div>
 
             <div class="row mb-3">
-                <label for="locationOfResidence" class="col-sm-2 col-form-label">Location of Residence:</label>
+                <label for="locationOfResidence" class="col-sm-2 col-form-label">Location of
+                    Residence:</label>
                 <div class="col-sm-10">
                     <input type="text" id="locationOfResidence" class="form-control"
                         placeholder="Enter your location of residence">
@@ -156,21 +190,24 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><input type="text" id="degree1" name="degree[]" placeholder="Enter Degree"></td>
+                            <td><input type="text" id="degree1" name="degree[]" placeholder="Enter Degree">
+                            </td>
                             <td><input type="text" id="college1" name="college[]"
                                     placeholder="Enter College/University"></td>
                             <td><input type="text" id="year1" name="year[]" placeholder="Enter Year"></td>
                             <td><input type="text" id="honors1" name="honors[]" placeholder="Enter Honors/Awards"></td>
                         </tr>
                         <tr>
-                            <td><input type="text" id="degree2" name="degree[]" placeholder="Enter Degree"></td>
+                            <td><input type="text" id="degree2" name="degree[]" placeholder="Enter Degree">
+                            </td>
                             <td><input type="text" id="college2" name="college[]"
                                     placeholder="Enter College/University"></td>
                             <td><input type="text" id="year2" name="year[]" placeholder="Enter Year"></td>
                             <td><input type="text" id="honors2" name="honors[]" placeholder="Enter Honors/Awards"></td>
                         </tr>
                         <tr>
-                            <td><input type="text" id="degree3" name="degree[]" placeholder="Enter Degree"></td>
+                            <td><input type="text" id="degree3" name="degree[]" placeholder="Enter Degree">
+                            </td>
                             <td><input type="text" id="college3" name="college[]"
                                     placeholder="Enter College/University"></td>
                             <td><input type="text" id="year3" name="year[]" placeholder="Enter Year"></td>
@@ -202,17 +239,20 @@
                         <tr>
                             <td><input type="text" id="exam1" name="exam[]" placeholder="Enter Examination Name"></td>
                             <td><input type="date" id="date1" name="date[]"></td>
-                            <td><input type="text" id="rating1" name="rating[]" placeholder="Enter Rating"></td>
+                            <td><input type="text" id="rating1" name="rating[]" placeholder="Enter Rating">
+                            </td>
                         </tr>
                         <tr>
                             <td><input type="text" id="exam2" name="exam[]" placeholder="Enter Examination Name"></td>
                             <td><input type="date" id="date2" name="date[]"></td>
-                            <td><input type="text" id="rating2" name="rating[]" placeholder="Enter Rating"></td>
+                            <td><input type="text" id="rating2" name="rating[]" placeholder="Enter Rating">
+                            </td>
                         </tr>
                         <tr>
                             <td><input type="text" id="exam3" name="exam[]" placeholder="Enter Examination Name"></td>
                             <td><input type="date" id="date3" name="date[]"></td>
-                            <td><input type="text" id="rating3" name="rating[]" placeholder="Enter Rating"></td>
+                            <td><input type="text" id="rating3" name="rating[]" placeholder="Enter Rating">
+                            </td>
                         </tr>
                         <!-- Add more rows as needed -->
                     </tbody>
@@ -220,7 +260,8 @@
             </div>
 
             <div class="form-group">
-                <label for="reasons">Reason(s) for having taken the course(s) or having pursued degree(s). You may check
+                <label for="reasons">Reason(s) for having taken the course(s) or having pursued degree(s).
+                    You may check
                     (✓) more than one answer.</label>
 
                 <table>
@@ -252,7 +293,8 @@
                             <td>Peer influence</td>
                             <td><input type="checkbox" id="undergrad_peer_influence" name="undergrad_peer_influence">
                             </td>
-                            <td><input type="checkbox" id="grad_peer_influence" name="grad_peer_influence"></td>
+                            <td><input type="checkbox" id="grad_peer_influence" name="grad_peer_influence">
+                            </td>
                         </tr>
                         <tr>
                             <td>Inspired by a role model</td>
@@ -271,7 +313,8 @@
                         </tr>
                         <tr>
                             <td>Status or prestige of the profession</td>
-                            <td><input type="checkbox" id="undergrad_prestige" name="undergrad_prestige"></td>
+                            <td><input type="checkbox" id="undergrad_prestige" name="undergrad_prestige">
+                            </td>
                             <td><input type="checkbox" id="grad_prestige" name="grad_prestige"></td>
                         </tr>
                         <tr>
@@ -301,7 +344,8 @@
                         </tr>
                         <tr>
                             <td>No particular choice or no better idea</td>
-                            <td><input type="checkbox" id="undergrad_no_choice" name="undergrad_no_choice"></td>
+                            <td><input type="checkbox" id="undergrad_no_choice" name="undergrad_no_choice">
+                            </td>
                             <td><input type="checkbox" id="grad_no_choice" name="grad_no_choice"></td>
                         </tr>
                         <tr>
@@ -320,8 +364,10 @@
             <h2>C. TRAINING(S) AND ADVANCED STUDIES ATTENDED FOR COLLEGE</h2>
 
             <div class="form-group">
-                <label for="training_table">Please list down all professional or work-related training program(s),
-                    including advanced studies, you have attended after college. You may use an extra sheet if
+                <label for="training_table">Please list down all professional or work-related training
+                    program(s),
+                    including advanced studies, you have attended after college. You may use an extra sheet
+                    if
                     needed.</label>
                 <table id="training_table">
                     <thead>
@@ -420,19 +466,26 @@
                 <label>Please state reason(s) why you are not yet employed. You may check (✓) more than one
                     answer.</label>
                 <div class="checkbox-group">
-                    <label><input type="checkbox" name="reason_not_employed[]" value="advanced_study"> Advance or
+                    <label><input type="checkbox" name="reason_not_employed[]" value="advanced_study">
+                        Advance or
                         Further Study</label>
-                    <label><input type="checkbox" name="reason_not_employed[]" value="family_concern"> Family Concern
+                    <label><input type="checkbox" name="reason_not_employed[]" value="family_concern">
+                        Family Concern
                         and Decided Not to Find a Job</label>
-                    <label><input type="checkbox" name="reason_not_employed[]" value="health_related"> Health Related
+                    <label><input type="checkbox" name="reason_not_employed[]" value="health_related">
+                        Health Related
                         Reason(s)</label>
-                    <label><input type="checkbox" name="reason_not_employed[]" value="lack_of_experience"> Lack of Work
+                    <label><input type="checkbox" name="reason_not_employed[]" value="lack_of_experience">
+                        Lack of Work
                         Experience</label>
-                    <label><input type="checkbox" name="reason_not_employed[]" value="no_job_opportunity"> No Job
+                    <label><input type="checkbox" name="reason_not_employed[]" value="no_job_opportunity">
+                        No Job
                         Opportunity</label>
-                    <label><input type="checkbox" name="reason_not_employed[]" value="did_not_look_for_job"> Did Not
+                    <label><input type="checkbox" name="reason_not_employed[]" value="did_not_look_for_job">
+                        Did Not
                         Look for a Job</label>
-                    <label><input type="checkbox" name="reason_not_employed[]" value="other"> Other Reason(s), please
+                    <label><input type="checkbox" name="reason_not_employed[]" value="other"> Other
+                        Reason(s), please
                         specify:</label>
                     <input type="text" name="reason_not_employed_other" placeholder="Specify other reasons">
                 </div>
@@ -475,7 +528,8 @@
             </div>
 
             <div class="row mb-3">
-                <label for="current-occupation" class="col-sm-2 col-form-label">Present Occupation (e.g., Grade School
+                <label for="current-occupation" class="col-sm-2 col-form-label">Present Occupation (e.g.,
+                    Grade School
                     Teacher, Electrical Engineer, Self-employed)</label>
                 <div class="col-sm-10">
                     <input type="text" id="current-occupation" name="current_occupation" class="form-control"
@@ -484,7 +538,8 @@
             </div>
 
             <div class="row mb-3">
-                <label for="company-name" class="col-sm-2 col-form-label">Name of Company or Organization Including
+                <label for="company-name" class="col-sm-2 col-form-label">Name of Company or Organization
+                    Including
                     Address</label>
                 <div class="col-sm-10">
                     <input type="text" id="company-name" name="company_name" class="form-control"
@@ -520,16 +575,20 @@
                         Benefits</label>
                     <label><input type="checkbox" name="reason_staying[]" value="career_challenge"> Career
                         Challenge</label>
-                    <label><input type="checkbox" name="reason_staying[]" value="special_skill"> Related to Special
+                    <label><input type="checkbox" name="reason_staying[]" value="special_skill"> Related to
+                        Special
                         Skill</label>
-                    <label><input type="checkbox" name="reason_staying[]" value="course_related"> Related to Course or
+                    <label><input type="checkbox" name="reason_staying[]" value="course_related"> Related to
+                        Course or
                         Program of Study</label>
                     <label><input type="checkbox" name="reason_staying[]" value="proximity"> Proximity to
                         Residence</label>
-                    <label><input type="checkbox" name="reason_staying[]" value="peer_influence"> Peer Influence</label>
+                    <label><input type="checkbox" name="reason_staying[]" value="peer_influence"> Peer
+                        Influence</label>
                     <label><input type="checkbox" name="reason_staying[]" value="family_influence"> Family
                         Influence</label>
-                    <label><input type="checkbox" name="reason_staying[]" value="other"> Other Reason(s), please
+                    <label><input type="checkbox" name="reason_staying[]" value="other"> Other Reason(s),
+                        please
                         specify:</label>
                     <input type="text" name="reason_staying_other" placeholder="Other reason(s)">
                 </div>
@@ -550,34 +609,40 @@
             </div>
 
             <div class="question">
-                <label>What were your reasons for accepting the job? You may check (✓) more than one answer.</label>
+                <label>What were your reasons for accepting the job? You may check (✓) more than one
+                    answer.</label>
                 <div class="checkbox-group">
                     <label><input type="checkbox" name="reason_accepting[]" value="salaries"> Salaries and
                         Benefits</label>
                     <label><input type="checkbox" name="reason_accepting[]" value="career_challenge"> Career
                         Challenge</label>
-                    <label><input type="checkbox" name="reason_accepting[]" value="special_skills"> Related to Special
+                    <label><input type="checkbox" name="reason_accepting[]" value="special_skills"> Related
+                        to Special
                         Skills</label>
                     <label><input type="checkbox" name="reason_accepting[]" value="proximity"> Proximity to
                         Residence</label>
-                    <label><input type="checkbox" name="reason_accepting[]" value="other"> Other Reason(s), please
+                    <label><input type="checkbox" name="reason_accepting[]" value="other"> Other Reason(s),
+                        please
                         specify:</label>
                     <input type="text" name="reason_accepting_other" placeholder="Other reason(s)">
                 </div>
             </div>
 
             <div class="question">
-                <label>What were your reasons for changing jobs? You may check (✓) more than one answer.</label>
+                <label>What were your reasons for changing jobs? You may check (✓) more than one
+                    answer.</label>
                 <div class="checkbox-group">
                     <label><input type="checkbox" name="reason_changing[]" value="salaries"> Salaries and
                         Benefits</label>
                     <label><input type="checkbox" name="reason_changing[]" value="career_challenge"> Career
                         Challenge</label>
-                    <label><input type="checkbox" name="reason_changing[]" value="special_skills"> Related to Special
+                    <label><input type="checkbox" name="reason_changing[]" value="special_skills"> Related
+                        to Special
                         Skills</label>
                     <label><input type="checkbox" name="reason_changing[]" value="proximity"> Proximity to
                         Residence</label>
-                    <label><input type="checkbox" name="reason_changing[]" value="other"> Other Reason(s), please
+                    <label><input type="checkbox" name="reason_changing[]" value="other"> Other Reason(s),
+                        please
                         specify:</label>
                     <input type="text" name="reason_changing_other" placeholder="Other reason(s)">
                 </div>
@@ -609,14 +674,16 @@
                     <label for="job-finding-recommended"><input type="checkbox" id="job-finding-recommended"
                             name="job_finding_method[]" value="recommended"> Recommended by Someone</label>
                     <label for="job-finding-information"><input type="checkbox" id="job-finding-information"
-                            name="job_finding_method[]" value="information"> Information from Friends</label>
+                            name="job_finding_method[]" value="information"> Information from
+                        Friends</label>
                     <label for="job-finding-arranged"><input type="checkbox" id="job-finding-arranged"
                             name="job_finding_method[]" value="arranged"> Arranged by School's Job Placement
                         Officer</label>
                     <label for="job-finding-family"><input type="checkbox" id="job-finding-family"
                             name="job_finding_method[]" value="family"> Family Business</label>
                     <label for="job-finding-job-fair"><input type="checkbox" id="job-finding-job-fair"
-                            name="job_finding_method[]" value="job_fair"> Job Fair or Public Employment Service Office
+                            name="job_finding_method[]" value="job_fair"> Job Fair or Public Employment
+                        Service Office
                         (PESO)</label>
                     <label for="job-finding-others"><input type="checkbox" id="job-finding-others"
                             name="job_finding_method[]" value="others"> Others, please specify:</label>
@@ -648,7 +715,8 @@
             </div>
 
             <div class="question">
-                <label for="initial-earning">32. What is your initial gross monthly earning in your first job after
+                <label for="initial-earning">32. What is your initial gross monthly earning in your first
+                    job after
                     college?</label>
                 <input type="number" id="initial-earning" name="initial_earning" placeholder="Enter amount">
             </div>
@@ -668,7 +736,8 @@
             </div>
 
             <div class="question">
-                <label>If YES, what competencies learned in college did you find very useful in your first job? You
+                <label>If YES, what competencies learned in college did you find very useful in your first
+                    job? You
                     may check (✓) more than one answer.</label>
                 <div class="checkbox-group">
                     <label for="competencies-communication"><input type="checkbox" id="competencies-communication"
@@ -685,7 +754,8 @@
                             id="competencies-critical-thinking" name="useful_competencies[]" value="critical_thinking">
                         Critical Thinking skills</label>
                     <label for="competencies-other"><input type="checkbox" id="competencies-other"
-                            name="useful_competencies[]" value="other"> Other reason(s), please specify:</label>
+                            name="useful_competencies[]" value="other"> Other reason(s), please
+                        specify:</label>
                     <input type="text" id="useful-competencies-other" name="useful_competencies_other"
                         placeholder="Other competencies">
                 </div>
@@ -700,7 +770,8 @@
             </div>
 
             <div class="question">
-                <label>What values did you learn from your Alma Mater that you have been practicing in your life and
+                <label>What values did you learn from your Alma Mater that you have been practicing in your
+                    life and
                     at work? You may check (✓) more than one answer.</label>
                 <div class="checkbox-group">
                     <label for="values-family-spirit"><input type="checkbox" id="values-family-spirit"
@@ -712,9 +783,11 @@
                     <label for="values-honesty"><input type="checkbox" id="values-honesty" name="values_learned[]"
                             value="honesty"> Honesty</label>
                     <label for="values-preference"><input type="checkbox" id="values-preference" name="values_learned[]"
-                            value="preference"> Preference for the least favored</label>
+                            value="preference"> Preference for the least
+                        favored</label>
                     <label for="values-respect"><input type="checkbox" id="values-respect" name="values_learned[]"
-                            value="respect"> Respect for the integrity of creation</label>
+                            value="respect"> Respect for the integrity of
+                        creation</label>
                     <label for="values-love-of-work"><input type="checkbox" id="values-love-of-work"
                             name="values_learned[]" value="love_of_work"> Love of work</label>
                     <label for="values-simplicity"><input type="checkbox" id="values-simplicity" name="values_learned[]"
@@ -728,7 +801,8 @@
             </div>
 
             <div class="row mb-3">
-                <label for="community-services">Please cite the services you have rendered to the community after
+                <label for="community-services">Please cite the services you have rendered to the community
+                    after
                     graduation from college (if any):</label>
                 <div class="col-sm-10">
                     <input type="text" id="community-services" class="form-control">
@@ -736,11 +810,13 @@
             </div>
 
             <div class="question">
-                <label>Being a SEAIT alumnus/alumna, what do you think is/are the best feature(s) of your Alma
+                <label>Being a SEAIT alumnus/alumna, what do you think is/are the best feature(s) of your
+                    Alma
                     Mater? You may check (✓) more than one answer.</label>
                 <div class="checkbox-group">
                     <label for="best-features-administration"><input type="checkbox" id="best-features-administration"
-                            name="best_features[]" value="administration"> Administration</label>
+                            name="best_features[]" value="administration">
+                        Administration</label>
                     <label for="best-features-library"><input type="checkbox" id="best-features-library"
                             name="best_features[]" value="library"> Library</label>
                     <label for="best-features-community-extension"><input type="checkbox"
@@ -749,14 +825,17 @@
                     <label for="best-features-faculty"><input type="checkbox" id="best-features-faculty"
                             name="best_features[]" value="faculty"> Faculty</label>
                     <label for="best-features-laboratories"><input type="checkbox" id="best-features-laboratories"
-                            name="best_features[]" value="laboratories"> Laboratories</label>
+                            name="best_features[]" value="laboratories">
+                        Laboratories</label>
                     <label for="best-features-student-services"><input type="checkbox"
                             id="best-features-student-services" name="best_features[]" value="student_services"> Student
                         Services (Student Affairs, Guidance, Clinic, Athletics, Canteen)</label>
                     <label for="best-features-instruction"><input type="checkbox" id="best-features-instruction"
-                            name="best_features[]" value="instruction"> Instruction</label>
+                            name="best_features[]" value="instruction">
+                        Instruction</label>
                     <label for="best-features-physical-plant"><input type="checkbox" id="best-features-physical-plant"
-                            name="best_features[]" value="physical_plant"> Physical Plant and Facilities</label>
+                            name="best_features[]" value="physical_plant">
+                        Physical Plant and Facilities</label>
                     <label for="best-features-other"><input type="checkbox" id="best-features-other"
                             name="best_features[]" value="other"> Others, please specify:</label>
                     <input type="text" id="best-features-other" name="best_features_other" placeholder="Other features">
@@ -765,10 +844,14 @@
 
 
             <div class="question">
-                <p>Thank you for taking time out to fill out this questionnaire. Please return this GTS to your
-                    institution. Being one of the alumni of South East Asian Institute of Technology (SEAIT), may we
-                    request you to list down the names of other SEAIT graduates (AY ____ to AY ____) from your
-                    institution including their addresses and contact numbers. Their participation will also be needed
+                <p>Thank you for taking time out to fill out this questionnaire. Please return this GTS to
+                    your
+                    institution. Being one of the alumni of South East Asian Institute of Technology
+                    (SEAIT), may we
+                    request you to list down the names of other SEAIT graduates (AY ____ to AY ____) from
+                    your
+                    institution including their addresses and contact numbers. Their participation will also
+                    be needed
                     to make this study more meaningful and useful.</p>
                 <table>
                     <tr>
@@ -812,6 +895,8 @@
             <span class="step"></span>
         </div>
     </form>
+
+    <!-- Form End -->
 
     <script>
     var currentTab = 0; // Current tab is set to be the first tab (0)
@@ -888,6 +973,18 @@
     }
     </script>
 
+    <?php include('inc/footer.php'); ?>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/counterup/counterup.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
 </body>
 
 </html>
