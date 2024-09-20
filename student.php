@@ -148,57 +148,46 @@
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
     <script>
-    document.getElementById('saveStudentBtn').addEventListener('click', function() {
-        const firstName = document.getElementById('inputFirstName').value;
-        const lastName = document.getElementById('inputLastName').value;
-        const course = document.getElementById('inputCourse').value;
-        const email = document.getElementById('inputEmail').value;
+document.getElementById('saveStudentBtn').addEventListener('click', function() {
+    const firstName = document.getElementById('inputFirstName').value.trim();
+    const lastName = document.getElementById('inputLastName').value.trim();
+    const course = document.getElementById('inputCourse').value.trim();
+    const email = document.getElementById('inputEmail').value.trim();
 
-        // Validate form inputs
-        if (!firstName || !lastName || !course || !email) {
-            document.getElementById('formFeedback').innerText = 'All fields are required.';
-            return;
+    // Validate form data
+    if (!firstName || !lastName || !course || !email) {
+        document.getElementById('formFeedback').innerText = "All fields are required.";
+        return;
+    }
+
+    // AJAX request
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'add_student.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            const response = JSON.parse(xhr.responseText);
+            document.getElementById('formFeedback').innerText = response.message; // Always display feedback
+
+            if (response.success) {
+                // Optionally, refresh the student table here
+                // LoadStudentTable(); // You would implement this function to reload data
+
+                // Close the modal
+                $('#addStudentModal').modal('hide');
+
+                // Clear the form
+                document.getElementById('addStudentForm').reset();
+            }
         }
+    };
 
-        // Prepare data to be sent
-        const formData = new FormData();
-        formData.append('firstName', firstName);
-        formData.append('lastName', lastName);
-        formData.append('course', course);
-        formData.append('email', email);
+    const params = `firstName=${encodeURIComponent(firstName)}&lastName=${encodeURIComponent(lastName)}&course=${encodeURIComponent(course)}&email=${encodeURIComponent(email)}`;
+    xhr.send(params);
+});
+</script>
 
-        // AJAX request
-        fetch('add_student.php', {
-                method: 'POST',
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Add new student to the table
-                    const studentTableBody = document.getElementById('studentTableBody');
-                    const newRow = document.createElement('tr');
-                    newRow.innerHTML = `
-                    <td>${data.student.firstName} ${data.student.lastName}</td>
-                    <td>${data.student.course}</td>
-                    <td>${data.student.email}</td>
-                    <td><button class="btn btn-danger" onclick="deleteStudent(${data.student.id})">Delete</button></td>
-                `;
-                    studentTableBody.appendChild(newRow);
-
-                    // Clear form and close modal
-                    document.getElementById('addStudentForm').reset();
-                    document.querySelector('.btn-close').click();
-                } else {
-                    document.getElementById('formFeedback').innerText = data.message;
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('formFeedback').innerText = 'An error occurred. Please try again.';
-            });
-    });
-    </script>
 
 
 

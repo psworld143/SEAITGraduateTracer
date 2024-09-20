@@ -30,6 +30,8 @@
 
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
+
+
 </head>
 
 <body>
@@ -57,7 +59,7 @@
                     <div class="row">
 
                         <!-- Total Students Card -->
-                        <div class="col-xxl-4 col-md-6">
+                        <div class="col-lg-6 col-md-12">
                             <div class="card info-card sales-card">
 
                                 <div class="card-body">
@@ -79,24 +81,10 @@
                         </div><!-- End Total Students Card -->
 
                         <!-- Recent Survey Card -->
-                        <div class="col-xxl-4 col-md-6">
+                        <div class="col-lg-6 col-md-12">
                             <div class="card info-card revenue-card">
-
-                                <div class="filter">
-                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                        <li class="dropdown-header text-start">
-                                            <h6>Filter</h6>
-                                        </li>
-
-                                        <li><a class="dropdown-item" href="#">Today</a></li>
-                                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                                        <li><a class="dropdown-item" href="#">This Year</a></li>
-                                    </ul>
-                                </div>
-
                                 <div class="card-body">
-                                    <h5 class="card-title">Recent Survey Submissions <span>| This Month</span></h5>
+                                    <h5 class="card-title">Recent Survey Submissions</h5>
 
                                     <div class="d-flex align-items-center">
                                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">

@@ -668,8 +668,8 @@ h6 {
 }
 
 .avatar-img {
-  width: 180px; /* Set the desired width */
-  height: 180px; /* Set the desired height */
+  width: 150px; /* Set the desired width */
+  height: 150px; /* Set the desired height */
   border-radius: 50%; /* Optional: make it circular */
   object-fit: cover; /* Maintain aspect ratio */
 }
