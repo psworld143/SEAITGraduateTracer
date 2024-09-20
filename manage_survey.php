@@ -113,7 +113,7 @@
         // Function to load batch list via AJAX
         function loadBatchList() {
             $.ajax({
-                url: 'get_batches.php',
+                url: 'backend/get_batches.php',
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
@@ -155,7 +155,7 @@
         $(document).on('click', '.archive-btn', function() {
             var batchId = $(this).data('id');
             $.ajax({
-                url: 'archive_batch.php', // Your server-side script for archiving
+                url: 'backend/archive_batch.php', // Your server-side script for archiving
                 type: 'POST',
                 data: {
                     id: batchId
@@ -180,7 +180,7 @@
             var batchId = $(this).data('id');
             if (confirm('Are you sure you want to delete this batch?')) {
                 $.ajax({
-                    url: 'delete_batch.php', // Your server-side script for deleting
+                    url: 'backend/delete_batch.php', // Your server-side script for deleting
                     type: 'POST',
                     data: {
                         id: batchId
@@ -218,7 +218,7 @@
 
             // Send data to PHP script via AJAX
             $.ajax({
-                url: 'addnewbatch.php',
+                url: 'backend/addnewbatch.php',
                 type: 'POST',
                 data: {
                     batchName: batchName,

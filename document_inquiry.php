@@ -50,7 +50,8 @@
                                 </div>
                                 <div class="col-12">
                                     <label for="availabilityStatus" class="form-label">Availability Status:</label>
-                                    <select id="availabilityStatus" class="form-select" name="availabilityStatus" required>
+                                    <select id="availabilityStatus" class="form-select" name="availabilityStatus"
+                                        required>
                                         <option value="" selected>Select Status</option>
                                         <option value="Available for Release">Available for Release</option>
                                         <option value="Not Available">Not Available</option>
@@ -58,11 +59,14 @@
                                 </div>
                                 <div class="col-12">
                                     <label for="releaseDate" class="form-label">Release Date:</label>
-                                    <input type="date" class="form-control" name="releaseDate" id="releaseDate" required>
+                                    <input type="date" class="form-control" name="releaseDate" id="releaseDate"
+                                        required>
                                 </div>
                                 <div class="col-12">
-                                    <label for="additionalInstructions" class="form-label">Additional Instructions:</label>
-                                    <textarea class="form-control" name="additionalInstructions" id="additionalInstructions" rows="3"></textarea>
+                                    <label for="additionalInstructions" class="form-label">Additional
+                                        Instructions:</label>
+                                    <textarea class="form-control" name="additionalInstructions"
+                                        id="additionalInstructions" rows="3"></textarea>
                                 </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary">Submit/Post</button>
@@ -114,6 +118,47 @@
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
+    <script>
+    $(document).ready(function() {
+        // Handle the form submission
+        $('#postDocumentForm').submit(function(e) {
+            e.preventDefault(); // Prevent the default form submission behavior
+
+            // Collect form data
+            var formData = {
+                documentType: $('#documentType').val(),
+                availabilityStatus: $('#availabilityStatus').val(),
+                releaseDate: $('#releaseDate').val(),
+                additionalInstructions: $('#additionalInstructions').val()
+            };
+
+            // Send the form data via AJAX
+            $.ajax({
+                url: 'insert_document.php', // The PHP file handling the request
+                type: 'POST',
+                data: formData,
+                dataType: 'json', // Expecting a JSON response from the server
+                success: function(response) {
+                    // Handle success or error response
+                    if (response.status === "success") {
+                        $('#responseMessage').html('<div class="alert alert-success">' +
+                            response.message + '</div>');
+                    } else {
+                        $('#responseMessage').html('<div class="alert alert-danger">' +
+                            response.message + '</div>');
+                    }
+                },
+                error: function() {
+                    $('#responseMessage').html(
+                        '<div class="alert alert-danger">An error occurred while posting the document.</div>'
+                        );
+                }
+            });
+        });
+    });
+    </script>
+
+
 
 </body>
 
