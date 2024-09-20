@@ -24,7 +24,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="manage_survey.php">
                 <i class="bi bi-file-text"></i>
-                <span>Manage Survey</span>
+                <span>Manage Alumni</span>
             </a>
         </li>
 

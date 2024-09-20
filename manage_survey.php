@@ -4,19 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
     <title>Manage Survey - SEAITGraduateTracer</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
-
-    <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-    <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-        rel="stylesheet">
 
     <!-- Vendor CSS Files -->
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -26,8 +14,6 @@
     <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
     <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
-
-    <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
 
@@ -38,11 +24,11 @@
 
     <main id="main" class="main">
         <div class="pagetitle">
-            <h1>Manage Survey</h1>
+            <h1>Manage Alumni</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                    <li class="breadcrumb-item active">Manage Survey</li>
+                    <li class="breadcrumb-item active">Manage Alumni</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -58,10 +44,12 @@
                         <div class="col-12">
                             <div class="card top-selling overflow-auto">
                                 <div class="card-body pb-0">
-                                    <h5 class="card-title">Batch Graduated</h5>
+                                    <h5 class="card-title">List of Alumni</h5>
                                     <div class="row" id="batchList">
-                                        <!-- Batch Card Template -->
+                                        <!-- Batch Card Template will be loaded via JS -->
+
                                     </div>
+
                                 </div>
                             </div>
                         </div><!-- End Batch Graduated -->
@@ -71,7 +59,7 @@
 
                 <!-- Right side columns -->
                 <div class="col-lg-4">
-                    <!-- Recent Activity -->
+                    <!-- Add New Batch -->
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Add New Batch</h5>
@@ -96,13 +84,13 @@
                                 </div>
                             </form>
                             <div id="responseMessage"></div>
-                        </div><!-- End Recent Activity -->
-                    </div><!-- End Right side columns -->
+                        </div>
+                    </div><!-- End Add New Batch -->
+
                 </div>
             </div>
         </section>
     </main><!-- End #main -->
-
     <?php include('inc/footer.php'); ?>
 
     <!-- Vendor JS Files -->
@@ -129,37 +117,94 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    if (response.success) {
-                        var batchListHtml = '';
-                        $.each(response.data, function(index, batch) {
-                            batchListHtml += `
+                    var batchListHtml = '';
+                    $.each(response.data, function(index, batch) {
+                        batchListHtml += `
                             <div class="col-xxl-4 col-md-6 mb-4">
-                                <a href="student.php?id=${batch.id}" class="card batch-card-link">
-                                    <div class="batch-card-body">
-                                        <h5 class="batch-card-title">${batch.batch_name}</h5>
-                                        <p>${batch.year_graduated}</p>
+                                <a href="batch_page.php?id=${batch.id}" class="card batch-card-link">
+                                    <div class="batch-card-body p-3">
+                                        <h5 class="batch-card-title mb-1">
+                                            <strong>${batch.batch_name}</strong>
+                                        </h5>
+                                    </div>
+                                    <div>
+                                        <p class="text-center">
+                                            <strong>Year Graduated:</strong> ${batch.year_graduated}
+                                        </p>
                                     </div>
                                 </a>
-                            </div>
-                        `;
-                        });
-                        $('#batchList').html(batchListHtml);
-                    } else {
-                        $('#batchList').html('<p>' + response.message + '</p>');
-                    }
+                                <div class="card-footer text-end">
+                                    <button class="btn btn-warning archive-btn" data-id="${batch.id}"><i class="bi bi-archive"></i>Archive</button>
+                                    <button class="btn btn-danger delete-btn" data-id="${batch.id}"><i class="bi bi-trash"></i>Delete</button>
+                                </div>
+                            </div>`;
+                    });
+                    $('#batchList').html(batchListHtml);
                 },
+
                 error: function() {
-                    $('#batchList').html('<p>An error occurred while fetching batch list.</p>');
+                    $('#batchList').html('<p>Error loading batch list.</p>');
                 }
             });
         }
 
-        // Load batch list when page loads
+        // Call loadBatchList on page load
         loadBatchList();
+
+        // Handle archive button click
+        $(document).on('click', '.archive-btn', function() {
+            var batchId = $(this).data('id');
+            $.ajax({
+                url: 'archive_batch.php', // Your server-side script for archiving
+                type: 'POST',
+                data: {
+                    id: batchId
+                },
+                success: function(response) {
+                    var data = JSON.parse(response);
+                    var messageType = data.success ? 'success' : 'danger';
+                    displayMessage(data.message, messageType);
+                    if (data.success) {
+                        loadBatchList(); // Refresh the batch list
+                    }
+                },
+                error: function() {
+                    displayMessage('An error occurred while archiving. Please try again.',
+                        'danger');
+                }
+            });
+        });
+
+        // Handle delete button click
+        $(document).on('click', '.delete-btn', function() {
+            var batchId = $(this).data('id');
+            if (confirm('Are you sure you want to delete this batch?')) {
+                $.ajax({
+                    url: 'delete_batch.php', // Your server-side script for deleting
+                    type: 'POST',
+                    data: {
+                        id: batchId
+                    },
+                    success: function(response) {
+                        var data = JSON.parse(response);
+                        var messageType = data.success ? 'success' : 'danger';
+                        displayMessage(data.message, messageType);
+                        if (data.success) {
+                            loadBatchList(); // Refresh the batch list
+                        }
+                    },
+                    error: function() {
+                        displayMessage(
+                            'An error occurred while deleting. Please try again.',
+                            'danger');
+                    }
+                });
+            }
+        });
 
         // Function to handle form submission
         $('#addBatchForm').submit(function(event) {
-            event.preventDefault(); // Prevent the form from submitting the default way
+            event.preventDefault();
 
             // Get form data
             var batchName = $('#batchName').val();
@@ -180,25 +225,42 @@
                     yearGraduated: yearGraduated
                 },
                 beforeSend: function() {
-                    $('#responseMessage').text('Processing...').css('color', 'blue');
+                    displayMessage('Processing...', 'info');
                 },
                 success: function(response) {
                     var data = JSON.parse(response);
-                    $('#responseMessage').text(data.message).css('color', data.success ?
-                        'green' : 'red');
+                    var messageType = data.success ? 'success' : 'danger';
+                    displayMessage(data.message, messageType);
+
                     if (data.success) {
                         $('#addBatchForm')[0].reset(); // Clear form if successful
                         loadBatchList(); // Refresh the batch list
                     }
                 },
                 error: function() {
-                    $('#responseMessage').text('An error occurred. Please try again.').css(
-                        'color', 'red');
+                    displayMessage('An error occurred. Please try again.', 'danger');
                 }
             });
         });
+
+        function displayMessage(message, type) {
+            $('#responseMessage').remove();
+            var messageHtml = `
+        <div id="responseMessage" class="alert alert-${type} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>`;
+            $('#addBatchForm').before(messageHtml);
+            setTimeout(function() {
+                $('#responseMessage').alert('close');
+            }, 5000);
+        }
+
     });
     </script>
+
+
+
 
 </body>
 

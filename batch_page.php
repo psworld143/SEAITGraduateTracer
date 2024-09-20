@@ -1,3 +1,8 @@
+<?php
+// Include the database connection file
+include('db.php');
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -108,6 +113,7 @@
                                 <thead>
                                     <tr>
                                         <th>Student Name</th>
+                                        <th>Year Graduated</th>
                                         <th>Course</th>
                                         <th>Email Address</th>
                                         <th>Action</th>
@@ -147,59 +153,6 @@
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
-    <script>
-    document.getElementById('saveStudentBtn').addEventListener('click', function() {
-        const firstName = document.getElementById('inputFirstName').value;
-        const lastName = document.getElementById('inputLastName').value;
-        const course = document.getElementById('inputCourse').value;
-        const email = document.getElementById('inputEmail').value;
-
-        // Validate form inputs
-        if (!firstName || !lastName || !course || !email) {
-            document.getElementById('formFeedback').innerText = 'All fields are required.';
-            return;
-        }
-
-        // Prepare data to be sent
-        const formData = new FormData();
-        formData.append('firstName', firstName);
-        formData.append('lastName', lastName);
-        formData.append('course', course);
-        formData.append('email', email);
-
-        // AJAX request
-        fetch('add_student.php', {
-                method: 'POST',
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Add new student to the table
-                    const studentTableBody = document.getElementById('studentTableBody');
-                    const newRow = document.createElement('tr');
-                    newRow.innerHTML = `
-                    <td>${data.student.firstName} ${data.student.lastName}</td>
-                    <td>${data.student.course}</td>
-                    <td>${data.student.email}</td>
-                    <td><button class="btn btn-danger" onclick="deleteStudent(${data.student.id})">Delete</button></td>
-                `;
-                    studentTableBody.appendChild(newRow);
-
-                    // Clear form and close modal
-                    document.getElementById('addStudentForm').reset();
-                    document.querySelector('.btn-close').click();
-                } else {
-                    document.getElementById('formFeedback').innerText = data.message;
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('formFeedback').innerText = 'An error occurred. Please try again.';
-            });
-    });
-    </script>
-
 
 
 </body>

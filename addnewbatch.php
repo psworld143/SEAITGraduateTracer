@@ -23,19 +23,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Prepare and bind
-    $stmt = $conn->prepare("INSERT INTO batches (batch_name, year_graduated) VALUES (?, ?)");
-    $stmt->bind_param("ss", $batchName, $yearGraduated);
+    // Check for duplicate entries
+    $checkStmt = $conn->prepare("SELECT * FROM batches WHERE batch_name = ? AND year_graduated = ?");
+    $checkStmt->bind_param("ss", $batchName, $yearGraduated);
+    $checkStmt->execute();
+    $checkResult = $checkStmt->get_result();
 
-    // Execute the statement
-    if ($stmt->execute()) {
-        echo json_encode(['success' => true, 'message' => 'Batch added successfully!']);
+    if ($checkResult->num_rows > 0) {
+        // If a duplicate is found
+        echo json_encode(['success' => false, 'message' => 'A batch with this name and graduation year already exists.']);
     } else {
-        echo json_encode(['success' => false, 'message' => 'Failed to add batch.']);
+        // Prepare and bind for insertion
+        $stmt = $conn->prepare("INSERT INTO batches (batch_name, year_graduated) VALUES (?, ?)");
+        $stmt->bind_param("ss", $batchName, $yearGraduated);
+
+        // Execute the statement
+        if ($stmt->execute()) {
+            echo json_encode(['success' => true, 'message' => 'Batch added successfully!']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Failed to add batch.']);
+        }
+
+        // Close the insertion statement
+        $stmt->close();
     }
 
-    // Close statement and connection
-    $stmt->close();
+    // Close check statement and connection
+    $checkStmt->close();
     $conn->close();
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
