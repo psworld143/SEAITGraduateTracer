@@ -18,16 +18,17 @@
             </a>
         </li><!-- Back -->
 
-        <!-- Dashboard -->
+        <!-- Dynamic Dashboard Link -->
         <li class="nav-item">
-            <a class="nav-link active" href="index_graduates.php">
+            <a class="nav-link active" href="index_graduates.php?id=<?php echo htmlspecialchars($_GET['id']); ?>">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
         </li><!-- End Dashboard Nav -->
 
+        <!-- Dynamic Students Link -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="student.php">
+            <a class="nav-link collapsed" href="batch_page.php?id=<?php echo htmlspecialchars($_GET['id']); ?>">
                 <i class="bi bi-person-badge"></i>
                 <span>Students</span>
             </a>

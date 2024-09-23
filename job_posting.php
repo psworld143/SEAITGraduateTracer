@@ -122,6 +122,87 @@
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
+    <script>
+    document.getElementById('addJobForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent the default form submission
+
+        const formData = new FormData(this); // Create a FormData object from the form
+
+        fetch('backend/save_job_posting.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                return response.json().then(data => {
+                    console.log(data); // Log the entire response
+                    const responseMessage = document.getElementById('responseMessage');
+                    responseMessage.innerHTML = data.message; // Display success or error message
+
+                    // Only reset the form and load job postings if the response indicates success
+                    if (data.success) {
+                        this.reset(); // Reset the form on success
+                        loadJobPostings(); // Refresh the job postings list
+                    } else {
+                        console.error('Error saving job posting:', data.message);
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('responseMessage').innerHTML =
+                    'An error occurred. Please try again.';
+            });
+    });
+
+
+    // Function to load job postings
+    function loadJobPostings() {
+        fetch('backend/get_job_postings.php')
+            .then(response => response.json())
+            .then(data => {
+                const jobPostingsList = document.getElementById('jobPostingsList');
+                jobPostingsList.innerHTML = ''; // Clear the list
+                data.forEach(job => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${job.jobTitle}</td>
+                        <td>${new Date(job.datePosted).toLocaleDateString()}</td>
+                        <td>${job.status}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="deleteJob(${job.id})">Delete</button>
+                        </td>
+                    `;
+                    jobPostingsList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error loading job postings:', error));
+    }
+
+    // Function to delete a job posting
+    function deleteJob(id) {
+        if (confirm("Are you sure you want to delete this job posting?")) {
+            fetch('backend/delete_job_posting.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    loadJobPostings(); // Refresh the job postings list
+                })
+                .catch(error => console.error('Error deleting job posting:', error));
+        }
+    }
+
+    // Call loadJobPostings on page load to populate the list
+    window.onload = loadJobPostings;
+    </script>
+
 
 </body>
 

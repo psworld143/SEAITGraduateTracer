@@ -98,13 +98,11 @@
                             </table>
                         </div>
                     </div><!-- End Manage Document Status -->
-
                 </div>
             </div>
         </section>
     </main><!-- End #main -->
     <?php include('inc/footer.php'); ?>
-
 
     <!-- Vendor JS Files -->
     <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -118,47 +116,126 @@
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
+
     <script>
-    $(document).ready(function() {
-        // Handle the form submission
-        $('#postDocumentForm').submit(function(e) {
-            e.preventDefault(); // Prevent the default form submission behavior
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchDocuments();
+    });
 
-            // Collect form data
-            var formData = {
-                documentType: $('#documentType').val(),
-                availabilityStatus: $('#availabilityStatus').val(),
-                releaseDate: $('#releaseDate').val(),
-                additionalInstructions: $('#additionalInstructions').val()
-            };
+    // Function to fetch documents from the database
+    function fetchDocuments() {
+        fetch('backend/fetch_documents.php')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('documentStatusList');
+                tableBody.innerHTML = ''; // Clear the table body
 
-            // Send the form data via AJAX
-            $.ajax({
-                url: 'insert_document.php', // The PHP file handling the request
-                type: 'POST',
-                data: formData,
-                dataType: 'json', // Expecting a JSON response from the server
-                success: function(response) {
-                    // Handle success or error response
-                    if (response.status === "success") {
-                        $('#responseMessage').html('<div class="alert alert-success">' +
-                            response.message + '</div>');
-                    } else {
-                        $('#responseMessage').html('<div class="alert alert-danger">' +
-                            response.message + '</div>');
-                    }
-                },
-                error: function() {
-                    $('#responseMessage').html(
-                        '<div class="alert alert-danger">An error occurred while posting the document.</div>'
-                        );
+                data.forEach(doc => {
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                            <td>${doc.document_type}</td>
+                            <td>${doc.availability_status}</td>
+                            <td>${doc.release_date}</td>
+                            <td><button class="btn btn-danger delete-btn" data-id="${doc.id}">Delete</button></td>
+                        `;
+                    tableBody.appendChild(newRow);
+                });
+
+                // Attach event listeners to delete buttons
+                attachDeleteListeners();
+            })
+            .catch(error => {
+                console.error('Error fetching documents:', error);
+            });
+    }
+
+    // Function to handle form submission
+    document.getElementById('postDocumentForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const releaseDate = new Date(document.getElementById('releaseDate').value);
+        const today = new Date();
+
+        if (releaseDate < today) {
+            alert('Release date cannot be in the past.');
+            return; // Prevent form submission if date is invalid
+        }
+
+        const formData = new FormData(this);
+
+        fetch('backend/save_document.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const responseMessage = document.getElementById('responseMessage');
+                responseMessage.innerHTML = data.message;
+
+                if (data.status === 'success') {
+                    // Append new row to the table
+                    const tableBody = document.getElementById('documentStatusList');
+                    const newRow = document.createElement('tr');
+
+                    newRow.innerHTML = `
+                        <td>${data.data.documentType}</td>
+                        <td>${data.data.availabilityStatus}</td>
+                        <td>${data.data.releaseDate}</td>
+                        <td><button class="btn btn-danger delete-btn" data-id="${data.data.id}">Delete</button></td>
+                    `;
+
+                    tableBody.appendChild(newRow);
+                    this.reset(); // Reset form after submission
+
+                    // Attach delete listener for the new button
+                    attachDeleteListeners();
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+
+    // Function to attach delete listeners to delete buttons
+    function attachDeleteListeners() {
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const documentId = this.getAttribute('data-id');
+                deleteDocument(documentId);
             });
         });
-    });
+    }
+
+    // Function to delete a document
+    function deleteDocument(id) {
+        console.log('Deleting document ID:', id); // Log the ID being deleted
+        if (confirm('Are you sure you want to delete this document?')) {
+            fetch('backend/delete_document.php', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: id
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Delete response:', data); // Log the response
+                    if (data.status === 'success') {
+                        fetchDocuments();
+                        alert('Document deleted successfully.');
+                    } else {
+                        alert('Error deleting document: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting document:', error);
+                });
+        }
+    }
     </script>
-
-
 
 </body>
 
