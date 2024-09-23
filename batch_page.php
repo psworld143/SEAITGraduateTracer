@@ -1,23 +1,27 @@
+<?php
+// db_connection.php - Replace with your actual database connection file
+include('db_conn.php');
+
+// Get batch_id from URL (with validation)
+$batch_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+// Query to fetch students based on batch_id
+$query = "SELECT id, first_name, last_name, course, email FROM students WHERE batch_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param('i', $batch_id);
+$stmt->execute();
+$result = $stmt->get_result();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
     <title>Survey Result / Data - SEAITGraduateTracer</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
-
-    <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link
-        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-        rel="stylesheet">
 
     <!-- Vendor CSS Files -->
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -27,8 +31,6 @@
     <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
     <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
-
-    <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
 
@@ -56,11 +58,12 @@
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="card-title mb-0">Batch 2024-2025</h5>
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#addStudentModal" aria-label="Add Student">
+                                    data-bs-target="#addStudentModal">
                                     <i class="bi bi-plus"></i>Add Student
                                 </button>
                             </div>
 
+                            <!-- Add Student Modal -->
                             <div class="modal fade" id="addStudentModal" tabindex="-1"
                                 aria-labelledby="addStudentModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -71,34 +74,88 @@
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form id="addStudentForm">
+                                            <form id="addStudentForm" method="POST" action="backend/save_student.php">
                                                 <div class="mb-3">
                                                     <label for="inputFirstName" class="form-label">First Name:</label>
-                                                    <input type="text" class="form-control" id="inputFirstName" required>
+                                                    <input type="text" class="form-control" id="inputFirstName"
+                                                        name="first_name" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="inputLastName" class="form-label">Last Name:</label>
-                                                    <input type="text" class="form-control" id="inputLastName" required>
+                                                    <input type="text" class="form-control" id="inputLastName"
+                                                        name="last_name" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="inputCourse" class="form-label">Course:</label>
-                                                    <input type="text" class="form-control" id="inputCourse" required>
+                                                    <input type="text" class="form-control" id="inputCourse"
+                                                        name="course" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="inputEmail" class="form-label">Email:</label>
-                                                    <input type="email" class="form-control" id="inputEmail" required>
+                                                    <input type="email" class="form-control" id="inputEmail"
+                                                        name="email" required>
                                                 </div>
+                                                <input type="hidden" name="batch_id" value="<?php echo $batch_id; ?>" />
                                                 <div id="formFeedback" class="text-danger"></div>
                                             </form>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary" id="saveStudentBtn">Save changes</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary" form="addStudentForm">Save
+                                                changes</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- Edit Student Modal -->
+                            <div class="modal fade" id="editStudentModal" tabindex="-1"
+                                aria-labelledby="editStudentModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editStudentModalLabel">Edit Student</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="editStudentForm" method="POST">
+                                                <input type="hidden" id="editStudentId" name="id">
+                                                <div class="mb-3">
+                                                    <label for="editFirstName" class="form-label">First Name:</label>
+                                                    <input type="text" class="form-control" id="editFirstName"
+                                                        name="first_name" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="editLastName" class="form-label">Last Name:</label>
+                                                    <input type="text" class="form-control" id="editLastName"
+                                                        name="last_name" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="editCourse" class="form-label">Course:</label>
+                                                    <input type="text" class="form-control" id="editCourse"
+                                                        name="course" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="editEmail" class="form-label">Email:</label>
+                                                    <input type="email" class="form-control" id="editEmail" name="email"
+                                                        required>
+                                                </div>
+                                                <div id="editFormFeedback" class="text-danger"></div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary" form="editStudentForm">Save
+                                                changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Student Table -->
                             <table class="table datatable">
                                 <thead>
                                     <tr>
@@ -109,7 +166,26 @@
                                     </tr>
                                 </thead>
                                 <tbody id="studentTableBody">
-                                    <!-- Student data will be dynamically added here -->
+                                    <?php
+                                    // Check if there are any students in the batch
+                                    if ($result->num_rows > 0) {
+                                        // Fetch and display students
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<tr id='studentRow-{$row['id']}'>";
+                                            echo "<td>{$row['first_name']} {$row['last_name']}</td>";
+                                            echo "<td>{$row['course']}</td>";
+                                            echo "<td>{$row['email']}</td>";
+                                            echo "<td>
+                                                <button class='btn btn-warning btn-sm' onclick='editStudent({$row['id']})'>Edit</button>
+                                                <button class='btn btn-danger btn-sm' onclick='deleteStudent({$row['id']})'>Delete</button>
+                                                </td>";
+                                            echo "</tr>";
+                                        }
+                                    } else {
+                                        // If no students found, display a message
+                                        echo "<tr><td colspan='4' class='text-center'>No students found.</td></tr>";
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
 
@@ -126,123 +202,54 @@
         </section>
     </main><!-- End #main -->
 
-    <?php include('inc/footer.php'); ?>
-
-    <!-- Vendor JS Files -->
-    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/chart.js/chart.umd.js"></script>
-    <script src="assets/vendor/echarts/echarts.min.js"></script>
-    <script src="assets/vendor/quill/quill.js"></script>
-    <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
-    <script src="assets/vendor/tinymce/tinymce.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
-
-    <!-- Template Main JS File -->
-    <script src="assets/js/main.js"></script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-    $(document).ready(function() {
-        // Load students on page load
-        loadStudents();
+        // Fetching student data to fill in the edit modal
+        function editStudent(id) {
+            document.getElementById('editFormFeedback').innerHTML = '';
 
-        // Function to load students
-        function loadStudents() {
-            $.ajax({
-                url: 'backend/fetch_students.php',
-                type: 'GET',
-                data: {
-                    batch_id: getQueryParam('id') // Pass the batch ID
-                },
-                success: function(data) {
-                    var studentTableBody = $('#studentTableBody');
-                    studentTableBody.empty(); // Clear previous data
-
-                    if (data.length > 0) {
-                        data.forEach(function(student) {
-                            var row = `<tr>
-                                <td>${student.first_name} ${student.last_name}</td>
-                                <td>${student.course}</td>
-                                <td>${student.email}</td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm" onclick="editStudent(${student.id})" aria-label="Edit Student">Edit</button>
-                                    <button class="btn btn-danger btn-sm" onclick="deleteStudent(${student.id})" aria-label="Delete Student">Delete</button>
-                                </td>
-                            </tr>`;
-                            studentTableBody.append(row);
-                        });
+            // AJAX request to get student details
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'backend/get_student.php?id=' + id, true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var student = JSON.parse(xhr.responseText);
+                    if (student) {
+                        document.getElementById('editStudentId').value = student.id;
+                        document.getElementById('editFirstName').value = student.first_name;
+                        document.getElementById('editLastName').value = student.last_name;
+                        document.getElementById('editCourse').value = student.course;
+                        document.getElementById('editEmail').value = student.email;
+                        $('#editStudentModal').modal('show');
                     } else {
-                        studentTableBody.append('<tr><td colspan="4" class="text-center">No students found.</td></tr>');
+                        document.getElementById('editFormFeedback').innerHTML = 'Student not found.';
                     }
-                },
-                error: function() {
-                    $('#studentTableBody').append('<tr><td colspan="4" class="text-center text-danger">An error occurred while fetching students.</td></tr>');
+                } else {
+                    document.getElementById('editFormFeedback').innerHTML = 'Error fetching student data.';
                 }
-            });
+            };
+            xhr.send();
         }
 
-        $('#saveStudentBtn').on('click', function() {
-            // Get form data
-            var firstName = $('#inputFirstName').val();
-            var lastName = $('#inputLastName').val();
-            var course = $('#inputCourse').val();
-            var email = $('#inputEmail').val();
-
-            // Validate inputs
-            if (firstName === '' || lastName === '' || course === '' || email === '') {
-                $('#formFeedback').text('All fields are required.');
-                return;
-            }
-
-            // AJAX request to save the student
-            $.ajax({
-                url: 'backend/save_student.php',
-                type: 'POST',
-                data: {
-                    first_name: firstName,
-                    last_name: lastName,
-                    course: course,
-                    email: email,
-                    batch_id: getQueryParam('id') // Pass the batch ID as well
-                },
-                success: function(response) {
-                    if (response === 'success') {
-                        $('#formFeedback').removeClass('text-danger').addClass('text-success').text('Student saved successfully!');
-                        $('#addStudentModal').modal('hide');
-                        $('#addStudentForm')[0].reset(); // Reset form fields
-                        loadStudents(); // Reload students
+        // Function to delete a student (implement this based on your requirements)
+        function deleteStudent(id) {
+            if (confirm('Are you sure you want to delete this student?')) {
+                // AJAX request to delete the student
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'backend/delete_student.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Reload the page or update the table
+                        location.reload();
                     } else {
-                        $('#formFeedback').text(response); // Display any error message from PHP
+                        alert('Error deleting student.');
                     }
-                },
-                error: function() {
-                    $('#formFeedback').text('An error occurred while saving the student.');
-                }
-            });
-        });
-    });
-
-    // Function to get query parameters
-    function getQueryParam(param) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
-    }
-
-    // Function to edit a student (placeholder function)
-    function editStudent(studentId) {
-        // Implement the edit logic here
-        alert('Edit student with ID: ' + studentId);
-    }
-
-    // Function to delete a student (placeholder function)
-    function deleteStudent(studentId) {
-        // Implement the delete logic here
-        alert('Delete student with ID: ' + studentId);
-    }
+                };
+                xhr.send('id=' + id);
+            }
+        }
     </script>
-
 </body>
 
 </html>
- 

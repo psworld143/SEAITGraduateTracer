@@ -1,49 +1,37 @@
 <?php
-$servername = "localhost"; // Change to your DB server
-$username = "root"; // Change to your DB username
-$password = ""; // Change to your DB password
-$dbname = "graduate_tracer"; // Change to your DB name
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "graduate_tracer";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
 if ($conn->connect_error) {
-    die(json_encode(['status' => 'error', 'message' => 'Connection failed.']));
+    die(json_encode(['status' => 'error', 'message' => 'Connection failed: ' . $conn->connect_error]));
 }
 
-$input = json_decode(file_get_contents('php://input'), true);
-$documentId = $input['id'] ?? null;
+// Check if the document ID is set and is numeric
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $id = intval($_GET['id']);
 
-if ($documentId) {
-    // Check if the document exists
-    $checkStmt = $conn->prepare("SELECT id FROM documents WHERE id = ?");
-    $checkStmt->bind_param('i', $documentId);
-    $checkStmt->execute();
-    $checkStmt->store_result();
+    // Prepare the delete statement
+    $stmt = $conn->prepare("DELETE FROM documents WHERE id = ?");
+    $stmt->bind_param("i", $id);
 
-    if ($checkStmt->num_rows > 0) {
-        // Prepare the delete statement using MySQLi
-        $stmt = $conn->prepare("DELETE FROM documents WHERE id = ?");
-        if ($stmt) {
-            $stmt->bind_param('i', $documentId);
-
-            if ($stmt->execute()) {
-                echo json_encode(['status' => 'success', 'message' => 'Document deleted successfully.']);
-            } else {
-                echo json_encode(['status' => 'error', 'message' => 'Could not delete the document.']);
-            }
-
-            $stmt->close();
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to prepare the SQL statement.']);
-        }
+    // Execute the statement
+    if ($stmt->execute()) {
+        echo json_encode(['status' => 'success', 'message' => 'Document deleted successfully.']);
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'No document found with that ID.']);
+        echo json_encode(['status' => 'error', 'message' => 'Failed to delete document.']);
     }
 
-    $checkStmt->close();
+    $stmt->close();
 } else {
-    echo json_encode(['status' => 'error', 'message' => 'Invalid request.']);
+    echo json_encode(['status' => 'error', 'message' => 'Invalid or missing document ID.']);
 }
 
+// Close the database connection
 $conn->close();
 ?>

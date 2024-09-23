@@ -133,11 +133,11 @@
                 data.forEach(doc => {
                     const newRow = document.createElement('tr');
                     newRow.innerHTML = `
-                            <td>${doc.document_type}</td>
-                            <td>${doc.availability_status}</td>
-                            <td>${doc.release_date}</td>
-                            <td><button class="btn btn-danger delete-btn" data-id="${doc.id}">Delete</button></td>
-                        `;
+                    <td>${doc.document_type}</td>
+                    <td>${doc.availability_status}</td>
+                    <td>${doc.release_date}</td>
+                    <td><button class="btn btn-danger delete-btn" data-id="${doc.id}">Delete</button></td>
+                `;
                     tableBody.appendChild(newRow);
                 });
 
@@ -178,11 +178,11 @@
                     const newRow = document.createElement('tr');
 
                     newRow.innerHTML = `
-                        <td>${data.data.documentType}</td>
-                        <td>${data.data.availabilityStatus}</td>
-                        <td>${data.data.releaseDate}</td>
-                        <td><button class="btn btn-danger delete-btn" data-id="${data.data.id}">Delete</button></td>
-                    `;
+                <td>${data.data.documentType}</td>
+                <td>${data.data.availabilityStatus}</td>
+                <td>${data.data.releaseDate}</td>
+                <td><button class="btn btn-danger delete-btn" data-id="${data.data.id}">Delete</button></td>
+            `;
 
                     tableBody.appendChild(newRow);
                     this.reset(); // Reset form after submission
@@ -209,25 +209,18 @@
 
     // Function to delete a document
     function deleteDocument(id) {
-        console.log('Deleting document ID:', id); // Log the ID being deleted
         if (confirm('Are you sure you want to delete this document?')) {
-            fetch('backend/delete_document.php', {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        id: id
-                    })
+            fetch(`backend/delete_document.php?id=${id}`, {
+                    method: 'DELETE'
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Delete response:', data); // Log the response
+                    const responseMessage = document.getElementById('responseMessage');
+                    responseMessage.innerHTML = data.message;
+
                     if (data.status === 'success') {
-                        fetchDocuments();
-                        alert('Document deleted successfully.');
-                    } else {
-                        alert('Error deleting document: ' + data.message);
+                        // Remove the deleted row from the table
+                        fetchDocuments(); // Refresh the document list
                     }
                 })
                 .catch(error => {
@@ -236,6 +229,7 @@
         }
     }
     </script>
+
 
 </body>
 
