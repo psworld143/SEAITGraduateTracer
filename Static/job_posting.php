@@ -1,113 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+    <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Job Postings - Your Application</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+        <title>About Us - SEAIT</title>
+        <meta content="About SEAIT, history, mission, and vision" name="description">
+        <meta content="SEAIT, education, history" name="keywords">
 
-    <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+        <!-- Favicons -->
+        <link href="assets/img/favicon.png" rel="icon">
+        <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600|Poppins:300,400,500,600"
+            rel="stylesheet">
 
-    <!-- Vendor CSS Files -->
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <!-- Vendor CSS Files -->
+        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+        <link href="assets/css/style.css" rel="stylesheet">
+        <link href="assets/css/static.css" rel="stylesheet">
 
-    <!-- Template Main CSS File -->
-    <link href="assets/css/style.css" rel="stylesheet">
-    <style>
-        .job-card {
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            transition: box-shadow 0.3s;
-        }
-        .job-card:hover {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .job-title {
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-        .job-details {
-            margin-top: 10px;
-        }
-        .apply-button {
-            margin-top: 10px;
-        }
-    </style>
-</head>
 
-<body>
-<?php include('inc/header.php'); ?>
-<main id="main" class="main">
 
-    <section class="section">
-        <div class="row">
+    </head>
 
-            <div class="col-lg-12">
-                <div class="row">
+    <body>
+        <?php include('inc/header.php'); ?>
+        <main>
+            <div class="container-sm">
 
-                    <!-- Job Posting Card Example -->
-                    <div class="col-md-4">
-                        <div class="job-card">
-                            <div class="job-title">Software Engineer</div>
-                            <div class="job-details">
-                                <p><strong>Date Posted:</strong> 2024-09-20</p>
-                                <p><strong>Status:</strong> Open</p>
-                                <p><strong>Qualifications:</strong> Bachelor's in Computer Science or related field.</p>
-                            </div>
-                            <a href="#" class="btn btn-primary apply-button">Apply Now</a>
-                        </div>
-                    </div><!-- End Job Posting Card -->
-
-                    <!-- Additional job postings can be added similarly -->
-                    <div class="col-md-4">
-                        <div class="job-card">
-                            <div class="job-title">Marketing Specialist</div>
-                            <div class="job-details">
-                                <p><strong>Date Posted:</strong> 2024-09-18</p>
-                                <p><strong>Status:</strong> Open</p>
-                                <p><strong>Qualifications:</strong> Experience in digital marketing.</p>
-                            </div>
-                            <a href="#" class="btn btn-primary apply-button">Apply Now</a>
-                        </div>
-                    </div><!-- End Job Posting Card -->
-
-                    <div class="col-md-4">
-                        <div class="job-card">
-                            <div class="job-title">Data Analyst</div>
-                            <div class="job-details">
-                                <p><strong>Date Posted:</strong> 2024-09-15</p>
-                                <p><strong>Status:</strong> Closed</p>
-                                <p><strong>Qualifications:</strong> Proficient in SQL and Excel.</p>
-                            </div>
-                            <a href="#" class="btn btn-secondary apply-button" disabled>Closed</a>
-                        </div>
-                    </div><!-- End Job Posting Card -->
-
-                </div>
             </div>
 
-        </div>
-    </section>
+            <div class="container">
+                <section class="section min-vh-100 d-flex flex-column align-items-center justify-content-center">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 col-md-10 d-flex flex-column align-items-center justify-content-center">
+                            <div class="d-flex justify-content-center py-4">    
+                                    <span class="d-none d-lg-block h1">Job Posting</span>
+                                </a>
+                            </div><!-- End Logo -->
 
-</main><!-- End #main -->
+                            <div class="card mb-3 shadow-sm">
+                                <div class="card-body">
+                                    <h3 class="card-title">Job Title: Software Engineer</h3>
+                                    <p class="card-text"><strong>Job Description:</strong> We are seeking a highly
+                                        motivated Software Engineer to join our dynamic team. The ideal candidate will
+                                        have a strong background in software development, with experience in designing,
+                                        implementing, and maintaining software applications. You will collaborate with
+                                        cross-functional teams to deliver high-quality software solutions and ensure
+                                        adherence to best practices.</p>
+                                    <p class="card-text"><strong>Qualifications/Requirements:</strong></p>
+                                    <ul>
+                                        <li>Bachelor’s degree in Computer Science, Software Engineering, or a related
+                                            field.</li>
+                                        <li>Minimum of 3 years of professional experience in software development.</li>
+                                        <li>Proficiency in programming languages such as Java, Python, or C#.</li>
+                                        <li>Experience with web technologies (HTML, CSS, JavaScript) and frameworks
+                                            (React, Angular, or Vue.js).</li>
+                                        <li>Strong problem-solving skills and ability to work independently.</li>
+                                        <li>Excellent communication and teamwork abilities.</li>
+                                    </ul>
+                                    <p class="card-text"><strong>Application Deadline:</strong> 2024-10-31</p>
+                                    <p class="card-text"><strong>Contact Information:</strong> For inquiries, please
+                                        contact Jane Doe at <a
+                                            href="mailto:jane.doe@example.com">jane.doe@example.com</a> or call (123)
+                                        456-7890.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main><!-- End #main -->
 
-<!-- Vendor JS Files -->
-<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Vendor JS Files -->
+        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-<!-- Template Main JS File -->
-<script src="assets/js/main.js"></script>
+        <!-- Template Main JS File -->
+        <script src="assets/js/main.js"></script>
 
-</body>
-</html>
+    </body>
+
+    </html>
