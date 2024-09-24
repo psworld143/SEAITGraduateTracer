@@ -33,50 +33,8 @@
         <section class="section dashboard">
             <div class="row">
 
-                <!-- Left side columns -->
-                <div class="col-lg-6">
-                    <!-- Post Document Availability -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Post Document Availability</h5>
-                            <form id="postDocumentForm" class="row g-3">
-                                <div class="col-12">
-                                    <label for="documentType" class="form-label">Document Type:</label>
-                                    <select id="documentType" class="form-select" name="documentType" required>
-                                        <option value="" selected>Select Document Type</option>
-                                        <option value="Transcript">Transcript</option>
-                                        <option value="Diploma">Diploma</option>
-                                        <option value="Certification">Certification</option>
-                                    </select>
-                                </div>
-                                <div class="col-12">
-                                    <label for="availabilityStatus" class="form-label">Availability Status:</label>
-                                    <select id="availabilityStatus" class="form-select" name="availabilityStatus" required>
-                                        <option value="" selected>Select Status</option>
-                                        <option value="Available for Release">Available for Release</option>
-                                        <option value="Not Available">Not Available</option>
-                                    </select>
-                                </div>
-                                <div class="col-12">
-                                    <label for="releaseDate" class="form-label">Release Date:</label>
-                                    <input type="date" class="form-control" name="releaseDate" id="releaseDate" required>
-                                </div>
-                                <div class="col-12">
-                                    <label for="additionalInstructions" class="form-label">Additional Instructions:</label>
-                                    <textarea class="form-control" name="additionalInstructions" id="additionalInstructions" rows="3"></textarea>
-                                </div>
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-primary">Submit/Post</button>
-                                </div>
-                            </form>
-                            <div id="responseMessage"></div>
-                        </div>
-                    </div><!-- End Post Document Availability -->
-                </div>
-
-                <!-- Right side columns -->
-                <div class="col-lg-6">
-                    <!-- Manage Document Status -->
+                <!-- Left side columns (Manage Document Status) -->
+                <div class="col-lg-8">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Manage Document Status</h5>
@@ -96,9 +54,54 @@
                         </div>
                     </div><!-- End Manage Document Status -->
                 </div>
+
+                <!-- Right side columns (Post Document Availability) -->
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Post Document Availability</h5>
+                            <form id="postDocumentForm" class="row g-3">
+                                <div class="col-12">
+                                    <label for="documentType" class="form-label">Document Type:</label>
+                                    <select id="documentType" class="form-select" name="documentType" required>
+                                        <option value="" selected>Select Document Type</option>
+                                        <option value="Transcript">Transcript</option>
+                                        <option value="Diploma">Diploma</option>
+                                        <option value="Certification">Certification</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="availabilityStatus" class="form-label">Availability Status:</label>
+                                    <select id="availabilityStatus" class="form-select" name="availabilityStatus"
+                                        required>
+                                        <option value="" selected>Select Status</option>
+                                        <option value="Available for Release">Available for Release</option>
+                                        <option value="Not Available">Not Available</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="releaseDate" class="form-label">Release Date:</label>
+                                    <input type="date" class="form-control" name="releaseDate" id="releaseDate"
+                                        required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="additionalInstructions" class="form-label">Additional
+                                        Instructions:</label>
+                                    <textarea class="form-control" name="additionalInstructions"
+                                        id="additionalInstructions" rows="3"></textarea>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Submit/Post</button>
+                                </div>
+                            </form>
+                            <div id="responseMessage"></div>
+                        </div>
+                    </div><!-- End Post Document Availability -->
+                </div>
             </div>
         </section>
     </main><!-- End #main -->
+
     <?php include('inc/footer.php'); ?>
 
     <!-- Vendor JS Files -->
