@@ -1,3 +1,40 @@
+<?php
+session_start();
+include('db_conn.php'); // Include your database connection file
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Sanitize input
+    $username = mysqli_real_escape_string($conn, $username);
+    $password = mysqli_real_escape_string($conn, $password);
+
+    // Query to check if the user exists
+    $query = "SELECT * FROM users WHERE username='$username'";
+    $result = mysqli_query($conn, $query);
+    
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        
+        // Verify password
+        if (password_verify($password, $row['password'])) {
+            // Set session variables
+            $_SESSION['user_id'] = $row['id'];
+            $_SESSION['username'] = $row['username'];
+
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid password.']);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'User not found.']);
+    }
+} else {
+    echo json_encode(['success' => false, 'message' => 'Invalid request.']);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -56,9 +93,7 @@
                                     <div class="pt-4 pb-2">
                                         <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
                                     </div>
-
-                                    <form class="row g-3 needs-validation" novalidate>
-
+                                    <form id="loginForm" class="row g-3 needs-validation" novalidate>
                                         <div class="col-12">
                                             <label for="yourUsername" class="form-label">Username</label>
                                             <div class="input-group has-validation">
@@ -90,6 +125,7 @@
                                                     href="pages-register.html">Create an account</a></p>
                                         </div>
                                     </form>
+
                                 </div>
                             </div>
                         </div>
@@ -113,6 +149,36 @@
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
+    <script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Create a FormData object to send the form data
+        const formData = new FormData(this);
+
+        // Send AJAX request
+        fetch('login.php', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Check the response from the server
+                if (data.success) {
+                    // Redirect or display a success message
+                    window.location.href = 'index.php'; // Adjust according to your application flow
+                } else {
+                    // Display error message
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while processing your request.');
+            });
+    });
+    </script>
+
 
 </body>
 

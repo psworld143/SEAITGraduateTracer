@@ -31,22 +31,20 @@
     <body>
         <?php include('inc/header.php'); ?>
         <main>
-
             <div class="container-sm">
-
                 <section class="section about">
-                    <div class="text-center mb-12">
+                    <div class="text-center section-title">
                         <h1>WELCOME TO SEAIT</h1>
                         <h2>Committed to the Total Development of Students</h2>
                     </div>
 
-                    <div class="mt-4">
+                    <div>
                         <h3>About Us</h3>
                         <p>The South East Asian Institute of Technology, Inc. (SEAIT) offers free education across all
                             college programs, supported by various government sectors and NGOs.</p>
                     </div>
 
-                    <div class="mt-4">
+                    <div>
                         <h3>Our History</h3>
                         <p>South East Asian Institute of Technology, Inc., affectionately known as SEAIT, began its
                             journey in February 2006. Unlike a typical foundation story, ours unfolded like a dramatic
@@ -86,9 +84,7 @@
                             our commitment to growth and excellence.</p>
                     </div>
                 </section>
-
             </div>
-
         </main><!-- End #main -->
 
         <!-- Vendor JS Files -->

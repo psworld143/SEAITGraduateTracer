@@ -5,6 +5,22 @@ include('db_conn.php');
 // Get batch_id from URL (with validation)
 $batch_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
+// Fetch the batch name based on batch_id
+$batch_query = "SELECT batch_name FROM batches WHERE id = ?";
+$batch_stmt = $conn->prepare($batch_query);
+$batch_stmt->bind_param('i', $batch_id);
+$batch_stmt->execute();
+$batch_result = $batch_stmt->get_result();
+
+// Default batch name if not found
+$batch_name = "Unknown Batch";
+
+// Check if the batch exists
+if ($batch_result->num_rows > 0) {
+    $batch_row = $batch_result->fetch_assoc();
+    $batch_name = $batch_row['batch_name'];
+}
+
 // Query to fetch students based on batch_id
 $query = "SELECT id, first_name, last_name, course, email FROM students WHERE batch_id = ?";
 $stmt = $conn->prepare($query);
@@ -12,7 +28,6 @@ $stmt->bind_param('i', $batch_id);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,7 +60,7 @@ $result = $stmt->get_result();
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
                     <li class="breadcrumb-item">Manage Survey</li>
-                    <li class="breadcrumb-item active">Batch 2024-2025</li>
+                    <li class="breadcrumb-item active"><?php echo $batch_name; ?></li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -56,7 +71,7 @@ $result = $stmt->get_result();
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="card-title mb-0">Batch 2024-2025</h5>
+                                <h5 class="card-title mb-0"><?php echo $batch_name; ?></h5>
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#addStudentModal">
                                     <i class="bi bi-plus"></i>Add Student
@@ -79,21 +94,76 @@ $result = $stmt->get_result();
                                                     <label for="inputFirstName" class="form-label">First Name:</label>
                                                     <input type="text" class="form-control" id="inputFirstName"
                                                         name="first_name" required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter a first name.
+                                                    </div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="inputLastName" class="form-label">Last Name:</label>
                                                     <input type="text" class="form-control" id="inputLastName"
                                                         name="last_name" required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter a last name.
+                                                    </div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="inputCourse" class="form-label">Course:</label>
-                                                    <input type="text" class="form-control" id="inputCourse"
-                                                        name="course" required>
+                                                    <select class="form-select" id="inputCourse" name="course" required>
+                                                        <option value="" disabled selected>Select a course</option>
+                                                        <option value="BS Business Administration Major in Mktg Mgt.">BS
+                                                            Business Administration Major in Mktg Mgt. (BSBA)</option>
+                                                        <option value="BS Accounting Information System">BS Accounting
+                                                            Information System (BSAIS)</option>
+                                                        <option value="BS Hospitality Management">BS Hospitality
+                                                            Management (BSHM)</option>
+                                                        <option value="BS Tourism Management">BS Tourism Management
+                                                            (BSTM)</option>
+                                                        <option value="Associate in Hospitality Management">Associate in
+                                                            Hospitality Management (AHM)</option>
+                                                        <option
+                                                            value="Bachelor in Secondary Education Major in English">
+                                                            BSEd - English</option>
+                                                        <option value="Bachelor in Secondary Education Major in Math">
+                                                            BSEd - Math</option>
+                                                        <option value="Bachelor in Elementary Education">Bachelor in
+                                                            Elementary Education (BEEd)</option>
+                                                        <option value="Bachelor in Early Childhood Education">Bachelor
+                                                            in Early Childhood Education (BECEd)</option>
+                                                        <option
+                                                            value="Bachelor in Secondary Education Major in Social Studies">
+                                                            BSEd - Social Studies</option>
+                                                        <option value="BS Agriculture Major in PBG">BS Agriculture Major
+                                                            in Plant Breeding and Genetics (PBG)</option>
+                                                        <option value="BS Agriculture Major in Horticulture">BS
+                                                            Agriculture Major in Horticulture (Horti)</option>
+                                                        <option value="BS Fisheries">BS Fisheries (BSF)</option>
+                                                        <option value="BS Agricultural Technology">BS Agricultural
+                                                            Technology</option>
+                                                        <option value="BS Information Technology">BS Information
+                                                            Technology (BSIT)</option>
+                                                        <option value="BS Civil Engineering">BS Civil Engineering (BSCE)
+                                                        </option>
+                                                        <option value="BS IT specialized in Business Analytics">BS
+                                                            Information Technology specialized in Business Analytics
+                                                            (BSIT-BAST)</option>
+                                                        <option value="Associate in Computer Technology">Associate in
+                                                            Computer Technology (ACT)</option>
+                                                        <option value="BS Criminology">BS Criminology (BSCrim)</option>
+                                                        <option value="BS Public Administration">BS Public
+                                                            Administration (BPA)</option>
+                                                        <option value="BS Social Works">BS Social Works (BSSW)</option>
+                                                    </select>
+                                                    <div class="invalid-feedback">
+                                                        Please select a course.
+                                                    </div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="inputEmail" class="form-label">Email:</label>
                                                     <input type="email" class="form-control" id="inputEmail"
                                                         name="email" required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter a valid email address.
+                                                    </div>
                                                 </div>
                                                 <input type="hidden" name="batch_id" value="<?php echo $batch_id; ?>" />
                                                 <div id="formFeedback" class="text-danger"></div>
@@ -204,51 +274,51 @@ $result = $stmt->get_result();
 
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Fetching student data to fill in the edit modal
-        function editStudent(id) {
-            document.getElementById('editFormFeedback').innerHTML = '';
+    // Fetching student data to fill in the edit modal
+    function editStudent(id) {
+        document.getElementById('editFormFeedback').innerHTML = '';
 
-            // AJAX request to get student details
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'backend/get_student.php?id=' + id, true);
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    var student = JSON.parse(xhr.responseText);
-                    if (student) {
-                        document.getElementById('editStudentId').value = student.id;
-                        document.getElementById('editFirstName').value = student.first_name;
-                        document.getElementById('editLastName').value = student.last_name;
-                        document.getElementById('editCourse').value = student.course;
-                        document.getElementById('editEmail').value = student.email;
-                        $('#editStudentModal').modal('show');
-                    } else {
-                        document.getElementById('editFormFeedback').innerHTML = 'Student not found.';
-                    }
+        // AJAX request to get student details
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'backend/get_student.php?id=' + id, true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var student = JSON.parse(xhr.responseText);
+                if (student) {
+                    document.getElementById('editStudentId').value = student.id;
+                    document.getElementById('editFirstName').value = student.first_name;
+                    document.getElementById('editLastName').value = student.last_name;
+                    document.getElementById('editCourse').value = student.course;
+                    document.getElementById('editEmail').value = student.email;
+                    $('#editStudentModal').modal('show');
                 } else {
-                    document.getElementById('editFormFeedback').innerHTML = 'Error fetching student data.';
+                    document.getElementById('editFormFeedback').innerHTML = 'Student not found.';
+                }
+            } else {
+                document.getElementById('editFormFeedback').innerHTML = 'Error fetching student data.';
+            }
+        };
+        xhr.send();
+    }
+
+    // Function to delete a student (implement this based on your requirements)
+    function deleteStudent(id) {
+        if (confirm('Are you sure you want to delete this student?')) {
+            // AJAX request to delete the student
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'backend/delete_student.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Reload the page or update the table
+                    location.reload();
+                } else {
+                    alert('Error deleting student.');
                 }
             };
-            xhr.send();
+            xhr.send('id=' + id);
         }
-
-        // Function to delete a student (implement this based on your requirements)
-        function deleteStudent(id) {
-            if (confirm('Are you sure you want to delete this student?')) {
-                // AJAX request to delete the student
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'backend/delete_student.php', true);
-                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                xhr.onload = function () {
-                    if (xhr.status === 200) {
-                        // Reload the page or update the table
-                        location.reload();
-                    } else {
-                        alert('Error deleting student.');
-                    }
-                };
-                xhr.send('id=' + id);
-            }
-        }
+    }
     </script>
 </body>
 

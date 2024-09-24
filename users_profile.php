@@ -113,7 +113,7 @@
                                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                                     <!-- Profile Edit Form -->
-                                    <form>
+                                    <form id="editProfileForm">
                                         <div class="row mb-3">
                                             <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile
                                                 Image</label>
@@ -134,7 +134,7 @@
                                                 Name</label>
                                             <div class="col-md-8 col-lg-9">
                                                 <input name="fullName" type="text" class="form-control" id="fullName"
-                                                    value="Kevin Anderson">
+                                                    value="Kevin Anderson" required>
                                             </div>
                                         </div>
 
@@ -143,7 +143,7 @@
                                                 class="col-md-4 col-lg-3 col-form-label">Address</label>
                                             <div class="col-md-8 col-lg-9">
                                                 <input name="address" type="text" class="form-control" id="Address"
-                                                    value="A108 Adam Street, New York, NY 535022">
+                                                    value="A108 Adam Street, New York, NY 535022" required>
                                             </div>
                                         </div>
 
@@ -151,7 +151,7 @@
                                             <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                                             <div class="col-md-8 col-lg-9">
                                                 <input name="email" type="email" class="form-control" id="Email"
-                                                    value="k.anderson@example.com">
+                                                    value="k.anderson@example.com" required>
                                             </div>
                                         </div>
 
@@ -162,62 +162,16 @@
 
                                 </div>
 
-                                <div class="tab-pane fade pt-3" id="profile-settings">
-
-                                    <!-- Settings Form -->
-                                    <form>
-
-                                        <div class="row mb-3">
-                                            <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email
-                                                Notifications</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="changesMade"
-                                                        checked>
-                                                    <label class="form-check-label" for="changesMade">
-                                                        Changes made to your account
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="newProducts"
-                                                        checked>
-                                                    <label class="form-check-label" for="newProducts">
-                                                        Information on new products and services
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="proOffers">
-                                                    <label class="form-check-label" for="proOffers">
-                                                        Marketing and promo offers
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="securityNotify"
-                                                        checked disabled>
-                                                    <label class="form-check-label" for="securityNotify">
-                                                        Security alerts
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                                        </div>
-                                    </form><!-- End settings Form -->
-
-                                </div>
-
                                 <div class="tab-pane fade pt-3" id="profile-change-password">
                                     <!-- Change Password Form -->
-                                    <form>
+                                    <form id="changePasswordForm">
 
                                         <div class="row mb-3">
                                             <label for="currentPassword"
                                                 class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="password" type="password" class="form-control"
-                                                    id="currentPassword">
+                                                <input name="currentPassword" type="password" class="form-control"
+                                                    id="currentPassword" required>
                                             </div>
                                         </div>
 
@@ -225,8 +179,8 @@
                                             <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New
                                                 Password</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="newpassword" type="password" class="form-control"
-                                                    id="newPassword">
+                                                <input name="newPassword" type="password" class="form-control"
+                                                    id="newPassword" required>
                                             </div>
                                         </div>
 
@@ -234,8 +188,8 @@
                                             <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter
                                                 New Password</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="renewpassword" type="password" class="form-control"
-                                                    id="renewPassword">
+                                                <input name="renewPassword" type="password" class="form-control"
+                                                    id="renewPassword" required>
                                             </div>
                                         </div>
 
