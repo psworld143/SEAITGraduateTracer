@@ -89,7 +89,7 @@ $result = $stmt->get_result();
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form id="addStudentForm" method="POST" action="backend/save_student.php">
+                                            <form id="addStudentForm">
                                                 <div class="mb-3">
                                                     <label for="inputFirstName" class="form-label">First Name:</label>
                                                     <input type="text" class="form-control" id="inputFirstName"
@@ -274,6 +274,36 @@ $result = $stmt->get_result();
 
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script>
+    // Function to save a student using AJAX
+    document.getElementById('addStudentForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent the form from submitting normally
+
+        // Prepare the form data for submission via AJAX
+        var formData = new FormData(this);
+
+        // Create an AJAX request to save the student
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'backend/save_student.php', true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.status === 'success') {
+                    // Show alert message
+                    alert(response.message); // Alert on successful submission
+                    // Reload the page to reflect the new data
+                    location.reload();
+                } else {
+                    // Show error message returned from the server
+                    document.getElementById('formFeedback').innerHTML = response.message;
+                }
+            } else {
+                document.getElementById('formFeedback').innerHTML = 'Error saving student.';
+            }
+        };
+
+        // Send the form data
+        xhr.send(formData);
+    });
     // Fetching student data to fill in the edit modal
     function editStudent(id) {
         document.getElementById('editFormFeedback').innerHTML = '';
@@ -301,6 +331,7 @@ $result = $stmt->get_result();
         xhr.send();
     }
 
+
     // Function to delete a student (implement this based on your requirements)
     function deleteStudent(id) {
         if (confirm('Are you sure you want to delete this student?')) {
@@ -319,7 +350,11 @@ $result = $stmt->get_result();
             xhr.send('id=' + id);
         }
     }
+
+    // Attach the saveStudent function to the form submission event
+    document.getElementById('editStudentForm').addEventListener('submit', saveStudent);
     </script>
+
 </body>
 
 </html>

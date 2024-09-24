@@ -111,6 +111,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
     $(document).ready(function() {
+        
         // Function to load batch list via AJAX
         function loadBatchList() {
             $.ajax({
@@ -135,8 +136,8 @@
                                     </div>
                                 </a>
                                 <div class="card-footer text-end">
-                                    <button class="btn btn-warning archive-btn" data-id="${batch.id}"><i class="bi bi-archive"></i></button>
-                                    <button class="btn btn-danger delete-btn" data-id="${batch.id}"><i class="bi bi-trash"></i></button>
+                                    <button class="btn btn-warning archive-btn" data-id="${batch.id}"><i class="bi bi-archive"> Archive</i></button>
+                                    <button class="btn btn-danger delete-btn" data-id="${batch.id}"><i class="bi bi-trash"></i> Delete</button>
                                 </div>
                             </div>`;
                     });

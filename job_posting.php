@@ -177,6 +177,7 @@
                         <td>${job.status}</td>
                         <td>
                             <button class="btn btn-danger btn-sm" onclick="deleteJob(${job.id})">Delete</button>
+                            <button class="btn btn-success btn-sm" onclick="deleteJob(${job.id})">View</button>
                         </td>
                     `;
                     jobPostingsList.appendChild(row);
