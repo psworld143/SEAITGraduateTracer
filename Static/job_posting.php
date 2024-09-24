@@ -60,7 +60,7 @@
                                 echo '
                                 <div class="card mb-3 shadow-sm">
                                     <div class="card-body">
-                                        <h3 class="card-title">Job Title: ' . htmlspecialchars($row["jobTitle"]) . '</h3>
+                                        <h3 class="card-title"><strong>Job Title: ' . htmlspecialchars($row["jobTitle"]) . '</strong></h3>
                                         <p class="card-text"><strong>Job Description:</strong> ' . htmlspecialchars($row["jobDescription"]) . '</p>
                                         <p class="card-text"><strong>Qualifications/Requirements:</strong></p>
                                         <ul>';

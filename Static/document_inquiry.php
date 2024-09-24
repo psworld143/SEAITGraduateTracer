@@ -55,7 +55,7 @@ $result = $conn->query($sql);
                             <?php while ($row = $result->fetch_assoc()): ?>
                                 <div class="card mb-4">
                                     <div class="card-body">
-                                        <h5 class="card-title">Document Type: <?php echo htmlspecialchars($row['document_type']); ?></h5>
+                                        <h5 class="card-title"><strong>Document Type: <?php echo htmlspecialchars($row['document_type']); ?></strong></h5>
                                         <p><strong>Availability Status:</strong> <?php echo htmlspecialchars($row['availability_status']); ?></p>
                                         <p><strong>Release Date:</strong> <?php echo htmlspecialchars($row['release_date']); ?></p>
                                         <p><strong>Additional Instructions:</strong></p>
