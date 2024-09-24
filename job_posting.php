@@ -10,6 +10,7 @@
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
 
@@ -17,7 +18,6 @@
 
     <?php include('inc/header.php'); ?>
     <?php include('inc/sidebar.php'); ?>
-
     <main id="main" class="main">
         <div class="pagetitle">
             <h1>Manage Job Postings</h1>
@@ -35,25 +35,28 @@
                 <!-- Left side columns -->
                 <div class="col-lg-8">
                     <div class="row">
-
                         <!-- Job Postings List -->
                         <div class="col-12">
-                            <div class="card top-selling overflow-auto">
+                            <div class="card shadow-sm border-light mb-4">
+                                <div class="card-header text-dark">
+                                    <h5 class="card-title pb-0">List of Current Job Postings</h5>
+                                </div>
                                 <div class="card-body pb-0">
-                                    <h5 class="card-title">List of Current Job Postings</h5>
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Job Title</th>
-                                                <th>Date Posted</th>
-                                                <th>Status</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="jobPostingsList">
-                                            <!-- Job Posting Template will be loaded via JS -->
-                                        </tbody>
-                                    </table>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-bordered" id="jobPostingsTable">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Job Title</th>
+                                                    <th>Date Posted</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="jobPostingsList">
+                                                <!-- Job Posting Template will be loaded via JS -->
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div><!-- End Job Postings List -->
@@ -64,9 +67,11 @@
                 <!-- Right side columns -->
                 <div class="col-lg-4">
                     <!-- Add New Job Posting -->
-                    <div class="card">
+                    <div class="card shadow-sm border-light mb-4">
+                        <div class="card-header text-dark">
+                            <h5 class="card-title mb-0">Add New Job Posting</h5>
+                        </div>
                         <div class="card-body">
-                            <h5 class="card-title">Add New Job Posting</h5>
                             <form id="addJobForm" class="row g-3" enctype="multipart/form-data">
                                 <div class="col-12">
                                     <label for="jobTitle" class="form-label">Job Title:</label>
@@ -97,17 +102,18 @@
                                     <input type="file" class="form-control" name="fileUpload" id="fileUpload">
                                 </div>
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary w-100">Submit</button>
                                 </div>
                             </form>
-                            <div id="responseMessage"></div>
+                            <div id="responseMessage" class="mt-3"></div>
                         </div>
                     </div><!-- End Add New Job Posting -->
+                </div><!-- End Right side columns -->
 
-                </div>
             </div>
         </section>
     </main><!-- End #main -->
+
     <?php include('inc/footer.php'); ?>
 
     <!-- Vendor JS Files -->
@@ -154,6 +160,7 @@
             });
     });
 
+    let dataTable; // Declare the datatable variable
 
     // Function to load job postings
     function loadJobPostings() {
@@ -174,6 +181,12 @@
                     `;
                     jobPostingsList.appendChild(row);
                 });
+
+                // Initialize the DataTable after loading the job postings
+                if (dataTable) {
+                    dataTable.destroy(); // Destroy the previous instance of the DataTable if it exists
+                }
+                dataTable = new simpleDatatables.DataTable("#jobPostingsTable"); // Initialize new DataTable
             })
             .catch(error => console.error('Error loading job postings:', error));
     }
@@ -202,6 +215,7 @@
     // Call loadJobPostings on page load to populate the list
     window.onload = loadJobPostings;
     </script>
+
 
 
 </body>

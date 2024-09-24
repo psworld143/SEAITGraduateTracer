@@ -11,6 +11,7 @@
     <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css">
 </head>
 
 <body>
@@ -50,8 +51,7 @@
                                 </div>
                                 <div class="col-12">
                                     <label for="availabilityStatus" class="form-label">Availability Status:</label>
-                                    <select id="availabilityStatus" class="form-select" name="availabilityStatus"
-                                        required>
+                                    <select id="availabilityStatus" class="form-select" name="availabilityStatus" required>
                                         <option value="" selected>Select Status</option>
                                         <option value="Available for Release">Available for Release</option>
                                         <option value="Not Available">Not Available</option>
@@ -59,14 +59,11 @@
                                 </div>
                                 <div class="col-12">
                                     <label for="releaseDate" class="form-label">Release Date:</label>
-                                    <input type="date" class="form-control" name="releaseDate" id="releaseDate"
-                                        required>
+                                    <input type="date" class="form-control" name="releaseDate" id="releaseDate" required>
                                 </div>
                                 <div class="col-12">
-                                    <label for="additionalInstructions" class="form-label">Additional
-                                        Instructions:</label>
-                                    <textarea class="form-control" name="additionalInstructions"
-                                        id="additionalInstructions" rows="3"></textarea>
+                                    <label for="additionalInstructions" class="form-label">Additional Instructions:</label>
+                                    <textarea class="form-control" name="additionalInstructions" id="additionalInstructions" rows="3"></textarea>
                                 </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary">Submit/Post</button>
@@ -83,7 +80,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Manage Document Status</h5>
-                            <table class="table table-bordered">
+                            <table class="table table-bordered datatable">
                                 <thead>
                                     <tr>
                                         <th>Document Type</th>
@@ -119,6 +116,7 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const dataTable = new simpleDatatables.DataTable(".datatable");
         fetchDocuments();
     });
 
@@ -140,6 +138,9 @@
                 `;
                     tableBody.appendChild(newRow);
                 });
+
+                // Re-initialize the DataTable to reflect changes
+                new simpleDatatables.DataTable(".datatable");
 
                 // Attach event listeners to delete buttons
                 attachDeleteListeners();
@@ -187,6 +188,9 @@
                     tableBody.appendChild(newRow);
                     this.reset(); // Reset form after submission
 
+                    // Re-initialize the DataTable to include new row
+                    new simpleDatatables.DataTable(".datatable");
+
                     // Attach delete listener for the new button
                     attachDeleteListeners();
                 }
@@ -209,9 +213,10 @@
 
     // Function to delete a document
     function deleteDocument(id) {
+        console.log("Attempting to delete document with ID:", id);
         if (confirm('Are you sure you want to delete this document?')) {
             fetch(`backend/delete_document.php?id=${id}`, {
-                    method: 'DELETE'
+                    method: 'GET' // Changed to GET
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -219,7 +224,6 @@
                     responseMessage.innerHTML = data.message;
 
                     if (data.status === 'success') {
-                        // Remove the deleted row from the table
                         fetchDocuments(); // Refresh the document list
                     }
                 })
@@ -229,7 +233,6 @@
         }
     }
     </script>
-
 
 </body>
 

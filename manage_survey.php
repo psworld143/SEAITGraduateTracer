@@ -32,7 +32,6 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-
         <section class="section dashboard">
             <div class="row">
 
@@ -87,9 +86,11 @@
                         </div>
                     </div><!-- End Add New Batch -->
 
-                </div>
+                </div><!-- End Right side columns -->
+
             </div>
         </section>
+
     </main><!-- End #main -->
     <?php include('inc/footer.php'); ?>
 
@@ -134,8 +135,8 @@
                                     </div>
                                 </a>
                                 <div class="card-footer text-end">
-                                    <button class="btn btn-warning archive-btn" data-id="${batch.id}"><i class="bi bi-archive"></i>Archive</button>
-                                    <button class="btn btn-danger delete-btn" data-id="${batch.id}"><i class="bi bi-trash"></i>Delete</button>
+                                    <button class="btn btn-warning archive-btn" data-id="${batch.id}"><i class="bi bi-archive"></i></button>
+                                    <button class="btn btn-danger delete-btn" data-id="${batch.id}"><i class="bi bi-trash"></i></button>
                                 </div>
                             </div>`;
                     });

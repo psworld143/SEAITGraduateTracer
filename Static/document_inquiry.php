@@ -39,32 +39,36 @@ $result = $conn->query($sql);
     <?php include('inc/header.php'); ?>
 
     <main>
-        <div class="container-sm">
-        </div>
+        <div class="container-sm"></div>
 
         <div class="container">
             <section class="section min-vh-100 d-flex flex-column align-items-center justify-content-center">
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-md-10 d-flex flex-column align-items-center justify-content-center">
+                        <!-- Header -->
                         <div class="d-flex justify-content-center py-4">
                             <span class="d-none d-lg-block h1">Document Inquiry</span>
                         </div>
 
                         <!-- Loop through each document and display -->
                         <?php if ($result->num_rows > 0): ?>
-                            <?php while ($row = $result->fetch_assoc()): ?>
-                                <div class="card mb-4">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><strong>Document Type: <?php echo htmlspecialchars($row['document_type']); ?></strong></h5>
-                                        <p><strong>Availability Status:</strong> <?php echo htmlspecialchars($row['availability_status']); ?></p>
-                                        <p><strong>Release Date:</strong> <?php echo htmlspecialchars($row['release_date']); ?></p>
-                                        <p><strong>Additional Instructions:</strong></p>
-                                        <p><?php echo htmlspecialchars($row['additional_instructions']); ?></p>
-                                    </div>
-                                </div>
-                            <?php endwhile; ?>
+                        <?php while ($row = $result->fetch_assoc()): ?>
+                        <div class="card mb-3 shadow-sm border-light">
+                            <div class="card-body">
+                                <h5 class="card-title"><strong>Document Type:
+                                        <?php echo htmlspecialchars($row['document_type']); ?></strong></h5>
+                                <p class="card-text"><strong>Availability Status:</strong>
+                                    <?php echo htmlspecialchars($row['availability_status']); ?></p>
+                                <p class="card-text"><strong>Release Date:</strong>
+                                    <?php echo htmlspecialchars($row['release_date']); ?></p>
+                                <p class="card-text"><strong>Additional Instructions:</strong></p>
+                                <p class="card-text"><?php echo htmlspecialchars($row['additional_instructions']); ?>
+                                </p>
+                            </div>
+                        </div>
+                        <?php endwhile; ?>
                         <?php else: ?>
-                            <p>No documents available at the moment.</p>
+                        <p>No documents available at the moment.</p>
                         <?php endif; ?>
 
                     </div>
@@ -73,6 +77,7 @@ $result = $conn->query($sql);
         </div>
     </main>
 
+
     <!-- Vendor JS Files -->
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -80,6 +85,7 @@ $result = $conn->query($sql);
     <script src="assets/js/main.js"></script>
 
 </body>
+
 </html>
 
 <?php
