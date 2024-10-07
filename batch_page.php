@@ -81,6 +81,114 @@ $batch_name = $batch_result->num_rows > 0 ? $batch_result->fetch_assoc()['batch_
                                                 <!-- Student data will be loaded here via JS -->
                                             </tbody>
                                         </table>
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title mb-0"><?php echo $batch_name; ?></h5>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#addStudentModal">
+                                    <i class="bi bi-plus"></i>Add Student
+                                </button>
+                            </div>
+
+                            <!-- Add Student Modal -->
+                            <div class="modal fade" id="addStudentModal" tabindex="-1"
+                                aria-labelledby="addStudentModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="addStudentModalLabel">Add Student</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="addStudentForm">
+                                                <div class="mb-3">
+                                                    <label for="inputFirstName" class="form-label">First Name:</label>
+                                                    <input type="text" class="form-control" id="inputFirstName"
+                                                        name="first_name" required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter a first name.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="inputLastName" class="form-label">Last Name:</label>
+                                                    <input type="text" class="form-control" id="inputLastName"
+                                                        name="last_name" required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter a last name.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="inputCourse" class="form-label">Course:</label>
+                                                    <select class="form-select" id="inputCourse" name="course" required>
+                                                        <option value="" disabled selected>Select a course</option>
+                                                        <option value="BS Business Administration Major in Mktg Mgt.">BS
+                                                            Business Administration Major in Mktg Mgt. (BSBA)</option>
+                                                        <option value="BS Accounting Information System">BS Accounting
+                                                            Information System (BSAIS)</option>
+                                                        <option value="BS Hospitality Management">BS Hospitality
+                                                            Management (BSHM)</option>
+                                                        <option value="BS Tourism Management">BS Tourism Management
+                                                            (BSTM)</option>
+                                                        <option value="Associate in Hospitality Management">Associate in
+                                                            Hospitality Management (AHM)</option>
+                                                        <option
+                                                            value="Bachelor in Secondary Education Major in English">
+                                                            BSEd - English</option>
+                                                        <option value="Bachelor in Secondary Education Major in Math">
+                                                            BSEd - Math</option>
+                                                        <option value="Bachelor in Elementary Education">Bachelor in
+                                                            Elementary Education (BEEd)</option>
+                                                        <option value="Bachelor in Early Childhood Education">Bachelor
+                                                            in Early Childhood Education (BECEd)</option>
+                                                        <option
+                                                            value="Bachelor in Secondary Education Major in Social Studies">
+                                                            BSEd - Social Studies</option>
+                                                        <option value="BS Agriculture Major in PBG">BS Agriculture Major
+                                                            in Plant Breeding and Genetics (PBG)</option>
+                                                        <option value="BS Agriculture Major in Horticulture">BS
+                                                            Agriculture Major in Horticulture (Horti)</option>
+                                                        <option value="BS Fisheries">BS Fisheries (BSF)</option>
+                                                        <option value="BS Agricultural Technology">BS Agricultural
+                                                            Technology</option>
+                                                        <option value="BS Information Technology">BS Information
+                                                            Technology (BSIT)</option>
+                                                        <option value="BS Civil Engineering">BS Civil Engineering (BSCE)
+                                                        </option>
+                                                        <option value="BS IT specialized in Business Analytics">BS
+                                                            Information Technology specialized in Business Analytics
+                                                            (BSIT-BAST)</option>
+                                                        <option value="Associate in Computer Technology">Associate in
+                                                            Computer Technology (ACT)</option>
+                                                        <option value="BS Criminology">BS Criminology (BSCrim)</option>
+                                                        <option value="BS Public Administration">BS Public
+                                                            Administration (BPA)</option>
+                                                        <option value="BS Social Works">BS Social Works (BSSW)</option>
+                                                    </select>
+                                                    <div class="invalid-feedback">
+                                                        Please select a course.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="inputEmail" class="form-label">Email:</label>
+                                                    <input type="email" class="form-control" id="inputEmail"
+                                                        name="email" required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter a valid email address.
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="batch_id" value="<?php echo $batch_id; ?>" />
+                                                <div id="formFeedback" class="text-danger"></div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary" form="addStudentForm">Save
+                                                changes</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

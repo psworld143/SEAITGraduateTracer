@@ -219,6 +219,7 @@ h6 {
 /* Card */
 .card {
   margin-bottom: 20px;
+  margin-bottom: 20px;
   border: none;
   border-radius: 5px;
   box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
@@ -230,6 +231,10 @@ h6 {
   background-color: #fff;
   color: #798eb3;
   padding: 15px;
+}
+
+.text-end {
+  text-align: center !important;          
 }
 
 .text-end {
