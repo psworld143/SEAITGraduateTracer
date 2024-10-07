@@ -15,6 +15,9 @@
         <a class="nav-link" href="index.php">About Us</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="news_dashboard.php">News Dashboard</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="job_posting.php">Job Posting</a>
       </li>
       <li class="nav-item">

@@ -218,7 +218,7 @@ h6 {
 
 /* Card */
 .card {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   border: none;
   border-radius: 5px;
   box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
@@ -230,6 +230,10 @@ h6 {
   background-color: #fff;
   color: #798eb3;
   padding: 15px;
+}
+
+.text-end {
+  text-align: center !important;          
 }
 
 .card-title {
@@ -253,6 +257,17 @@ h6 {
 .card-img-overlay {
   background-color: rgba(255, 255, 255, 0.6);
 }
+
+.batch-card-link {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.batch-card-link:hover {
+  background-color: rgb(236, 236, 236); /* Change this color to your desired highlight color */
+  transform: scale(1.02); /* Optional: slightly enlarge the card on hover */
+  box-shadow: 0px 4px 20px rgb(214, 214, 214); /* Optional: add shadow effect */
+}
+
 
 /* Alerts */
 .alert-heading {
@@ -351,6 +366,16 @@ h6 {
   border-bottom: 2px solid #4154f1;
 }
 
+.datatable-selector{
+  padding: 6px;
+  border-radius: 5px;
+}
+
+.datatable-search{
+  padding: 6px;
+  border-radius: 10px;
+}
+
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
@@ -372,7 +397,7 @@ h6 {
 .logo span {
   font-size: 26px;
   font-weight: 700;
-  color: #012970;
+  color: #fff;
   font-family: "Nunito", sans-serif;
 }
 
@@ -392,7 +417,7 @@ h6 {
   font-size: 32px;
   padding-right: 10px;
   cursor: pointer;
-  color: #012970;
+  color: #fff;
 }
 
 /*--------------------------------------------------------------
@@ -541,6 +566,10 @@ h6 {
 /* Base Sidebar Styles */
 .sidebar {
   position: fixed;
+  height: 75%;
+  border-radius: 8px;
+  margin-top: 4%;
+  margin-bottom: 5%;
   top: 60px;
   left: 0;
   bottom: 0;
@@ -553,6 +582,7 @@ h6 {
   box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
   scrollbar-width: thin;
   scrollbar-color: #aab7cf transparent;
+  
 }
 
 .sidebar::-webkit-scrollbar {
@@ -603,7 +633,7 @@ h6 {
 }
 
 .sidebar-nav .nav-item {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .sidebar-nav .nav-heading {
@@ -619,8 +649,8 @@ h6 {
   align-items: center;
   font-size: 15px;
   font-weight: 600;
-  color: #4154f1;
-  background: #f6f9ff;
+  color: #012970;
+  background: #fff;
   padding: 10px 15px;
   border-radius: 4px;
   transition: background 0.3s, color 0.3s;
@@ -698,11 +728,19 @@ h6 {
   border-radius: 50%;
 }
 
+
 /* Active/hover States */
 .sidebar-nav .nav-content a:hover, .sidebar-nav .nav-content a.active {
   color: #4154f1;
 }
 
+.sidebar-nav .nav-link.active {
+  color: #ffffff;
+  background: rgba(255, 112, 29, 1);
+}
+.sidebar-nav .nav-link.active i {
+  color: #ffffff;
+}
 .sidebar-nav .nav-content a.active i {
   background-color: #4154f1;
 }
@@ -775,6 +813,7 @@ h6 {
 .batch-card-title {
   font-size: 1.25rem;
   margin-bottom: 0;
+  color: #012970;
 }
 
 .dashboard .info-card {
@@ -934,6 +973,17 @@ h6 {
 .dashboard .top-selling img {
   border-radius: 5px;
   max-width: 60px;
+}
+
+tbody, td, tfoot, th, thead, tr {
+  border-color: inherit;
+  border-style: none;
+  border-width: 0;
+}
+
+.hidden-column {
+  display: none;
+  /* Hide the column */
 }
 
 /*--------------------------------------------------------------
@@ -1192,7 +1242,7 @@ h6 {
 # Footer
 --------------------------------------------------------------*/
 .footer {
-  padding: 20px 0;
+  padding: 15px 0;
   font-size: 14px;
   transition: all 0.3s;
   border-top: 1px solid #cddfff;
@@ -1228,3 +1278,7 @@ body {
   margin-top: auto;
 }
 
+.btn-group {
+  display: flex;
+  gap: 5px;
+}

@@ -1,38 +1,26 @@
 <?php
-// Database connection
-$servername = "localhost"; // Change to your DB server
-$username = "root"; // Change to your DB username
-$password = ""; // Change to your DB password
-$dbname = "graduate_tracer"; // Change to your DB name
+include('../db_conn.php');
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+// Check if the required fields are present
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $firstName = $_POST['firstName'] ?? '';
+    $lastName = $_POST['lastName'] ?? '';
+    $course = $_POST['course'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $batch_id = $_POST['batch_id'] ?? 0; // Get batch_id from the form
 
-// Check connection
-if ($conn->connect_error) {
-    die(json_encode(['status' => 'error', 'message' => 'Database connection failed: ' . $conn->connect_error]));
+    // Prepare an insert statement
+    $insert_query = "INSERT INTO students (first_name, last_name, course, email, batch_id) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($insert_query);
+    $stmt->bind_param('ssssi', $firstName, $lastName, $course, $email, $batch_id);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Student added successfully!']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Failed to add student.']);
+    }
+    $stmt->close();
 }
 
-// Prepare and bind
-$stmt = $conn->prepare("INSERT INTO students (first_name, last_name, course, email, batch_id) VALUES (?, ?, ?, ?, ?)");
-$stmt->bind_param("ssssi", $first_name, $last_name, $course, $email, $batch_id);
-
-// Set parameters from POST request
-$first_name = $_POST['first_name'];
-$last_name = $_POST['last_name'];
-$course = $_POST['course'];
-$email = $_POST['email'];
-$batch_id = $_POST['batch_id'];
-
-// Execute query and check for errors
-if ($stmt->execute()) {
-    // Return success response
-    echo json_encode(['status' => 'success', 'message' => 'Student added successfully']);
-} else {
-    // Return error response
-    echo json_encode(['status' => 'error', 'message' => 'Error: ' . $stmt->error]);
-}
-
-// Close the prepared statement and connection
-$stmt->close();
 $conn->close();
 ?>

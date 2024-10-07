@@ -1,45 +1,55 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "graduate_tracer";
+// Include database connection
+include('../db_conn.php');
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+// Set the content type to JSON
+header('Content-Type: application/json');
 
-// Check connection
-if ($conn->connect_error) {
-    die(json_encode(['status' => 'error', 'message' => 'Connection failed: ' . $conn->connect_error]));
-}
+// Initialize the response array
+$response = ['success' => false];
 
-// Check if the document ID is set and is numeric
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $id = intval($_GET['id']); // Sanitize the ID input
+// Get the JSON input from the request
+$data = json_decode(file_get_contents("php://input"), true);
+
+// Validate the ID from the input
+if (isset($data['id']) && is_numeric($data['id'])) {
+    $id = intval($data['id']); // Cast to integer
 
     // Prepare the delete statement
-    $stmt = $conn->prepare("DELETE FROM documents WHERE id = ?");
-    
-    if ($stmt === false) {
-        die(json_encode(['status' => 'error', 'message' => 'Prepare failed: ' . $conn->error]));
-    }
+    $query = "DELETE FROM documents WHERE id = ?";
+    $stmt = $conn->prepare($query);
 
-    $stmt->bind_param("i", $id); // Bind the ID parameter
+    if ($stmt) {
+        // Bind the ID as an integer
+        $stmt->bind_param('i', $id);
 
-    // Execute the statement
-    if ($stmt->execute()) {
-        if ($stmt->affected_rows > 0) {
-            echo json_encode(['status' => 'success', 'message' => 'Document deleted successfully.']);
+        // Execute the statement
+        if ($stmt->execute()) {
+            // Check affected rows to determine success
+            if ($stmt->affected_rows > 0) {
+                $response['success'] = true;
+                $response['message'] = 'Document deleted successfully.';
+            } else {
+                $response['message'] = 'Document not found or already deleted.';
+            }
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'No document found with the given ID.']);
+            // Execution failure
+            $response['message'] = 'Failed to delete document: ' . $stmt->error;
         }
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'Failed to delete document.']);
-    }
 
-    $stmt->close(); // Close the prepared statement
+        // Close the statement
+        $stmt->close();
+    } else {
+        // Error preparing the SQL statement
+        $response['message'] = 'Error preparing statement: ' . $conn->error;
+    }
 } else {
-    echo json_encode(['status' => 'error', 'message' => 'Invalid or missing document ID.']);
+    // Handle case where ID is missing or invalid
+    $response['message'] = 'Invalid or missing document ID.';
 }
+
+// Return the JSON response
+echo json_encode($response);
 
 // Close the database connection
 $conn->close();

@@ -1,40 +1,3 @@
-<?php
-session_start();
-include('db_conn.php'); // Include your database connection file
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    // Sanitize input
-    $username = mysqli_real_escape_string($conn, $username);
-    $password = mysqli_real_escape_string($conn, $password);
-
-    // Query to check if the user exists
-    $query = "SELECT * FROM users WHERE username='$username'";
-    $result = mysqli_query($conn, $query);
-    
-    if (mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        
-        // Verify password
-        if (password_verify($password, $row['password'])) {
-            // Set session variables
-            $_SESSION['user_id'] = $row['id'];
-            $_SESSION['username'] = $row['username'];
-
-            echo json_encode(['success' => true]);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Invalid password.']);
-        }
-    } else {
-        echo json_encode(['success' => false, 'message' => 'User not found.']);
-    }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Invalid request.']);
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -149,37 +112,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
-    <script>
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        // Create a FormData object to send the form data
-        const formData = new FormData(this);
-
-        // Send AJAX request
-        fetch('login.php', {
-                method: 'POST',
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Check the response from the server
-                if (data.success) {
-                    // Redirect or display a success message
-                    window.location.href = 'index.php'; // Adjust according to your application flow
-                } else {
-                    // Display error message
-                    alert(data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while processing your request.');
-            });
-    });
-    </script>
-
-
 </body>
 
 </html>

@@ -61,11 +61,11 @@
                     <!-- Add New Batch -->
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Add New Batch</h5>
+                            <h5 class="card-title"><i class="bi bi-plus-circle-fill"></i> Add New Batch</h5>
                             <form id="addBatchForm" class="row g-3">
                                 <div class="col-12">
                                     <label for="batchName" class="form-label">Batch Name:</label>
-                                    <input type="text" class="form-control" name="batchName" id="batchName" required>
+                                    <input type="text" class="form-control" name="batchName" id="batchName" placeholder="Enter Batch Name" required>
                                 </div>
                                 <div class="col-12">
                                     <label for="yearGraduated" class="form-label">Year Graduated:</label>
@@ -79,7 +79,7 @@
                                     </select>
                                 </div>
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary">Add</button>
+                                    <button type="submit" class="btn btn-primary w-100">Add</button>
                                 </div>
                             </form>
                             <div id="responseMessage"></div>
@@ -111,6 +111,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
     $(document).ready(function() {
+        
         // Function to load batch list via AJAX
         function loadBatchList() {
             $.ajax({
@@ -135,8 +136,8 @@
                                     </div>
                                 </a>
                                 <div class="card-footer text-end">
-                                    <button class="btn btn-warning archive-btn" data-id="${batch.id}"><i class="bi bi-archive"></i></button>
-                                    <button class="btn btn-danger delete-btn" data-id="${batch.id}"><i class="bi bi-trash"></i></button>
+                                    <button class="btn btn-warning archive-btn" data-id="${batch.id}"><i class="bi bi-archive"> Archive</i></button>
+                                    <button class="btn btn-danger delete-btn" data-id="${batch.id}"><i class="bi bi-trash"></i> Delete</button>
                                 </div>
                             </div>`;
                     });

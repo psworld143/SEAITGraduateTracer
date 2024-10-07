@@ -10,8 +10,8 @@
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css">
 </head>
 
 <body>
@@ -35,31 +35,41 @@
 
                 <!-- Left side columns (Manage Document Status) -->
                 <div class="col-lg-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Manage Document Status</h5>
-                            <table class="table table-bordered datatable">
-                                <thead>
-                                    <tr>
-                                        <th>Document Type</th>
-                                        <th>Status</th>
-                                        <th>Posted/Release Date</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="documentStatusList">
-                                    <!-- Document Status Template will be loaded via JS -->
-                                </tbody>
-                            </table>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow-sm border-light mb-4">
+                                <div class="card-header text-dark">
+                                    <h5 class="card-title">Manage Document Status</h5>
+                                </div>
+                                <div class="card-body pb-0">
+                                    <div id="responseMessage"></div>
+                                    <table id="documentStatusTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Document Type</th>
+                                                <th>Status</th>
+                                                <th>Posted/Release Date</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="documentStatusList">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div><!-- End Manage Document Status -->
                 </div>
 
+
                 <!-- Right side columns (Post Document Availability) -->
                 <div class="col-lg-4">
-                    <div class="card">
+                    <div class="card shadow-sm border-light mb-4">
+                        <div class="card-header text-dark">
+                            <h5 class="card-title"><i class="bi bi-plus-circle-fill"></i> Post Document Availability
+                            </h5>
+                        </div>
                         <div class="card-body">
-                            <h5 class="card-title">Post Document Availability</h5>
                             <form id="postDocumentForm" class="row g-3">
                                 <div class="col-12">
                                     <label for="documentType" class="form-label">Document Type:</label>
@@ -71,7 +81,8 @@
                                     </select>
                                 </div>
                                 <div class="col-12">
-                                    <label for="availabilityStatus" class="form-label">Availability Status:</label>
+                                    <label for="availabilityStatus" class="form-label">Availability
+                                        Status:</label>
                                     <select id="availabilityStatus" class="form-select" name="availabilityStatus"
                                         required>
                                         <option value="" selected>Select Status</option>
@@ -91,7 +102,7 @@
                                         id="additionalInstructions" rows="3"></textarea>
                                 </div>
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary">Submit/Post</button>
+                                    <button type="submit" class="btn btn-primary w-100">Submit/Post</button>
                                 </div>
                             </form>
                             <div id="responseMessage"></div>
@@ -101,6 +112,73 @@
             </div>
         </section>
     </main><!-- End #main -->
+
+    <!-- View Document Modal -->
+    <div class="modal fade" id="viewDocumentModal" tabindex="-1" aria-labelledby="viewDocumentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewDocumentModalLabel">Document Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 id="viewDocumentType" class="mb-3"></h6>
+
+                    <p><strong>Availability Status:</strong></p>
+                    <p id="viewAvailabilityStatus" class="text-muted"></p>
+
+                    <p><strong>Release Date:</strong></p>
+                    <p id="viewReleaseDate" class="text-muted"></p>
+
+                    <p><strong>Additional Instructions:</strong></p>
+                    <p id="viewAdditionalInstructions" class="text-muted"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Document Modal -->
+    <div class="modal fade" id="editDocumentModal" tabindex="-1" aria-labelledby="editDocumentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editDocumentModalLabel">Edit Document Inquiry</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editDocumentForm">
+                        <input type="hidden" id="editDocumentId" name="editDocumentId"> <!-- Add name attribute -->
+                        <div class="mb-3">
+                            <label for="editDocumentType" class="form-label">Document Type:</label>
+                            <input type="text" class="form-control" id="editDocumentType" name="editDocumentType"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editAvailabilityStatus" class="form-label">Availability Status:</label>
+                            <input type="text" class="form-control" id="editAvailabilityStatus"
+                                name="editAvailabilityStatus" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editReleaseDate" class="form-label">Release Date:</label>
+                            <input type="date" class="form-control" id="editReleaseDate" name="editReleaseDate"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editAdditionalInstructions" class="form-label">Additional Instructions:</label>
+                            <textarea class="form-control" id="editAdditionalInstructions"
+                                name="editAdditionalInstructions" rows="3" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <?php include('inc/footer.php'); ?>
 
@@ -116,55 +194,10 @@
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
-
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const dataTable = new simpleDatatables.DataTable(".datatable");
-        fetchDocuments();
-    });
-
-    // Function to fetch documents from the database
-    function fetchDocuments() {
-        fetch('backend/fetch_documents.php')
-            .then(response => response.json())
-            .then(data => {
-                const tableBody = document.getElementById('documentStatusList');
-                tableBody.innerHTML = ''; // Clear the table body
-
-                data.forEach(doc => {
-                    const newRow = document.createElement('tr');
-                    newRow.innerHTML = `
-                    <td>${doc.document_type}</td>
-                    <td>${doc.availability_status}</td>
-                    <td>${doc.release_date}</td>
-                    <td><button class="btn btn-danger delete-btn" data-id="${doc.id}">Delete</button></td>
-                `;
-                    tableBody.appendChild(newRow);
-                });
-
-                // Re-initialize the DataTable to reflect changes
-                new simpleDatatables.DataTable(".datatable");
-
-                // Attach event listeners to delete buttons
-                attachDeleteListeners();
-            })
-            .catch(error => {
-                console.error('Error fetching documents:', error);
-            });
-    }
-
-    // Function to handle form submission
-    document.getElementById('postDocumentForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        const releaseDate = new Date(document.getElementById('releaseDate').value);
-        const today = new Date();
-
-        if (releaseDate < today) {
-            alert('Release date cannot be in the past.');
-            return; // Prevent form submission if date is invalid
-        }
-
+    // Function to handle document submission
+    document.getElementById('postDocumentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
         const formData = new FormData(this);
 
         fetch('backend/save_document.php', {
@@ -177,66 +210,182 @@
                 responseMessage.innerHTML = data.message;
 
                 if (data.status === 'success') {
-                    // Append new row to the table
-                    const tableBody = document.getElementById('documentStatusList');
-                    const newRow = document.createElement('tr');
-
-                    newRow.innerHTML = `
-                <td>${data.data.documentType}</td>
-                <td>${data.data.availabilityStatus}</td>
-                <td>${data.data.releaseDate}</td>
-                <td><button class="btn btn-danger delete-btn" data-id="${data.data.id}">Delete</button></td>
-            `;
-
-                    tableBody.appendChild(newRow);
-                    this.reset(); // Reset form after submission
-
-                    // Re-initialize the DataTable to include new row
-                    new simpleDatatables.DataTable(".datatable");
-
-                    // Attach delete listener for the new button
-                    attachDeleteListeners();
+                    alert(data.message);
+                    this.reset();
+                    window.location.reload();
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
+                document.getElementById('responseMessage').innerHTML =
+                    'An error occurred while saving the document.';
             });
     });
 
-    // Function to attach delete listeners to delete buttons
-    function attachDeleteListeners() {
-        const deleteButtons = document.querySelectorAll('.delete-btn');
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const documentId = this.getAttribute('data-id');
-                deleteDocument(documentId);
+    let dataTable;
+
+    // Load documents on DOM content loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        loadDocuments();
+    });
+
+    // Function to fetch and display documents
+    function loadDocuments() {
+        fetch('backend/fetch_documents.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                if (!Array.isArray(data)) {
+                    throw new Error('Received data is not an array');
+                }
+
+                const documentStatusList = document.getElementById('documentStatusList');
+                documentStatusList.innerHTML = ''; // Clear the list
+
+                // Populate the document status list
+                data.forEach(doc => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${doc.document_type || 'N/A'}</td>
+                        <td>${doc.availability_status || 'N/A'}</td>
+                        <td>${doc.release_date || 'N/A'}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="deleteDocument(${doc.id})">Delete</button>
+                            <button class="btn btn-success btn-sm" onclick="viewDocument(${doc.id})">View</button>
+                            <button class="btn btn-primary btn-sm" onclick="editDocument(${doc.id})">Edit</button>
+                        </td>
+                    `;
+                    documentStatusList.appendChild(row);
+                });
+
+                // Initialize or refresh DataTable
+                const documentStatusTable = document.getElementById('documentStatusTable');
+                if (dataTable) {
+                    dataTable.destroy(); // Destroy existing DataTable instance
+                }
+                dataTable = new simpleDatatables.DataTable("#documentStatusTable"); // Initialize new DataTable
+            })
+            .catch(error => {
+                console.error('Error loading documents:', error);
             });
-        });
     }
 
     // Function to delete a document
     function deleteDocument(id) {
-        console.log("Attempting to delete document with ID:", id);
-        if (confirm('Are you sure you want to delete this document?')) {
-            fetch(`backend/delete_document.php?id=${id}`, {
-                    method: 'GET' // Changed to GET
+        if (confirm("Are you sure you want to delete this document?")) {
+            fetch('backend/delete_document.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id
+                    })
                 })
                 .then(response => response.json())
                 .then(data => {
-                    const responseMessage = document.getElementById('responseMessage');
-                    responseMessage.innerHTML = data.message;
-
-                    if (data.status === 'success') {
-                        fetchDocuments(); // Refresh the document list
+                    alert(data.message);
+                    if (data.success) {
+                        window.location.reload();
                     }
                 })
                 .catch(error => {
                     console.error('Error deleting document:', error);
+                    alert('An error occurred while deleting the document.');
                 });
         }
     }
-    </script>
 
+    // Function to view a document's details
+    function viewDocument(docId) {
+        fetch(`backend/get_document_details.php?id=${docId}`)
+            .then(response => response.json())
+            .then(doc => {
+                document.getElementById('viewDocumentType').textContent = doc.document_type || 'N/A';
+                document.getElementById('viewAvailabilityStatus').textContent = doc.availability_status || 'N/A';
+                document.getElementById('viewReleaseDate').textContent = doc.release_date ? new Date(doc
+                    .release_date).toLocaleDateString() : 'N/A';
+                document.getElementById('viewAdditionalInstructions').textContent = doc.additional_instructions ||
+                    'N/A';
+
+                const viewModal = new bootstrap.Modal(document.getElementById('viewDocumentModal'));
+                viewModal.show();
+            })
+            .catch(error => {
+                console.error('Error fetching document details:', error);
+                alert('Failed to load document details: ' + error.message);
+            });
+    }
+
+    // Function to edit a document
+    function editDocument(docId) {
+        fetch(`backend/get_document_details.php?id=${docId}`)
+            .then(response => response.json())
+            .then(doc => {
+                document.getElementById('editDocumentId').value = docId;
+                document.getElementById('editDocumentType').value = doc.document_type;
+                document.getElementById('editAvailabilityStatus').value = doc.availability_status;
+                document.getElementById('editReleaseDate').value = doc.release_date;
+                document.getElementById('editAdditionalInstructions').value = doc.additional_instructions;
+
+                const editModal = new bootstrap.Modal(document.getElementById('editDocumentModal'));
+                editModal.show();
+                
+            })
+            .catch(error => {
+                console.error('Error fetching document details for editing:', error);
+            });
+    }
+
+    // Handle form submission for editing document
+    document.getElementById('editDocumentForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent default form submission behavior
+
+        const formData = new FormData(this); // Create a new FormData object from the form
+
+        // Debugging: Log form data to verify it's being captured
+        for (const [key, value] of formData.entries()) {
+            console.log(key + ': ' + value); // Check what is being sent
+        }
+
+        // Fetch request to update the document
+        fetch('backend/update_document.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Document updated successfully!');
+                    $('#editDocumentModal').modal('hide'); // Hide the modal using Bootstrap method
+                    window.location.reload(); // Refresh the page immediately
+                } else {
+                    alert('Error: ' + data.message); // Display server error message
+                }
+            })
+            .catch(error => {
+                console.error('Error updating document:', error); // Log error to console
+                alert(
+                    'An error occurred while updating the document. Please try again.'
+                ); // User-friendly error message
+            });
+    });
+    // Function to close the modal
+    function closeEditModal() {
+        const editDocumentModal = document.getElementById('editDocumentModal');
+        if (editDocumentModal) {
+            editDocumentModal.style.display = 'none';
+            editDocumentModal.classList.remove('show');
+        }
+    }
+    </script>
 </body>
 
 </html>

@@ -1,13 +1,5 @@
 <?php
-$servername = "localhost"; // Change to your DB server
-$username = "root"; // Change to your DB username
-$password = ""; // Change to your DB password
-$dbname = "graduate_tracer"; // Change to your DB name
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die(json_encode(['success' => false, 'message' => 'Connection failed.']));
-}
+include("../db_conn.php");
 
 $data = json_decode(file_get_contents("php://input"));
 $id = $data->id;

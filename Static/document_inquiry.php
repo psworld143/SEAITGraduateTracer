@@ -42,9 +42,9 @@ $result = $conn->query($sql);
         <div class="container-sm"></div>
 
         <div class="container">
-            <section class="section min-vh-100 d-flex flex-column align-items-center justify-content-center">
+            <section class="section">
                 <div class="row justify-content-center">
-                    <div class="col-lg-8 col-md-10 d-flex flex-column align-items-center justify-content-center">
+                    <div class="col-lg-8 col-md-10">
                         <!-- Header -->
                         <div class="d-flex justify-content-center py-4">
                             <span class="d-none d-lg-block h1">Document Inquiry</span>
