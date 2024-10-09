@@ -58,7 +58,7 @@
                                             </div>
                                             <hr class="my-3">
                                             <div class="mt-3">
-                                                <h5 class="card-title"><strong>' . htmlspecialchars($row["job_title"]) . '</strong></h5>
+                                                <h5 class="card-title"><strong>HIRING: ' . htmlspecialchars($row["job_title"]) . '</strong></h5>
                                                 <p class="card-text mb-4"><strong>Description:</strong> ' . nl2br(strip_tags($row["job_description"], '<br><p><strong>')) . '</p>
                                                 <p class="card-text"><strong>Qualifications:</strong></p>
                                                 <ul class="list-unstyled mb-4">';

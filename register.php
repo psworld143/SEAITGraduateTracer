@@ -28,6 +28,60 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+        body {
+            background: linear-gradient(135deg, #ff9a3f, #ff6f3f, #ff3f3f);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .login-card {
+            border-radius: 15px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            padding: 2rem;
+        }
+
+        .login-card .card-title {
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 0.8rem;
+        }
+
+        .btn-primary {
+            background-color: #6e8efb;
+            border-color: #6e8efb;
+            border-radius: 10px;
+            padding: 0.8rem;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background-color: #5a7de0;
+        }
+
+        .form-check-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        a {
+            color: #6e8efb;
+        }
+
+        a:hover {
+            color: #5a7de0;
+        }
+    </style>
 </head>
 
 <body>

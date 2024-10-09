@@ -7,6 +7,11 @@ function sanitizeInput($conn, $data) {
     return mysqli_real_escape_string($conn, strip_tags($data));
 }
 
+// Function to log errors
+function logError($message) {
+    error_log($message . "\n", 3, "errors.log");
+}
+
 // Get and sanitize inputs
 $newsTitle = sanitizeInput($conn, $_POST['newsTitle']);
 $newsDescription = sanitizeInput($conn, $_POST['newsDescription']);
@@ -14,31 +19,33 @@ $newsDescription = sanitizeInput($conn, $_POST['newsDescription']);
 // Initialize image path
 $imagePath = '';
 
-// Handle image upload securely
-if (isset($_FILES['newsImage']) && $_FILES['newsImage']['error'] === 0) {
-    $image = $_FILES['newsImage'];
+// Handle file upload
+$companyLogo = null; // Default value
+if (isset($_FILES['newsImage']) && $_FILES['newsImage']['error'] === UPLOAD_ERR_OK) {
+    $fileTmpPath = $_FILES['newsImage']['tmp_name'];
+    $fileName = $_FILES['newsImage']['name'];
+    $fileSize = $_FILES['newsImage']['size'];
+    $fileType = $_FILES['newsImage']['type'];
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
-    // Ensure the uploads directory exists
-    $uploadDir = 'uploads/';
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0755, true); // Create directory with appropriate permissions
-    }
+    // Validate file type and size
+    if (in_array($fileType, $allowedTypes) && $fileSize <= 2 * 1024 * 1024) { // Limit size to 2MB
+        $uploadDir = '../uploads/';
+        $filePath = $uploadDir . uniqid() . '-' . basename($fileName); // Unique filename to prevent overwriting
 
-    // Generate a unique filename
-    $imageFileName = uniqid() . '-' . basename($image['name']);
-    $imagePath = $uploadDir . $imageFileName;
+        // Ensure the uploads directory exists
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true); // Create directory with appropriate permissions
+        }
 
-    // Validate the file type
-    $allowedFileTypes = ['image/jpeg', 'image/png', 'image/gif'];
-    if (in_array($image['type'], $allowedFileTypes)) {
-        // Move the uploaded file to the correct directory
-        if (!move_uploaded_file($image['tmp_name'], $imagePath)) {
-            echo json_encode(['success' => false, 'message' => 'Error uploading image.']);
-            exit;
+        // Move the uploaded file to the specified directory
+        if (move_uploaded_file($fileTmpPath, $filePath)) {
+            $companyLogo = $filePath;
+        } else {
+            throw new Exception('File upload failed.');
         }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Invalid image type.']);
-        exit;
+        throw new Exception('Invalid file type or size exceeds 2MB. Only JPG, PNG, and GIF files are allowed.');
     }
 }
 
@@ -48,18 +55,20 @@ $stmt = mysqli_prepare($conn, $sql);
 
 if ($stmt) {
     // Bind parameters
-    mysqli_stmt_bind_param($stmt, "sss", $newsTitle, $newsDescription, $imagePath);
+    mysqli_stmt_bind_param($stmt, "sss", $newsTitle, $newsDescription, $companyLogo);
 
     // Execute the statement
     if (mysqli_stmt_execute($stmt)) {
         echo json_encode(['success' => true, 'message' => 'News posted successfully!']);
     } else {
+        logError("Error posting news: " . mysqli_stmt_error($stmt));
         echo json_encode(['success' => false, 'message' => 'Error posting news.']);
     }
 
     // Close the statement
     mysqli_stmt_close($stmt);
 } else {
+    logError("Error preparing statement: " . mysqli_error($conn));
     echo json_encode(['success' => false, 'message' => 'Error preparing statement.']);
 }
 

@@ -1,24 +1,28 @@
 <?php
 include('../db_conn.php');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $firstname = $con->real_escape_string($_POST['firstname']);
-    $middlename = $con->real_escape_string($_POST['middlename']);
-    $lastname = $con->real_escape_string($_POST['lastname']);
-    $username = $con->real_escape_string($_POST['username']);
-    $account_type = $con->real_escape_string($_POST['account_type']);
-    $email = $con->real_escape_string($_POST['email']);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Get the data from the POST request
+    $firstname = $_POST['firstname'];
+    $middlename = $_POST['middlename'];
+    $lastname = $_POST['lastname'];
+    $username = $_POST['username'];
+    $account_type = $_POST['account_type'];
+    $email = $_POST['email'];
 
-    $query = "INSERT INTO user (firstname, middlename, lastname, username, account_type, email) VALUES ('$firstname', '$middlename', '$lastname', '$username', '$account_type', '$email')";
+    // Prepare and bind
+    $stmt = $conn->prepare("INSERT INTO user (firstname, middlename, lastname, username, account_type, email) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssss", $firstname, $middlename, $lastname, $username, $account_type, $email);
 
-    if ($con->query($query) === TRUE) {
-        echo "User added successfully";
+    // Execute the statement
+    if ($stmt->execute()) {
+        echo json_encode(['status' => 'success', 'message' => 'User added successfully!']);
     } else {
-        echo "Error: " . $query . "<br>" . $con->error;
+        echo json_encode(['status' => 'error', 'message' => 'Failed to add user.']);
     }
 
-    $con->close();
-    header("Location: ../index.php"); // Redirect after adding
-    exit();
+    // Close the statement and connection
+    $stmt->close();
+    $conn->close();
 }
 ?>

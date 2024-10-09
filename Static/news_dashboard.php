@@ -17,6 +17,7 @@ $result = fetchNews($conn);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -36,62 +37,113 @@ $result = fetchNews($conn);
     <?php include('inc/header.php'); ?>
 
     <main>
-    <div class="container-sm"></div>
+        <div class="container-sm"></div>
 
-    <div class="container">
-        <section class="section">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-md-10">
-                    <!-- Header -->
-                    <div class="d-flex justify-content-center py-4">
-                        <h1 class="d-none d-lg-block">News Dashboard</h1>
-                    </div>
+        <div class="container">
+            <section class="section">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-md-10">
+                        <div class="d-flex justify-content-center py-4">
+                            <span class="d-none d-lg-block h1">News Dashboard</span>
+                        </div>
 
-                    <!-- Loop through each news item and display -->
-                    <?php if ($result->num_rows > 0): ?>
-                    <?php while ($row = $result->fetch_assoc()): ?>
-                    <div class="card mb-4 shadow-sm border-light" style="border-radius: 15px;">
-                        <div class="card-body">
-                            <h5 class="card-title" style="font-weight: bold; font-size: 1.2rem;">
-                                <?php echo htmlspecialchars($row['news_title']); ?></h5>
+                        <!-- News Items -->
+                        <?php if ($result->num_rows > 0): ?>
+                        <?php while ($row = $result->fetch_assoc()): ?>
+                        <div class="card mb-4 shadow-sm border-light" style="border-radius: 15px;">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold fs-5">
+                                    <?php echo htmlspecialchars($row['news_title']); ?>
+                                </h5>
 
-                            <div class="card-text" style="font-size: 0.95rem; color: #555;">
-                                <?php
-                                // Strip HTML tags and convert new lines to <br>
-                                $description = strip_tags($row['news_description']); // Remove HTML tags
-                                echo nl2br(htmlspecialchars($description)); // Convert new lines and escape special characters
-                                ?>
+                                <div class="card-text text-muted" style="font-size: 0.95rem;">
+                                    <?php
+                                    $description = strip_tags($row['news_description']);
+                                    $formattedDescription = nl2br(htmlspecialchars($description));
+                                    $paragraphs = explode("\n", $formattedDescription);
+                                    
+                                    foreach ($paragraphs as $paragraph) {
+                                        if (trim($paragraph) !== '') {
+                                            echo "<p>" . $paragraph . "</p>";
+                                        }
+                                    }
+                                    ?>
+                                </div>
+
+                                <?php if (!empty($row['news_image'])): ?>
+                                <img src="<?php echo htmlspecialchars($row['news_image']); ?>" alt="News Image"
+                                    class="img-fluid mt-2" style="border-radius: 15px;" data-bs-toggle="modal"
+                                    data-bs-target="#imageModal-<?php echo $row['id']; ?>">
+                                <?php endif; ?>
+
+                                <!-- Modal Structure -->
+                                <div class="modal fade" id="imageModal-<?php echo $row['id']; ?>" tabindex="-1"
+                                    aria-labelledby="imageModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                                        <!-- Use modal-xl for extra-large size -->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="imageModalLabel">News Image</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <!-- Center the image in the modal -->
+                                                <img src="<?php echo htmlspecialchars($row['news_image']); ?>"
+                                                    alt="News Image" class="img-fluid"
+                                                    style="border-radius: 15px; max-height: 90vh; width: 100%;">
+                                                <!-- Make the image fill the modal -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <p class="card-text">
+                                    <small class="text-muted">Posted on
+                                        <?php echo date("F j, Y", strtotime($row['created_at'])); ?></small>
+                                </p>
+
+                                <!-- Like and Comment Section -->
+                                <div class="mt-3">
+                                    <div class="row">
+                                        <div class="col text-center">
+                                            <button class="btn btn-outline-primary w-100 border-0">
+                                                <i class="bi bi-hand-thumbs-up"></i> Like
+                                            </button>
+                                        </div>
+                                        <div class="col text-center">
+                                            <button class="btn btn-outline-secondary w-100 border-0"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#commentSection-<?php echo $row['id']; ?>"
+                                                aria-expanded="false">
+                                                <i class="bi bi-chat-dots"></i> Comment
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Comment Section -->
+                                <div class="collapse mt-3" id="commentSection-<?php echo $row['id']; ?>">
+                                    <textarea class="form-control" rows="3" placeholder="Write a comment..."></textarea>
+                                    <button class="btn btn-primary mt-2">Submit</button>
+                                </div>
+
                             </div>
-                            
-                            <?php if (!empty($row['news_image'])): ?>
-                            <img src="<?php echo htmlspecialchars($row['news_image']); ?>" class="img-fluid rounded"
-                                alt="News Image" style="margin-top: 10px; border-radius: 15px;">
-                            <?php else: ?>
-                            <img src="path/to/default/image.jpg" class="img-fluid rounded"
-                                alt="Default News Image" style="margin-top: 10px; border-radius: 15px;">
-                            <?php endif; ?>
-                            
-                            <p class="card-text">
-                                <small class="text-muted">Posted on 
-                                    <?php echo date("F j, Y", strtotime($row['created_at'])); ?></small>
-                            </p>
+
                         </div>
                     </div>
                     <?php endwhile; ?>
                     <?php else: ?>
-                    <p>No news available at the moment.</p>
+                    <p class="text-center">No news available at the moment.</p>
                     <?php endif; ?>
-
                 </div>
-            </div>
+        </div>
         </section>
-    </div>
-</main>
-
+        </div>
+    </main>
 
     <!-- Vendor JS Files -->
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
 
