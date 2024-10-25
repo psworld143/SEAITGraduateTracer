@@ -182,8 +182,11 @@ $batch_name = $batch_result->num_rows > 0 ? $batch_result->fetch_assoc()['batch_
                     if (responseData.data.length) {
                         tbody.innerHTML = responseData.data.map(student => `
                         <tr>
-                            <td>${student.first_name} ${student.last_name}</td>
+                            <td>${student.school_id}</td>
+                            <td>${student.full_name}</td>
                             <td>${student.course}</td>
+                            <td>${student.department_code}</td>
+                            <td>${student.control_code}</td>
                             <td>${student.email}</td>
                             <td>
                                 <button class="btn btn-danger btn-sm" onclick="deleteStudent(${student.id})">

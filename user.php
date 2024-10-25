@@ -9,7 +9,6 @@
     <meta content="SEAIT, Graduate Tracer, User Management" name="keywords">
 
     <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
     <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
@@ -48,32 +47,32 @@
         </div>
 
         <section class="section">
-                <div class="col-lg-20">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="card-title">List of Users</h5>
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#adduser">
-                                    <i class="bx bx-plus"></i>Add User
-                                </button>
-                            </div>
-                            <table class="table datatable">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Username</th>
-                                        <th>Password</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- User data will be populated here -->
-                                </tbody>
-                            </table>
+            <div class="col-lg-20">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">List of Users</h5>
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#adduser">
+                                <i class="bx bx-plus"></i>Add User
+                            </button>
                         </div>
+                        <table class="table datatable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Password</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- User data will be populated here -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
         </section>
 
         <!-- Add User Modal -->
@@ -143,6 +142,123 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
+    <script>
+    $(document).ready(function() {
+        // Handle the form submission for adding a user
+        $('#addUserForm').on('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting the default way
+
+            // Collect form data
+            const formData = {
+                firstname: $('#firstname').val(),
+                middlename: $('#middlename').val(),
+                lastname: $('#lastname').val(),
+                username: $('#username').val(),
+                password: $('#password').val()
+            };
+
+            // Send data to add_user.php using AJAX
+            $.ajax({
+                type: 'POST',
+                url: 'backend/add_user.php',
+                data: formData,
+                dataType: 'json', // Expect a JSON response
+                success: function(response) {
+                    // Handle the response from the server
+                    if (response.success) {
+                        // Reload the user list
+                        fetchUserData();
+                        // Close the modal
+                        $('#adduser').modal('hide');
+
+                        // Show success toast
+                        showToast('User added successfully!', 'success');
+                        // Reset the form fields
+                        $('#addUserForm')[0].reset();
+                    } else {
+                        showToast('Error: ' + response.message, 'danger');
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Request failed:', textStatus, errorThrown);
+                    showToast('Request failed: ' + textStatus, 'danger');
+                }
+            });
+        });
+
+        // Function to fetch user data and display in DataTable
+        function fetchUserData() {
+            $.ajax({
+                type: 'GET',
+                url: 'backend/fetch_user.php', // Adjust path as necessary
+                dataType: 'json',
+                success: function(data) {
+                    // Initialize the DataTable with the fetched data
+                    const tableBody = $('table.datatable tbody');
+                    tableBody.empty(); // Clear existing data
+
+                    // Populate table with user data
+                    data.forEach(user => {
+                        tableBody.append(`
+                    <tr>
+                        <td>${user.firstname} ${user.middlename ? user.middlename + ' ' : ''}${user.lastname}</td>
+                        <td>${user.username}</td>
+                        <td>********</td> <!-- Password is not displayed for security -->
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">Delete</button> <!-- Example action -->
+                        </td>
+                    </tr>
+                `);
+                    });
+
+                    // Initialize DataTable after populating
+                    if ($.fn.DataTable.isDataTable('.datatable')) {
+                        $('.datatable').DataTable()
+                            .destroy(); // Destroy existing DataTable instance
+                    }
+                    $('.datatable').DataTable(); // Initialize new DataTable
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Failed to fetch user data:', textStatus, errorThrown);
+                    showToast('Failed to fetch user data: ' + textStatus, 'danger');
+                }
+            });
+        }
+
+        // Function to show toast notifications
+        function showToast(message, type) {
+            // Create a toast element
+            const toastHTML = `
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 20px; right: 20px;">
+                <div class="toast-header">
+                    <strong class="me-auto">${type === 'success' ? 'Success' : 'Error'}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    ${message}
+                </div>
+            </div>
+        `;
+
+            // Append the toast to the body
+            $('body').append(toastHTML);
+
+            // Show the toast
+            const toastElement = $('.toast').last();
+            const bsToast = new bootstrap.Toast(toastElement[0]);
+            bsToast.show();
+
+            // Remove the toast after a timeout
+            setTimeout(() => {
+                toastElement.remove();
+            }, 5000); // Adjust time as needed
+        }
+
+        // Call the fetchUserData function on page load
+        fetchUserData();
+    });
+    </script>
+
 
 </body>
 

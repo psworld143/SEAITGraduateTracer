@@ -23,7 +23,7 @@ $result = $conn->query($sql);
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Document Inquiry - Admin</title>
+    <title>Document Inquiry</title>
     <meta content="Document Inquiry and Status" name="description">
     <meta content="document, availability, status, inquiry" name="keywords">
 

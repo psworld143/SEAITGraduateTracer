@@ -19,7 +19,8 @@ try {
         throw new Exception("Invalid batch ID");
     }
 
-    $query = "SELECT id, first_name, last_name, course, email FROM students WHERE batch_id = ?";
+    // Adjusted query to fetch additional fields
+    $query = "SELECT id, school_id, full_name, course, department_code, control_code, email FROM students WHERE batch_id = ?";
     $stmt = $conn->prepare($query);
     
     if (!$stmt) {
@@ -38,9 +39,11 @@ try {
     while ($row = $result->fetch_assoc()) {
         $students[] = [
             'id' => $row['id'],
-            'first_name' => $row['first_name'],
-            'last_name' => $row['last_name'],
+            'school_id' => $row['school_id'], // Added school_id
+            'full_name' => $row['full_name'],
             'course' => $row['course'],
+            'department_code' => $row['department_code'], // Added department_code
+            'control_code' => $row['control_code'], // Added control_code
             'email' => $row['email']
         ];
     }

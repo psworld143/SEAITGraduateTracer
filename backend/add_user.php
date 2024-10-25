@@ -1,28 +1,29 @@
 <?php
 include('../db_conn.php');
 
+// Handle POST request to add a new user
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Get the data from the POST request
-    $firstname = $_POST['firstname'];
-    $middlename = $_POST['middlename'];
-    $lastname = $_POST['lastname'];
-    $username = $_POST['username'];
-    $account_type = $_POST['account_type'];
-    $email = $_POST['email'];
+    // Validate and sanitize inputs
+    $firstname = trim($_POST['firstname']);
+    $middlename = trim($_POST['middlename']);
+    $lastname = trim($_POST['lastname']);
+    $username = trim($_POST['username']);
+    $password = password_hash(trim($_POST['password']), PASSWORD_BCRYPT); // Hash the password
 
-    // Prepare and bind
-    $stmt = $conn->prepare("INSERT INTO user (firstname, middlename, lastname, username, account_type, email) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $firstname, $middlename, $lastname, $username, $account_type, $email);
+    // Prepare and bind the statement
+    $stmt = $conn->prepare("INSERT INTO users (firstname, middlename, lastname, username, password) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $firstname, $middlename, $lastname, $username, $password);
 
-    // Execute the statement
     if ($stmt->execute()) {
-        echo json_encode(['status' => 'success', 'message' => 'User added successfully!']);
+        echo json_encode(['success' => true]);
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Failed to add user.']);
+        echo json_encode(['success' => false, 'message' => 'Database insertion failed: ' . $stmt->error]);
     }
 
-    // Close the statement and connection
     $stmt->close();
-    $conn->close();
+} else {
+    echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
 }
+
+$conn->close();
 ?>
