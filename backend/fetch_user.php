@@ -1,8 +1,8 @@
 <?php
 include('../db_conn.php');
 
-// Prepare and execute the SQL query
-$sql = "SELECT id, firstname, middlename, lastname, username FROM users"; // Added ID for possible deletion
+// Prepare and execute the SQL query to fetch user data, including user_type
+$sql = "SELECT id, firstname, middlename, lastname, username, user_type FROM users"; // Added user_type to the query
 $result = $conn->query($sql);
 
 // Initialize an empty array to hold user data

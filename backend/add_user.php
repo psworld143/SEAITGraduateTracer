@@ -9,10 +9,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lastname = trim($_POST['lastname']);
     $username = trim($_POST['username']);
     $password = password_hash(trim($_POST['password']), PASSWORD_BCRYPT); // Hash the password
+    $user_type = trim($_POST['user_type']); // Get the user type (admin or student)
+
+    // Validate user_type (ensure it is either 'admin' or 'student')
+    if (!in_array($user_type, ['admin', 'student'])) {
+        echo json_encode(['success' => false, 'message' => 'Invalid user type']);
+        exit;
+    }
 
     // Prepare and bind the statement
-    $stmt = $conn->prepare("INSERT INTO users (firstname, middlename, lastname, username, password) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $firstname, $middlename, $lastname, $username, $password);
+    $stmt = $conn->prepare("INSERT INTO users (firstname, middlename, lastname, username, password, user_type) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssss", $firstname, $middlename, $lastname, $username, $password, $user_type);
 
     if ($stmt->execute()) {
         echo json_encode(['success' => true]);

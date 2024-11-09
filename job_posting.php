@@ -375,7 +375,6 @@
         }
 
         // Function to view job details
-        // Function to view job details
         async function viewJob(jobId) {
             try {
                 const response = await fetch(`backend/fetch_job_details.php?id=${jobId}`);

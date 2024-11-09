@@ -47,7 +47,7 @@
 
                                     // Display company logo beside the company name
                                     if (!empty($row["company_logo"])) {
-                                        echo '<img src="' . htmlspecialchars($row["company_logo"]) . '" alt="Company Logo" class="img-fluid" style="height: 60px; margin-right: 20px;">';
+                                        echo '<img src="' . htmlspecialchars($row["company_logo"]) . '" alt="Company Logo" class="img-fluid" style="height: 60px; margin-right: 20px; margin-top:20px;">';
                                     }
 
                                     echo '<div>

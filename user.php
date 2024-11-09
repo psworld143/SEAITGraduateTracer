@@ -47,22 +47,24 @@
         </div>
 
         <section class="section">
-            <div class="col-lg-20">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="card-title">List of Users</h5>
                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#adduser">
-                                <i class="bx bx-plus"></i>Add User
+                                <i class="bx bx-plus"></i> Add User
                             </button>
                         </div>
                         <table class="table datatable">
                             <thead>
                                 <tr>
+                                    
                                     <th>Name</th>
                                     <th>Username</th>
                                     <th>Password</th>
+                                    <th>User Type</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -77,11 +79,11 @@
 
         <!-- Add User Modal -->
         <form id="addUserForm">
-            <div class="modal fade" id="adduser" tabindex="-1">
+            <div class="modal fade" id="adduser" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">User Details</h5>
+                            <h5 class="modal-title" id="addUserModalLabel">User Details</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -101,12 +103,21 @@
                                         <input type="text" name="lastname" class="form-control" id="lastname" required>
                                     </div>
                                 </div>
-                                <div class="row mb-6">
+                                <div class="row mb-2">
                                     <div class="col-md-8">
                                         <label for="username" class="form-label">Username</label>
                                         <input type="text" name="username" class="form-control" id="username" required>
                                     </div>
+                                    <div class="col-md-4">
+                                        <label for="user_type" class="form-label">User Type</label>
+                                        <select name="user_type" class="form-control" id="user_type" required>
+                                            <option value="" selected disabled>Select User Type</option>
+                                            <option value="admin">Admin</option>
+                                            <option value="student">Student</option>
+                                        </select>
+                                    </div>
                                 </div>
+
                                 <div class="row mb-6">
                                     <div class="col-md-8">
                                         <label for="password" class="form-label">Password</label>
@@ -124,9 +135,8 @@
                 </div>
             </div>
         </form>
-
-
     </main>
+
 
     <!-- Vendor JS Files -->
     <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -154,7 +164,8 @@
                 middlename: $('#middlename').val(),
                 lastname: $('#lastname').val(),
                 username: $('#username').val(),
-                password: $('#password').val()
+                password: $('#password').val(),
+                user_type: $('#user_type').val() // Added user_type field
             };
 
             // Send data to add_user.php using AJAX
@@ -200,21 +211,22 @@
                     // Populate table with user data
                     data.forEach(user => {
                         tableBody.append(`
-                    <tr>
-                        <td>${user.firstname} ${user.middlename ? user.middlename + ' ' : ''}${user.lastname}</td>
-                        <td>${user.username}</td>
-                        <td>********</td> <!-- Password is not displayed for security -->
-                        <td>
-                            <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">Delete</button> <!-- Example action -->
-                        </td>
-                    </tr>
-                `);
+                        <tr>
+                            <td>${user.firstname} ${user.middlename ? user.middlename + ' ' : ''}${user.lastname}</td>
+                            <td>${user.username}</td>
+                            <td>********</td> <!-- Password is not displayed for security -->
+                            <td>${user.user_type}</td> <!-- Display user type -->
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">Delete</button> <!-- Example action -->
+                            </td>
+                        </tr>
+                    `);
                     });
 
                     // Initialize DataTable after populating
                     if ($.fn.DataTable.isDataTable('.datatable')) {
                         $('.datatable').DataTable()
-                            .destroy(); // Destroy existing DataTable instance
+                    .destroy(); // Destroy existing DataTable instance
                     }
                     $('.datatable').DataTable(); // Initialize new DataTable
                 },
@@ -258,6 +270,7 @@
         fetchUserData();
     });
     </script>
+
 
 
 </body>

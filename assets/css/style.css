@@ -571,10 +571,7 @@ h6 {
 /* Base Sidebar Styles */
 .sidebar {
   position: fixed;
-  height: 75%;
   border-radius: 8px;
-  margin-top: 4%;
-  margin-bottom: 5%;
   top: 60px;
   left: 0;
   bottom: 0;

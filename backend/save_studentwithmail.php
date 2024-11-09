@@ -1,5 +1,9 @@
 <?php
 include('../db_conn.php');
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+require 'vendor/autoload.php';
 
 // Enable error reporting
 error_reporting(E_ALL);
@@ -27,25 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $controlCode = $_POST['controlCode'] ?? '';
         $batch_id = $_POST['batch_id'] ?? 0;
 
-        // Validate required fields
         if (empty($schoolID) || empty($fullName) || empty($email)) {
             throw new Exception("Missing required fields");
         }
-
-        // Sanitize inputs to prevent SQL Injection
-        $schoolID = htmlspecialchars($schoolID, ENT_QUOTES, 'UTF-8');
-        $fullName = htmlspecialchars($fullName, ENT_QUOTES, 'UTF-8');
-        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-        $course = htmlspecialchars($course, ENT_QUOTES, 'UTF-8');
-        $departmentCode = htmlspecialchars($departmentCode, ENT_QUOTES, 'UTF-8');
-        $controlCode = htmlspecialchars($controlCode, ENT_QUOTES, 'UTF-8');
-        $batch_id = intval($batch_id); // Ensure this is an integer
 
         // Generate simple token
         $activation_token = bin2hex(random_bytes(16));
         $token_expiration = date('Y-m-d H:i:s', strtotime('+24 hours'));
 
-        // Prepare SQL statement
+        // First, just try to insert basic data
         $sql = "INSERT INTO students (
             school_id, 
             full_name, 
@@ -64,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Prepare failed: " . $conn->error);
         }
 
-        // Bind parameters
         $stmt->bind_param("sssssssss", 
             $schoolID,
             $fullName,
@@ -77,25 +70,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $token_expiration
         );
 
-        // Execute the statement
         if (!$stmt->execute()) {
             throw new Exception("Execute failed: " . $stmt->error);
         }
 
-        // Return success response
-        echo json_encode(['success' => true, 'message' => 'Student added successfully']);
+        // If insert successful, try to send email
+        $mail = new PHPMailer(true);
+        
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'marotabdul@gmail.com';
+        $mail->Password = 'htbf mtxr tytj vuku';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port = 465;
+
+        $mail->setFrom('marotabdul@gmail.com', 'School Admin');
+        $mail->addAddress($email, $fullName);
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Account Activation';
+        $activationLink = "http://localhost/seaitgraduatetracer/register?token=$activation_token";
+        $mail->Body = "Hello $fullName,<br><br>Please click here to activate your account: <a href='$activationLink'>Activate Account</a>";
+
+        $mail->send();
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Registration successful'
+        ]);
+
     } catch (Exception $e) {
-        // Log error and return error response
-        error_log("Error: " . $e->getMessage());
-        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+        // Log the error with full details
+        error_log("Error in student registration: " . $e->getMessage());
+        error_log("Stack trace: " . $e->getTraceAsString());
+
+        echo json_encode([
+            'success' => false,
+            'message' => 'Registration failed: ' . $e->getMessage(),
+            'details' => $e->getTraceAsString()
+        ]);
     } finally {
-        // Close the statement and connection
         if (isset($stmt)) {
             $stmt->close();
         }
-        $conn->close();
+        if (isset($conn)) {
+            $conn->close();
+        }
     }
 } else {
-    echo json_encode(['success' => false, 'error' => 'Invalid request method']);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid request method'
+    ]);
 }
 ?>

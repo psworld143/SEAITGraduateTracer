@@ -21,7 +21,7 @@ $result = fetchNews($conn);
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>News Dashboard - Admin</title>
+    <title>News Dashboard</title>
     <meta content="Manage and view school news and updates" name="description">
     <meta content="news, dashboard, updates, management" name="keywords">
 

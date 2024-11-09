@@ -1,4 +1,4 @@
-    <?php
+<?php
 // db_connection.php - Replace with your actual database connection file
 include('db_conn.php');
 
