@@ -1,3 +1,51 @@
+<?php
+session_start();
+
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    // Redirect to login page if not logged in
+    header('Location: index2.php');
+    exit;
+}
+
+require_once 'db_conn.php';
+
+// Get the user ID from the session
+$user_id = $_SESSION['user_id'];
+
+// Determine whether the user is a student or a regular user
+// Check the 'students' table first
+$stmt = $conn->prepare("SELECT full_name, email FROM students WHERE id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    // The user is a student
+    $user = $result->fetch_assoc();
+    $_SESSION['user_type'] = 'student';
+    $_SESSION['user_name'] = $user['full_name'];
+    $_SESSION['user_email'] = $user['email'];
+} else {
+    // If not found in 'students', check the 'users' table
+    $stmt = $conn->prepare("SELECT firstname, lastname FROM users WHERE id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        // The user is a regular user
+        $user = $result->fetch_assoc();
+        $_SESSION['user_type'] = 'regular_user';
+        $_SESSION['user_name'] = $user['firstname'] . ' ' . $user['lastname'];
+    } else {
+        // If user is not found in either table, log them out
+        session_destroy();
+        header('Location: index2.php');
+        exit;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,6 +67,43 @@
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/static.css" rel="stylesheet">
     <link href="assets/css/alumni.css" rel="stylesheet">
+    <style>
+    .form-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .checkbox-group {
+        margin-left: 20px;
+    }
+
+    .error {
+        color: red;
+        font-size: 0.9em;
+        margin-top: 5px;
+    }
+
+    .required::after {
+        content: " *";
+        color: red;
+    }
+    </style>
+
 </head>
 
 <body>
@@ -44,7 +129,7 @@
             <h2>A. GENERAL INFORMATION</h2>
 
             <div class="col-md-12 ">
-                <label for="name" class="form-label">Name:</label>
+                <label for="name" class="form-label">1. Name:</label>
                 <div class="col-sm-12">
                     <input type="text" id="name" name="name" class="form-control" placeholder="Enter your full name"
                         required>
@@ -52,7 +137,7 @@
             </div>
 
             <div class="col-md-12 ">
-                <label for="email_address" class="form-label">Email Address:</label>
+                <label for="email_address" class="form-label">2. Email Address:</label>
                 <div class="col-sm-12">
                     <input type="email" id="email_address" name="email_address" class="form-control"
                         placeholder="Enter your email address" required aria-describedby="emailHelp">
@@ -61,7 +146,7 @@
 
 
             <div class="col-md-12 ">
-                <label for="telephone_contact" class="form-label">Telephone/Contact:</label>
+                <label for="telephone_contact" class="form-label">3. Telephone/Contact:</label>
                 <div class="col-sm-12">
                     <input type="text" id="telephone_contact" name="telephone_contact" class="form-control"
                         placeholder="Enter your telephone number" maxlength="15" required>
@@ -70,7 +155,7 @@
 
 
             <div class="col-md-12 ">
-                <label for="mobile_phone_number" class="form-label">Mobile Phone Number:</label>
+                <label for="mobile_phone_number" class="form-label">4. Mobile Phone Number:</label>
                 <div class="col-sm-12">
                     <input type="text" id="mobile_phone_number" name="mobile_phone_number" class="form-control"
                         placeholder="Enter your mobile phone number">
@@ -78,7 +163,7 @@
             </div>
 
             <div class="col-md-12 ">
-                <label for="civil_status" class="form-label">Civil Status:</label>
+                <label for="civil_status" class="form-label">5. Civil Status:</label>
                 <div class="col-sm-12">
                     <select id="civil_status" name="civil_status" class="form-select" aria-label="Civil Status">
                         <option selected>Select Status</option>
@@ -92,14 +177,14 @@
             </div>
 
             <div class="col-md-12 ">
-                <label for="date" class="form-label">Date:</label>
+                <label for="date" class="form-label">6. Date:</label>
                 <div class="col-sm-12">
                     <input type="date" id="date" name="date" class="form-control">
                 </div>
             </div>
 
             <div class="col-md-12 ">
-                <label for="region_of_origin" class="form-label">Region of Origin:</label>
+                <label for="region_of_origin" class="form-label">7. Region of Origin:</label>
                 <div class="col-sm-12">
                     <select id="region_of_origin" name="region_of_origin" class="form-select"
                         aria-label="Region of Origin">
@@ -126,7 +211,7 @@
             </div>
 
             <div class="col-md-12 ">
-                <label for="province_of_origin" class="form-label">Province of Origin:</label>
+                <label for="province_of_origin" class="form-label">8. Province of Origin:</label>
                 <div class="col-sm-12">
                     <input type="text" id="province_of_origin" name="province_of_origin" class="form-control"
                         placeholder="Enter your province of origin">
@@ -134,7 +219,7 @@
             </div>
 
             <div class="col-md-12 ">
-                <label for="location_of_residence" class="form-label">Location of Residence:</label>
+                <label for="location_of_residence" class="form-label">9. Location of Residence:</label>
                 <div class="col-12">
                     <input type="text" id="location_of_residence" name="location_of_residence" class="form-control"
                         placeholder="Enter your location of residence">
@@ -142,7 +227,7 @@
             </div>
 
             <div class="col-md-12">
-                <label for="municipalities" class="form-label">Municipalities:</label>
+                <label for="municipalities" class="form-label">10. Municipalities:</label>
                 <div class="col-sm-12">
                     <input type="text" id="municipalities" name="municipalities" class="form-control"
                         placeholder="Enter your municipality">
@@ -153,7 +238,7 @@
             <h2>B. EDUCATIONAL BACKGROUND</h2>
 
             <div class="col-md-12">
-                <label for="education">Educational Attainment (Baccalaureate Degree only)</label>
+                <label for="education">11. Educational Attainment (Baccalaureate Degree only)</label>
 
                 <table>
                     <thead>
@@ -192,14 +277,14 @@
             </div>
 
             <div class="col-md-12">
-                <label for="skill">Professional Skills (Please specify)</label>
+                <label for="skill">12. Professional Skills (Please specify)</label>
                 <div class="col-sm-12">
                     <input type="text" id="skill" name="skill" class="form-control" aria-label="Professional Skills">
                 </div>
             </div>
 
             <div class="col-md-12">
-                <label for="examinations">Professional Examination(s) Passed</label>
+                <label for="examinations">13. Professional Examination(s) Passed</label>
                 <table>
                     <thead>
                         <tr>
@@ -228,7 +313,7 @@
             </div>
 
             <div class="col-md-12">
-                <label for="reasons">Reason(s) for having taken the course(s) or having pursued degree(s). You may
+                <label for="reasons">14. Reason(s) for having taken the course(s) or having pursued degree(s). You may
                     check (✓) more than one answer.</label>
 
                 <table>
@@ -322,7 +407,7 @@
 
             <h2>C. TRAINING(S) AND ADVANCED STUDIES ATTENDED FOR COLLEGE</h2>
             <div class="col-md-12">
-                <label for="training_table">Please list down all professional or work-related training
+                <label for="training_table">15. Please list down all professional or work-related training
                     program(s),
                     including advanced studies, you have attended after college. You may use an extra sheet if
                     needed.</label>
@@ -365,7 +450,7 @@
             </div>
 
             <div class="col-md-12">
-                <legend class="col-form-label">What made you pursue advanced studies?</legend>
+                <legend class="col-form-label">16. What made you pursue advanced studies?</legend>
                 <div class="col-sm-10">
                     <div class="col-12">
                         <div class="form-check">
@@ -392,7 +477,7 @@
             <h2>D. EMPLOYMENT DATA</h2>
 
             <div class="col-md-12">
-                <label class="form-label">Are you presently employed?</label>
+                <label class="form-label">17. Are you presently employed?</label>
                 <div class="col-sm-10">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="yes" name="employment_status" value="yes">
@@ -407,98 +492,90 @@
                         <label class="form-check-label" for="never">Never Employed</label>
                     </div>
                     <p>If NO or NEVER EMPLOYED, proceed to Question 18.</p>
-                    <p>If YES, proceed to Questions 19-23.</p>
+                    <p>If YES, proceed to Questions 19, 20, 21, 22, and 23.</p>
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <label>Please state reason(s) why you are not yet employed. You may check (✓) more than one
-                    answer.</label>
+            <div class="col-md-12" id="section18">
+                <label>18. Please state reason(s) why you are not yet employed. You may check (✓) more than one answer.</label>
                 <div class="checkbox-group">
-                    <label><input type="checkbox" name="reason_not_employed[]" value="advanced_study"> Advance or
-                        Further Study</label>
-                    <label><input type="checkbox" name="reason_not_employed[]" value="family_concern"> Family
-                        Concern
-                        and Decided Not to Find a Job</label>
-                    <label><input type="checkbox" name="reason_not_employed[]" value="health_related"> Health
-                        Related
-                        Reason(s)</label>
-                    <label><input type="checkbox" name="reason_not_employed[]" value="lack_of_experience"> Lack of
-                        Work
-                        Experience</label>
-                    <label><input type="checkbox" name="reason_not_employed[]" value="no_job_opportunity"> No Job
-                        Opportunity</label>
-                    <label><input type="checkbox" name="reason_not_employed[]" value="did_not_look_for_job"> Did Not
-                        Look for a Job</label>
-                    <label><input type="checkbox" name="reason_not_employed[]" value="other"> Other Reason(s),
-                        please
-                        specify:</label>
+                    <label><input type="checkbox" name="reason_not_employed[]" value="Advance or Further Study"> Advance or Further Study</label>
+                    <label><input type="checkbox" name="reason_not_employed[]" value="Family Concern and Decided Not to Find a Job"> Family Concern and Decided Not to Find a Job</label>
+                    <label><input type="checkbox" name="reason_not_employed[]" value="Health Related Reason(s)"> Health Related Reason(s)</label>
+                    <label><input type="checkbox" name="reason_not_employed[]" value="Lack of Work Experience"> Lack of Work Experience</label>
+                    <label><input type="checkbox" name="reason_not_employed[]" value="No Job Opportunity"> No Job Opportunity</label>
+                    <label><input type="checkbox" name="reason_not_employed[]" value="Did Not Look for a Job"> Did Not Look for a Job</label>
+                    <label><input type="checkbox" name="reason_not_employed[]" value="Other Reason(s)"> Other Reason(s), please specify:</label>
                     <input type="text" id="other_reason" name="other_reason" placeholder="Specify other reasons">
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <legend class="form-label">Present Employment Status</legend>
+            <div class="employed-section" id="employedSection19">
+                <label>19. Present Employment Status</label>
                 <div class="col-sm-10">
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" id="regular" name="employment_status_current"
-                            value="regular">
+                        <input class="form-check-input" type="radio" id="regular" name="employment_status_current" value="Regular or Permanent">
                         <label class="form-check-label" for="status-regular">Regular or Permanent</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" id="temporary" name="employment_status_current"
-                            value="temporary">
+                        <input class="form-check-input" type="radio" id="temporary" name="employment_status_current" value="Temporary">
                         <label class="form-check-label" for="temporary">Temporary</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" id="casual" name="employment_status_current"
-                            value="casual">
+                        <input class="form-check-input" type="radio" id="casual" name="employment_status_current" value="Casual">
                         <label class="form-check-label" for="casual">Casual</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" id="contractual" name="employment_status_current"
-                            value="contractual">
+                        <input class="form-check-input" type="radio" id="contractual" name="employment_status_current" value="Contractual">
                         <label class="form-check-label" for="contractual">Contractual</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" id="self-employed" name="employment_status_current"
-                            value="self_employed">
+                        <input class="form-check-input" type="radio" id="self-employed" name="employment_status_current" value="Self-employed">
                         <label class="form-check-label" for="self-employed">Self-employed</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" id="unemployed" name="employment_status_current"
-                            value="unemployed">
+                        <input class="form-check-input" type="radio" id="unemployed" name="employment_status_current" value="Unemployed">
                         <label class="form-check-label" for="unemployed">Unemployed</label>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <label for="current_occupation" class="form-label">Present Occupation (e.g., Grade
-                    School Teacher, Electrical Engineer, Self-employed)</label>
-                <div class="col-sm-12">
-                    <input type="text" id="current_occupation" name="current_occupation" class="form-control"
-                        placeholder="Enter Occupation">
+            <div class="employed-section" id="employedSection20">
+                <label>20. Which sector are you currently employed in?</label>
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="government" name="employment_sector" value="Government">
+                        <label class="form-check-label" for="government">Government</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="non-government" name="employment_sector" value="Non-Government">
+                        <label class="form-check-label" for="non-government">Non-Government</label>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <label for="company_name" class="form-label">Name of Company or Organization Including
-                    Address</label>
+            <div class="employed-section" id="employedSection21">
+                <label for="current_occupation" class="form-label">21. Present Occupation (e.g., Grade School Teacher, Electrical Engineer, Self-employed)</label>
                 <div class="col-sm-12">
-                    <input type="text" id="company_name" name="company_name" class="form-control"
-                        placeholder="Enter Company Name and Address">
+                    <input type="text" id="current_occupation" name="current_occupation" class="form-control" placeholder="Enter Occupation">
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <label for="place-of-work">Place of Work:</label>
+            <div class="employed-section" id="employedSection22">
+                <label for="company_information" class="form-label">22. Name of Company or Organization Including Address</label>
+                <div class="col-sm-12">
+                    <input type="text" id="company_name" name="company_name" class="form-control" placeholder="Enter Company Name and Address">
+                </div>
+            </div>
+
+            <div class="employed-section" id="employedSection23">
+                <label for="place-of-work">23. Place of Work:</label>
                 <input type="text" id="local_place" name="local_place" placeholder="Local">
                 <input type="text" id="abroad_place" name="abroad_place" placeholder="Abroad">
             </div>
 
-            <div class="col-md-12">
-                <label>Is this your first job after college?</label>
+            <div class="employed-section" id="employedSection24">
+                <label>24. Is this your first job after college?</label>
                 <div class="col-sm-10">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="yes" name="is_first_job" value="yes">
@@ -508,36 +585,28 @@
                         <input class="form-check-input" type="radio" id="no" name="is_first_job" value="no">
                         <label class="form-check-label" for="no">No</label>
                     </div>
+                    <p>If YES, proceed to Question 25 and 26.</p>
+                    <p>If NO, proceed to Question 28 and 29.</p>
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <label>What are your reason(s) for staying on the job? You may check (✓) more than one
-                    answer.</label>
+            <div class="first-job-section" id="firstJobSection25">
+                <label>25. What are your reason(s) for staying on the job? You may check (✓) more than one answer.</label>
                 <div class="checkbox-group">
-                    <label><input type="checkbox" name="reason_staying[]" value="salaries"> Salaries and
-                        Benefits</label>
-                    <label><input type="checkbox" name="reason_staying[]" value="career_challenge"> Career
-                        Challenge</label>
-                    <label><input type="checkbox" name="reason_staying[]" value="special_skill"> Related to Special
-                        Skill</label>
-                    <label><input type="checkbox" name="reason_staying[]" value="course_related"> Related to Course
-                        or
-                        Program of Study</label>
-                    <label><input type="checkbox" name="reason_staying[]" value="proximity"> Proximity to
-                        Residence</label>
-                    <label><input type="checkbox" name="reason_staying[]" value="peer_influence"> Peer
-                        Influence</label>
-                    <label><input type="checkbox" name="reason_staying[]" value="family_influence"> Family
-                        Influence</label>
-                    <label><input type="checkbox" name="reason_staying[]" value="other"> Other Reason(s), please
-                        specify:</label>
+                    <label><input type="checkbox" name="reason_staying[]" value="Salaries and Benefits"> Salaries and Benefits</label>
+                    <label><input type="checkbox" name="reason_staying[]" value="Career Challenge"> Career Challenge</label>
+                    <label><input type="checkbox" name="reason_staying[]" value="Related to Special Skill"> Related to Special Skill</label>
+                    <label><input type="checkbox" name="reason_staying[]" value="Related to Course or Program of Study"> Related to Course or Program of Study</label>
+                    <label><input type="checkbox" name="reason_staying[]" value="Proximity to Residence"> Proximity to Residence</label>
+                    <label><input type="checkbox" name="reason_staying[]" value="Peer Influence"> Peer Influence</label>
+                    <label><input type="checkbox" name="reason_staying[]" value="Family Influence"> Family Influence</label>
+                    <label><input type="checkbox" name="reason_staying[]" value="Other Reason(s)"> Other Reason(s), please specify:</label>
                     <input type="text" id="other_reason" name="other_reason" placeholder="Other reason(s)">
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <label>Is your first job related to the course you took up in college?</label>
+            <div class="first-job-section" id="firstJobSection26">
+                <label>26. Is your first job related to the course you took up in college?</label>
                 <div class="col-sm-10">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="yes" name="is_related" value="yes">
@@ -547,49 +616,36 @@
                         <input class="form-check-input" type="radio" id="no" name="is_related" value="no">
                         <label class="form-check-label" for="no">No</label>
                     </div>
+                    <p>If NO, proceed to Question 27.</p>
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <label>What were your reasons for accepting the job? You may check (✓) more than one answer.</label>
+            <div class="first-job-section" id="firstJobSection27">
+                <label>27. What were your reasons for accepting the job? You may check (✓) more than one answer.</label>
                 <div class="checkbox-group">
-                    <label><input type="checkbox" name="reason_accepting[]" value="salaries"> Salaries and
-                        Benefits</label>
-                    <label><input type="checkbox" name="reason_accepting[]" value="career_challenge"> Career
-                        Challenge</label>
-                    <label><input type="checkbox" name="reason_accepting[]" value="special_skills"> Related to
-                        Special
-                        Skills</label>
-                    <label><input type="checkbox" name="reason_accepting[]" value="proximity"> Proximity to
-                        Residence</label>
-                    <label><input type="checkbox" name="reason_accepting[]" value="other"> Other Reason(s), please
-                        specify:</label>
-                    <input type="text" id="other" name="other_reason" placeholder="Other reason(s)">
+                    <label><input type="checkbox" name="reason_accepting[]" value="Salaries and Benefits"> Salaries and Benefits</label>
+                    <label><input type="checkbox" name="reason_accepting[]" value="Career Challenge"> Career Challenge</label>
+                    <label><input type="checkbox" name="reason_accepting[]" value="Related to Special Skills"> Related to Special Skills</label>
+                    <label><input type="checkbox" name="reason_accepting[]" value="Proximity to Residence"> Proximity to Residence</label>
+                    <label><input type="checkbox" name="reason_accepting[]" value="Other Reason(s)"> Other Reason(s), please specify:</label>
+                    <input type="text" id="other_reason" name="other_reason" placeholder="Other reason(s)">
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <label>What were your reasons for changing jobs? You may check (✓) more than one answer.</label>
+            <div class="not-first-job-section" id="notFirstJobSection28">
+                <label>28. What were your reasons for changing jobs? You may check (✓) more than one answer.</label>
                 <div class="checkbox-group">
-                    <label><input type="checkbox" name="reason_changing[]" value="salaries"> Salaries and
-                        Benefits</label>
-                    <label><input type="checkbox" name="reason_changing[]" value="career_challenge"> Career
-                        Challenge</label>
-                    <label><input type="checkbox" name="reason_changing[]" value="special_skills"> Related to
-                        Special
-                        Skills</label>
-                    <label><input type="checkbox" name="reason_changing[]" value="proximity"> Proximity to
-                        Residence</label>
-                    <label><input type="checkbox" name="reason_changing[]" value="other"> Other Reason(s), please
-                        specify:</label>
-                    <input type="text" id="other" name="other_reason" placeholder="Other reason(s)">
+                    <label><input type="checkbox" name="reason_changing[]" value="Salaries and Benefits"> Salaries and Benefits</label>
+                    <label><input type="checkbox" name="reason_changing[]" value="Career Challenge"> Career Challenge</label>
+                    <label><input type="checkbox" name="reason_changing[]" value="Related to Special Skills"> Related to Special Skills</label>
+                    <label><input type="checkbox" name="reason_changing[]" value="Proximity to Residence"> Proximity to Residence</label>
+                    <label><input type="checkbox" name="reason_changing[]" value="Other Reason(s)"> Other Reason(s), please specify:</label>
+                    <input type="text" id="other_reason" name="other_reason" placeholder="Other reason(s)">
                 </div>
             </div>
 
-            <!-- Half -->
-
-            <div class="col-md-12">
-                <label for="first-job-duration">How long did you stay in your first job?</label>
+            <div class="not-first-job-section" id="notFirstJobSection29">
+                <label for="first-job-duration">29. How long did you stay in your first job?</label>
                 <select id="first-job-duration" name="first_job_duration">
                     <option value="">Select an option</option>
                     <option value="less_than_month">Less than a month</option>
@@ -603,34 +659,38 @@
                 <input type="text" id="other_duration" name="other_duration" placeholder="Other duration">
             </div>
 
-            <div class="col-md-12">
-                <label>How did you find your first job?</label>
+            <div class="col-md-12" id="employedSections">
+                <label>30. How did you find your first job?</label>
                 <div class="checkbox-group">
                     <label for="job-finding-advertisement"><input type="checkbox" id="job-finding-advertisement"
-                            name="job_finding_method[]" value="advertisement"> Response to an Advertisement</label>
+                            name="job_finding_method[]" value="Response to an Advertisement"> Response to an
+                        Advertisement</label>
                     <label for="job-finding-walk-in"><input type="checkbox" id="job-finding-walk-in"
-                            name="job_finding_method[]" value="walk_in"> As Walk-In Applicant</label>
+                            name="job_finding_method[]" value="As Walk-In Applicant"> As Walk-In Applicant</label>
                     <label for="job-finding-recommended"><input type="checkbox" id="job-finding-recommended"
-                            name="job_finding_method[]" value="recommended"> Recommended by Someone</label>
+                            name="job_finding_method[]" value="Recommended by Someone"> Recommended by Someone</label>
                     <label for="job-finding-information"><input type="checkbox" id="job-finding-information"
-                            name="job_finding_method[]" value="information"> Information from Friends</label>
+                            name="job_finding_method[]" value="Information from Friends"> Information from
+                        Friends</label>
                     <label for="job-finding-arranged"><input type="checkbox" id="job-finding-arranged"
-                            name="job_finding_method[]" value="arranged"> Arranged by School's Job Placement
+                            name="job_finding_method[]" value="Arranged by School Job Placement Officer"> Arranged by
+                        School's Job Placement
                         Officer</label>
                     <label for="job-finding-family"><input type="checkbox" id="job-finding-family"
-                            name="job_finding_method[]" value="family"> Family Business</label>
+                            name="job_finding_method[]" value="Family Business"> Family Business</label>
                     <label for="job-finding-job-fair"><input type="checkbox" id="job-finding-job-fair"
-                            name="job_finding_method[]" value="job_fair"> Job Fair or Public Employment Service
+                            name="job_finding_method[]" value="Job Fair or Public Employment Service Office (PESO)"> Job
+                        Fair or Public Employment Service
                         Office
                         (PESO)</label>
                     <label for="job-finding-others"><input type="checkbox" id="job-finding-others"
-                            name="job_finding_method[]" value="other_method"> Others, please specify:</label>
+                            name="job_finding_method[]" value="Others"> Others, please specify:</label>
                     <input type="text" id="other_method" name="other_method" placeholder="Other method">
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <label for="time-to-first-job">How long did it take you to land your first job?</label>
+            <div class="col-md-12" id="employedSections">
+                <label for="time-to-first-job">31. How long did it take you to land your first job?</label>
                 <select id="time-to-first-job" name="time_to_first_job">
                     <option value="">Select an option</option>
                     <option value="less_than_month">Less than a month</option>
@@ -644,20 +704,20 @@
                 <input type="text" id="other_time" name="other_time" placeholder="Other duration">
             </div>
 
-            <div class="col-md-12">
-                <label for="first-job">Job Position:</label>
+            <div class="col-md-12" id="employedSections">
+                <label for="first-job">32. Job Position:</label>
                 <input type="text" id="first-job" name="first_job" placeholder="First job">
                 <input type="text" id="current-job" name="current_job" placeholder="Current or Present Job">
             </div>
 
-            <div class="col-md-12">
-                <label for="initial-earning">32. What is your initial gross monthly earning in your first job after
+            <div class="col-md-12" id="employedSections">
+                <label for="initial-earning">33. What is your initial gross monthly earning in your first job after
                     college?</label>
                 <input type="number" id="initial-earning" name="initial_earning" placeholder="Enter amount">
             </div>
 
-            <div class="col-md-12">
-                <label>Was the curriculum you had in college relevant to your first job?</label>
+            <div class="course-relevance-section" id="courseRelevanceSection34">
+                <label>34. Was the curriculum you had in college relevant to your first job?</label>
                 <div class="col-sm-10">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="yes" name="is_relevant" value="yes">
@@ -667,73 +727,61 @@
                         <input class="form-check-input" type="radio" id="no" name="is_relevant" value="no">
                         <label class="form-check-label" for="no">No</label>
                     </div>
+                    <p>If NO, proceed to Question 36.</p>
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <label>If YES, what competencies learned in college did you find very useful in your first job? You
-                    may check (✓) more than one answer.</label>
+            <div class="competencies-section" id="competenciesSection35">
+                <label>35. If YES, what competencies learned in college did you find very useful in your first job? You may check (✓) more than one answer.</label>
                 <div class="checkbox-group">
-                    <label for="competencies-communication"><input type="checkbox" id="competencies-communication"
-                            name="useful_competencies[]" value="communication"> Communication skills</label>
-                    <label for="competencies-human-relations"><input type="checkbox" id="competencies-human-relations"
-                            name="useful_competencies[]" value="human_relations">
-                        Human Relations skills</label>
-                    <label for="competencies-entrepreneurial"><input type="checkbox" id="competencies-entrepreneurial"
-                            name="useful_competencies[]" value="entrepreneurial">
-                        Entrepreneurial skills</label>
-                    <label for="competencies-it"><input type="checkbox" id="competencies-it"
-                            name="useful_competencies[]" value="it"> Information Technology skills</label>
-                    <label for="competencies-problem-solving"><input type="checkbox" id="competencies-problem-solving"
-                            name="useful_competencies[]" value="problem_solving">
-                        Problem-solving skills</label>
-                    <label for="competencies-critical-thinking"><input type="checkbox"
-                            id="competencies-critical-thinking" name="useful_competencies[]" value="critical_thinking">
-                        Critical Thinking skills</label>
-                    <label for="competencies-other"><input type="checkbox" id="competencies-other"
-                            name="useful_competencies[]" value="other"> Other reason(s), please specify:</label>
+                    <label for="competencies-communication"><input type="checkbox" id="competencies-communication" name="useful_competencies[]" value="Communication Skills"> Communication Skills</label>
+                    <label for="competencies-human-relations"><input type="checkbox" id="competencies-human-relations" name="useful_competencies[]" value="Human Relations Skills"> Human Relations Skills</label>
+                    <label for="competencies-entrepreneurial"><input type="checkbox" id="competencies-entrepreneurial" name="useful_competencies[]" value="Entrepreneurial skills"> Entrepreneurial skills</label>
+                    <label for="competencies-it"><input type="checkbox" id="competencies-it" name="useful_competencies[]" value="Information Technology Skills"> Information Technology Skills</label>
+                    <label for="competencies-problem-solving"><input type="checkbox" id="competencies-problem-solving" name="useful_competencies[]" value="Problem-solving skills"> Problem-solving skills</label>
+                    <label for="competencies-critical-thinking"><input type="checkbox" id="competencies-critical-thinking" name="useful_competencies[]" value="Critical Thinking skills"> Critical Thinking skills</label>
+                    <label for="competencies-other"><input type="checkbox" id="competencies-other" name="useful_competencies[]" value="Other Reason(s)"> Other Reason(s), please specify:</label>
                     <input type="text" id="other_competency" name="other_competency" placeholder="Other competencies">
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <label for="suggestions">List down suggestions to further improve your course
-                    curriculum:</label>
+            <div class="suggestions-section" id="suggestionsSection36">
+                <label for="suggestions">36. List down suggestions to further improve your course curriculum:</label>
                 <div class="col-sm-12">
                     <input type="text" id="suggestions" name="suggestions" class="form-control">
                 </div>
             </div>
 
             <div class="col-md-12">
-                <label>What values did you learn from your Alma Mater that you have been practicing in your life and
+                <label>37. What values did you learn from your Alma Mater that you have been practicing in your life and
                     at work? You may check (✓) more than one answer.</label>
                 <div class="checkbox-group">
                     <label for="values-family-spirit"><input type="checkbox" id="values-family-spirit"
-                            name="values_learned[]" value="family_spirit"> Family spirit</label>
+                            name="values_learned[]" value="Family Spirit"> Family Spirit</label>
                     <label for="values-presence"><input type="checkbox" id="values-presence" name="values_learned[]"
-                            value="presence"> Presence</label>
+                            value="Presence"> Presence</label>
                     <label for="values-marian"><input type="checkbox" id="values-marian" name="values_learned[]"
-                            value="marian"> Marian</label>
+                            value="Marian"> Marian</label>
                     <label for="values-honesty"><input type="checkbox" id="values-honesty" name="values_learned[]"
-                            value="honesty"> Honesty</label>
+                            value="Honesty"> Honesty</label>
                     <label for="values-preference"><input type="checkbox" id="values-preference" name="values_learned[]"
-                            value="preference"> Preference for the least favored</label>
+                            value="Preference for the Least Favored"> Preference for the Least Favored</label>
                     <label for="values-respect"><input type="checkbox" id="values-respect" name="values_learned[]"
-                            value="respect"> Respect for the integrity of creation</label>
+                            value="Respect for the Integrity of Creation"> Respect for the Integrity of Creation</label>
                     <label for="values-love-of-work"><input type="checkbox" id="values-love-of-work"
-                            name="values_learned[]" value="love_of_work"> Love of work</label>
+                            name="values_learned[]" value="Love of Work"> Love of Work</label>
                     <label for="values-simplicity"><input type="checkbox" id="values-simplicity" name="values_learned[]"
-                            value="simplicity"> Simplicity</label>
+                            value="Simplicity"> Simplicity</label>
                     <label for="values-justice-peace"><input type="checkbox" id="values-justice-peace"
-                            name="values_learned[]" value="justice_peace"> Justice and Peace</label>
+                            name="values_learned[]" value="Justice and Peace"> Justice and Peace</label>
                     <label for="values-other"><input type="checkbox" id="values-other" name="values_learned[]"
-                            value="other"> Others, please specify:</label>
+                            value="Others"> Others, please specify:</label>
                     <input type="text" id="other_value" name="other_value" placeholder="Other values">
                 </div>
             </div>
 
             <div class="col-md-12">
-                <label for="services">Please cite the services you have rendered to the community after
+                <label for="services">38. Please cite the services you have rendered to the community after
                     graduation from college (if any):</label>
                 <div class="col-sm-12">
                     <input type="text" id="services" name="services" class="form-control">
@@ -741,32 +789,32 @@
             </div>
 
             <div class="col-md-12">
-                <label>Being a SEAIT alumnus/alumna, what do you think is/are the best feature(s) of your Alma
+                <label>39. Being a SEAIT alumnus/alumna, what do you think is/are the best feature(s) of your Alma
                     Mater? You may check (✓) more than one answer.</label>
                 <div class="checkbox-group">
                     <label for="best-features-administration"><input type="checkbox" id="best-features-administration"
-                            name="best_features[]" value="administration">
+                            name="best_features[]" value="Administration">
                         Administration</label>
                     <label for="best-features-library"><input type="checkbox" id="best-features-library"
-                            name="best_features[]" value="library"> Library</label>
+                            name="best_features[]" value="Library"> Library</label>
                     <label for="best-features-community-extension"><input type="checkbox"
-                            id="best-features-community-extension" name="best_features[]" value="community_extension">
+                            id="best-features-community-extension" name="best_features[]" value="Community Extension">
                         Community Extension</label>
                     <label for="best-features-faculty"><input type="checkbox" id="best-features-faculty"
-                            name="best_features[]" value="faculty"> Faculty</label>
+                            name="best_features[]" value="Faculty"> Faculty</label>
                     <label for="best-features-laboratories"><input type="checkbox" id="best-features-laboratories"
-                            name="best_features[]" value="laboratories"> Laboratories</label>
+                            name="best_features[]" value="Laboratories"> Laboratories</label>
                     <label for="best-features-student-services"><input type="checkbox"
-                            id="best-features-student-services" name="best_features[]" value="student_services">
-                        Student
-                        Services (Student Affairs, Guidance, Clinic, Athletics, Canteen)</label>
+                            id="best-features-student-services" name="best_features[]"
+                            value="Student Services (Student Affairs, Guidance, Clinic, Athletics, Canteen)">
+                        Student Services (Student Affairs, Guidance, Clinic, Athletics, Canteen)</label>
                     <label for="best-features-instruction"><input type="checkbox" id="best-features-instruction"
-                            name="best_features[]" value="instruction"> Instruction</label>
+                            name="best_features[]" value="Instruction"> Instruction</label>
                     <label for="best-features-physical-plant"><input type="checkbox" id="best-features-physical-plant"
-                            name="best_features[]" value="physical_plant">
+                            name="best_features[]" value="Physical Plant and Facilities">
                         Physical Plant and Facilities</label>
                     <label for="best-features-other"><input type="checkbox" id="best-features-other"
-                            name="best_features[]" value="other"> Others, please specify:</label>
+                            name="best_features[]" value="Others"> Others, please specify:</label>
                     <input type="text" id="other_feature" name="other_feature" placeholder="Other features">
                 </div>
             </div>
@@ -782,6 +830,188 @@
         </form>
     </main>
     <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initial setup - show all sections by default
+        setupEmploymentStatusLogic();
+        setupFirstJobLogic();
+        setupDurationFields();
+        setupOtherInputs();
+        setupCourseRelevanceLogic();
+        setupJobRelatedLogic();
+    });
+
+    // Handle first job logic (Question 24)
+    function setupFirstJobLogic() {
+        const isFirstJobRadios = document.querySelectorAll('input[name="is_first_job"]');
+        const firstJobSections = document.querySelectorAll('.first-job-section');
+        const notFirstJobSections = document.querySelectorAll('.not-first-job-section');
+        const employedSections = document.querySelectorAll('#employedSections');
+
+        // Initial state - show all sections
+        firstJobSections.forEach(section => section.style.display = 'block');
+        notFirstJobSections.forEach(section => section.style.display = 'block');
+        employedSections.forEach(section => section.style.display = 'block');
+
+        isFirstJobRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'yes') {
+                    // If YES selected:
+                    // Show questions 25-27
+                    firstJobSections.forEach(section => section.style.display = 'block');
+                    // Hide questions 28-33
+                    notFirstJobSections.forEach(section => section.style.display = 'none');
+                    employedSections.forEach(section => section.style.display = 'none');
+                } else if (this.value === 'no') {
+                    // If NO selected:
+                    // Hide questions 25-27
+                    firstJobSections.forEach(section => section.style.display = 'none');
+                    // Show questions 28-33
+                    notFirstJobSections.forEach(section => section.style.display = 'block');
+                    employedSections.forEach(section => section.style.display = 'block');
+                }
+            });
+        });
+    }
+
+    // Handle employment status logic (Question 17)
+    function setupEmploymentStatusLogic() {
+        const employmentRadios = document.querySelectorAll('input[name="employment_status"]');
+        const section18 = document.getElementById('section18');
+        const employedSections = document.querySelectorAll('.employed-section');
+        const firstJobSections = document.querySelectorAll('.first-job-section');
+        const notFirstJobSections = document.querySelectorAll('.not-first-job-section');
+        const courseRelevanceSection = document.getElementById('courseRelevanceSection34');
+        const competenciesSection = document.getElementById('competenciesSection35');
+        const suggestionsSection = document.getElementById('suggestionsSection36');
+        const valuesSection = document.querySelector('.col-md-12:nth-of-type(37)');
+        const servicesSection = document.querySelector('.col-md-12:nth-of-type(38)');
+        const bestFeaturesSection = document.querySelector('.col-md-12:nth-of-type(39)');
+        const questions30to33 = document.querySelectorAll('#employedSections');
+
+        // Initial state - show all sections
+        if (section18) section18.style.display = 'block';
+        employedSections.forEach(section => section.style.display = 'block');
+        firstJobSections.forEach(section => section.style.display = 'block');
+        notFirstJobSections.forEach(section => section.style.display = 'block');
+        if (courseRelevanceSection) courseRelevanceSection.style.display = 'block';
+        if (competenciesSection) competenciesSection.style.display = 'block';
+        if (suggestionsSection) suggestionsSection.style.display = 'block';
+        if (valuesSection) valuesSection.style.display = 'block';
+        if (servicesSection) servicesSection.style.display = 'block';
+        if (bestFeaturesSection) bestFeaturesSection.style.display = 'block';
+        questions30to33.forEach(section => section.style.display = 'block');
+
+        employmentRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'yes') {
+                    // If YES selected:
+                    if (section18) section18.style.display = 'none';
+                    // Show employment sections but let firstJobLogic handle 25-33
+                    employedSections.forEach(section => section.style.display = 'block');
+                    if (courseRelevanceSection) courseRelevanceSection.style.display = 'block';
+                    if (competenciesSection) competenciesSection.style.display = 'block';
+                    if (suggestionsSection) suggestionsSection.style.display = 'block';
+                    if (valuesSection) valuesSection.style.display = 'block';
+                    if (servicesSection) servicesSection.style.display = 'block';
+                    if (bestFeaturesSection) bestFeaturesSection.style.display = 'block';
+                    questions30to33.forEach(section => section.style.display = 'block');
+                } else if (this.value === 'no' || this.value === 'never') {
+                    // If NO or NEVER selected:
+                    if (section18) section18.style.display = 'block';
+                    employedSections.forEach(section => section.style.display = 'none');
+                    firstJobSections.forEach(section => section.style.display = 'none');
+                    notFirstJobSections.forEach(section => section.style.display = 'none');
+                    if (courseRelevanceSection) courseRelevanceSection.style.display = 'none';
+                    if (competenciesSection) competenciesSection.style.display = 'none';
+                    if (suggestionsSection) suggestionsSection.style.display = 'block';
+                    if (valuesSection) valuesSection.style.display = 'block';
+                    if (servicesSection) servicesSection.style.display = 'block';
+                    if (bestFeaturesSection) bestFeaturesSection.style.display = 'block';
+                    questions30to33.forEach(section => section.style.display = 'none');
+                }
+            });
+        });
+    }
+
+    // Handle course relevance logic (Question 34)
+    function setupCourseRelevanceLogic() {
+        const relevanceRadios = document.querySelectorAll('input[name="is_relevant"]');
+        const competenciesSection = document.getElementById('competenciesSection35');
+        const suggestionsSection = document.getElementById('suggestionsSection36');
+
+        // Initial state - show all sections
+        if (competenciesSection) competenciesSection.style.display = 'block';
+        if (suggestionsSection) suggestionsSection.style.display = 'block';
+
+        relevanceRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'yes') {
+                    if (competenciesSection) competenciesSection.style.display = 'block';
+                } else {
+                    if (competenciesSection) competenciesSection.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    // Handle duration fields (Questions 29)
+    function setupDurationFields() {
+        const durationSelects = ['first-job-duration'];
+
+        durationSelects.forEach(selectId => {
+            const select = document.getElementById(selectId);
+            const otherInput = select?.nextElementSibling;
+
+            if (select && otherInput) {
+                // Initial state - hide other input
+                otherInput.style.display = 'none';
+                
+                select.addEventListener('change', function() {
+                    otherInput.style.display = this.value === 'other_duration' ? 'block' : 'none';
+                });
+            }
+        });
+    }
+
+    // Handle "Other" inputs for checkbox groups
+    function setupOtherInputs() {
+        const checkboxGroups = document.querySelectorAll('.checkbox-group');
+
+        checkboxGroups.forEach(group => {
+            const otherCheckbox = group.querySelector('input[value="Other Reason(s)"], input[value="Others"]');
+            const otherInput = group.querySelector('input[type="text"]');
+
+            if (otherCheckbox && otherInput) {
+                // Initial state - hide other input
+                otherInput.style.display = 'none';
+                
+                otherCheckbox.addEventListener('change', function() {
+                    otherInput.style.display = this.checked ? 'block' : 'none';
+                });
+            }
+        });
+    }
+
+    // Add new function to handle question 26 logic
+    function setupJobRelatedLogic() {
+        const relatedRadios = document.querySelectorAll('input[name="is_related"]');
+        const question27 = document.getElementById('firstJobSection27');
+
+        // Initial state - show question 27
+        if (question27) question27.style.display = 'block';
+
+        relatedRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'yes') {
+                    if (question27) question27.style.display = 'none';
+                } else {
+                    if (question27) question27.style.display = 'block';
+                }
+            });
+        });
+    }
+    </script>
+    <script>
     // Function to handle form submission
     function submitForm(event) {
         event.preventDefault(); // Prevent the default form submission to stay on the page
@@ -794,30 +1024,29 @@
         // Gather form data using FormData API
         const formData = new FormData(document.getElementById('regForm'));
 
-        // Example: Log form data to the console (for debugging)
-        console.log("Form Submitted with data:");
-        for (let [name, value] of formData.entries()) {
-            console.log(name + ": " + value);
-        }
-
         // Send data to the server (using fetch API)
         fetch('backend/save_question.php', {
                 method: 'POST',
-                body: formData,
+                body: formData
             })
-            .then(response => response.json()) // Parse JSON response from the server
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     alert('Form submitted successfully!');
                     // Optionally, you can clear the form fields or redirect
                     document.getElementById('regForm').reset();
                 } else {
-                    alert('Error submitting form: ' + data.message);
+                    alert('Error submitting form: ' + (data.error || 'Unknown error occurred'));
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('There was an error submitting the form.');
+                alert('There was an error submitting the form. Please try again.');
             });
     }
 
