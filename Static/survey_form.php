@@ -53,7 +53,7 @@ if ($result->num_rows > 0) {
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Survey Form</title>
+    <title>SEAIT Graduate Tracer</title>
     <meta content="About SEAIT, history, mission, and vision" name="description">
     <meta content="SEAIT, education, history" name="keywords">
 

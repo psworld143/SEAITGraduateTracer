@@ -66,7 +66,7 @@ $batch_name = $batch_result->num_rows > 0 ? $batch_result->fetch_assoc()['batch_
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Survey Result / Data - SEAITGraduateTracer</title>
+    <title>SEAIT Graduate Tracer</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -1135,7 +1135,7 @@ $batch_name = $batch_result->num_rows > 0 ? $batch_result->fetch_assoc()['batch_
             printWindow.document.write(`
                 <html>
                     <head>
-                        <title>Graduate Information</title>
+                        <title>SEAIT Graduate Tracer</title>
                         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
                         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
                         <style>

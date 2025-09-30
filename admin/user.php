@@ -51,12 +51,12 @@ if ($result->num_rows > 0) {
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Dashboard - SEAIT Graduate Tracer</title>
+    <title>SEAIT Graduate Tracer</title>
     <meta content="User management dashboard for SEAIT Graduate Tracer." name="description">
     <meta content="SEAIT, Graduate Tracer, User Management" name="keywords">
 
     <!-- Favicons -->
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="assets/img/logoseait.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">

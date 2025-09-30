@@ -52,7 +52,7 @@ if ($result->num_rows > 0) {
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Document Inquiry - Admin</title>
+    <title>SEAIT Graduate Tracer</title>
 
     <!-- Vendor CSS Files -->
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">

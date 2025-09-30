@@ -52,7 +52,7 @@ if ($result->num_rows > 0) {
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Manage School News & Updates - SEAITGraduateTracer</title>
+    <title>SEAIT Graduate Tracer</title>
 
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
